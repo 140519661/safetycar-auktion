@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datenschutzerklärung – Safety Car</title>
+  <meta name="description" content="Datenschutzerklärung der Jenne, Zehner Safety Car GbR – Informationen zur Verarbeitung Ihrer personenbezogenen Daten." />
+
+  <!-- ═══════════════════════════════════════
+       FONTS
+       Hinweis: Sobald Fonts lokal eingebettet sind,
+       diesen Block durch <link href="fonts.css"> ersetzen.
+  ═══════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --red: #B00000;
+      --red-h: #C80000;
+      --ink: #0A0A0A;
+      --ink-b: #1C1C1C;
+      --text: #1a1a1a;
+      --mid: #444;
+      --muted: #777;
+      --border: #E4E4E4;
+      --bg: #fff;
+      --bg-off: #F8F8F8;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .ds-header {
+      background: var(--ink);
+      padding: 0 5%;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
+      border-bottom: 1px solid var(--ink-b);
+    }
+    .logo-mark { display:flex; flex-direction:column; line-height:1; gap:1px; text-decoration:none; }
+    .logo-mark .lw1 { font-family:'Montserrat',sans-serif; font-weight:600; font-size:.9rem; letter-spacing:.2em; text-transform:uppercase; color:var(--red); }
+    .logo-mark .lw2 { font-family:'Montserrat',sans-serif; font-weight:600; font-size:.9rem; letter-spacing:.2em; text-transform:uppercase; color:#fff; }
+    .back-link {
+      font-family:'Montserrat',sans-serif; font-weight:500;
+      font-size:.75rem; letter-spacing:.06em; text-transform:uppercase;
+      color:#A0A0A0; text-decoration:none;
+      display:inline-flex; align-items:center; gap:7px;
+      transition:color .2s;
+    }
+    .back-link:hover { color:#fff; }
+    .back-link svg { stroke:currentColor; fill:none; stroke-width:2; }
+
+    /* ── Hero ── */
+    .ds-hero {
+      background: var(--bg-off);
+      border-bottom: 1px solid var(--border);
+      padding: 56px 5% 48px;
+    }
+    .ds-hero-inner { max-width: 820px; margin: 0 auto; }
+    .ds-tag {
+      display:inline-block;
+      font-family:'Montserrat',sans-serif; font-weight:600;
+      font-size:.65rem; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--red); background:rgba(176,0,0,.08);
+      border:1px solid rgba(176,0,0,.2); padding:4px 13px;
+      border-radius:100px; margin-bottom:16px;
+    }
+    .ds-hero h1 {
+      font-family:'Montserrat',sans-serif; font-weight:800;
+      font-size:clamp(1.8rem,4vw,2.6rem); letter-spacing:-.03em;
+      line-height:1.1; margin-bottom:12px;
+    }
+    .ds-hero p { color:var(--muted); font-size:.92rem; max-width:560px; }
+
+    /* ── Content ── */
+    .ds-content {
+      max-width: 820px; margin: 0 auto;
+      padding: 56px 5% 80px;
+    }
+    .ds-content h2 {
+      font-family:'Montserrat',sans-serif; font-weight:700;
+      font-size:1.25rem; letter-spacing:-.02em;
+      margin: 40px 0 14px; padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text);
+    }
+    .ds-content h2:first-of-type { border-top:none; padding-top:0; margin-top:0; }
+    .ds-content h3 {
+      font-family:'Montserrat',sans-serif; font-weight:600;
+      font-size:1rem; margin: 26px 0 8px; color: var(--text);
+    }
+    .ds-content p {
+      font-size:.9rem; color:var(--mid); margin-bottom:14px;
+    }
+    .ds-content ul {
+      margin: 0 0 16px 0; padding-left: 20px;
+    }
+    .ds-content li {
+      font-size:.9rem; color:var(--mid); margin-bottom:8px;
+    }
+    .ds-content a { color:var(--red); text-decoration:none; }
+    .ds-content a:hover { text-decoration:underline; }
+    .ds-content strong { color:var(--text); font-weight:600; }
+
+    /* ── Highlight box (use-case relevant) ── */
+    .ds-box {
+      background: var(--bg-off);
+      border-left: 3px solid var(--red);
+      border-radius: 0 8px 8px 0;
+      padding: 18px 22px;
+      margin: 18px 0 24px;
+    }
+    .ds-box p { margin-bottom: 0; font-size:.88rem; }
+
+    /* ── Verantwortlicher Card ── */
+    .ds-resp {
+      background: var(--ink); color: #fff;
+      border-radius: 12px; padding: 24px 26px;
+      margin-bottom: 8px;
+    }
+    .ds-resp p { color:rgba(255,255,255,.7); font-size:.88rem; margin-bottom:4px; }
+    .ds-resp strong { color:#fff; }
+    .ds-resp a { color:#fff; }
+
+    /* ── TOC ── */
+    .ds-toc {
+      background: var(--bg-off); border:1px solid var(--border);
+      border-radius:10px; padding:20px 24px; margin-bottom:8px;
+    }
+    .ds-toc p {
+      font-family:'Montserrat',sans-serif; font-weight:600;
+      font-size:.7rem; letter-spacing:.1em; text-transform:uppercase;
+      color:var(--muted); margin-bottom:12px;
+    }
+    .ds-toc ol { padding-left:18px; }
+    .ds-toc li { font-size:.86rem; margin-bottom:6px; }
+    .ds-toc a { color:var(--mid); }
+    .ds-toc a:hover { color:var(--red); }
+
+    /* ── Footer ── */
+    .ds-footer {
+      background: var(--ink); color:rgba(255,255,255,.4);
+      padding: 32px 5%; text-align:center;
+      border-top:1px solid var(--ink-b);
+    }
+    .ds-footer a { color:rgba(255,255,255,.6); text-decoration:none; font-size:.8rem; }
+    .ds-footer a:hover { color:#fff; }
+    .ds-footer-links { display:flex; gap:20px; justify-content:center; margin-bottom:14px; flex-wrap:wrap; }
+    .ds-footer-copy { font-size:.75rem; }
+
+    @media(max-width:600px){
+      .ds-content h2 { font-size:1.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="ds-header">
+  <a href="index.html" class="logo-mark" aria-label="Safety Car – Zur Startseite">
+    <span class="lw1">Safety</span>
+    <span class="lw2">Car</span>
+  </a>
+  <a href="index.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Zurück zur Website
+  </a>
+</header>
+
+<!-- ── Hero ── -->
+<section class="ds-hero">
+  <div class="ds-hero-inner">
+    <span class="ds-tag">Rechtliches</span>
+    <h1>Datenschutzerklärung</h1>
+    <p>Informationen zur Verarbeitung Ihrer personenbezogenen Daten gemäß der Datenschutz-Grundverordnung (DSGVO).</p>
+  </div>
+</section>
+
+<!-- ── Content ── -->
+<main class="ds-content">
+
+  <!-- Verantwortlicher -->
+  <div class="ds-resp">
+    <p style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#B00000;margin-bottom:10px;">Verantwortlicher</p>
+    <p><strong>Jenne, Zehner Safety Car GbR</strong></p>
+    <p>Hauptstraße 40, 70825 Korntal-Münchingen</p>
+    <p>E-Mail: <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a></p>
+    <p>Telefon: <a href="tel:+4915757076079" style="color:rgba(255,255,255,.7);">+49 157 570 760 79</a></p>
+  </div>
+
+  <!-- Inhaltsverzeichnis -->
+  <div class="ds-toc">
+    <p>Inhalt</p>
+    <ol>
+      <li><a href="#zugriff">Zugriffsdaten und Hosting</a></li>
+      <li><a href="#kontakt">Kontaktaufnahme &amp; Kundenkommunikation</a></li>
+      <li><a href="#check">Datenverarbeitung beim Safety Car-Check</a></li>
+      <li><a href="#auktion">Datenverarbeitung im Rahmen der Fahrzeugauktion</a></li>
+      <li><a href="#haendler">Datenverarbeitung gewerblicher Händler</a></li>
+      <li><a href="#zahlung">Zahlungsabwicklung</a></li>
+      <li><a href="#cookies">Cookies und Einwilligungsverwaltung</a></li>
+      <li><a href="#fonts">Schriftarten (Google Fonts)</a></li>
+      <li><a href="#rechte">Ihre Rechte &amp; Kontaktmöglichkeiten</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. Zugriffsdaten -->
+  <h2 id="zugriff">1. Zugriffsdaten und Hosting</h2>
+  <p>Beim Besuch unserer Webseite können Sie ohne Angabe personenbezogener Daten surfen. Bei jedem Zugriff auf die Webseite speichert der Webserver automatisch ein sogenanntes Server-Logfile. Dieses enthält unter anderem den Dateinamen der angeforderten Seite, Ihre IP-Adresse, Datum und Uhrzeit des Zugriffs, die übertragene Datenmenge und den anfragenden Provider (Zugriffsdaten).</p>
+  <p>Diese Zugriffsdaten werden ausschließlich zur Gewährleistung eines reibungslosen Betriebs der Webseite und zur Verbesserung unseres Angebots ausgewertet. Dies erfolgt zum Schutz unserer berechtigten Interessen gemäß <strong>Art. 6 Abs. 1 lit. f DSGVO</strong> im Rahmen einer Interessenabwägung. Alle Zugriffsdaten werden spätestens sieben Tage nach Ihrem Besuch gelöscht.</p>
+
+  <h3>Hosting</h3>
+  <p>Die Hosting-Dienste und die technische Darstellung der Webseite werden teilweise von beauftragten Dienstleistern erbracht. Sofern in dieser Datenschutzerklärung nicht anders angegeben, werden sämtliche Zugriffsdaten sowie alle Daten, die über die dafür vorgesehenen Formulare erhoben werden, auf den Servern dieser Dienstleister verarbeitet. Bei Fragen zu unseren Dienstleistern und der rechtlichen Grundlage der Zusammenarbeit erreichen Sie uns über die unten angegebene Kontaktmöglichkeit.</p>
+
+  <!-- 2. Kontaktaufnahme -->
+  <h2 id="kontakt">2. Kontaktaufnahme &amp; Kundenkommunikation</h2>
+  <p>Wir erfassen personenbezogene Daten, die Sie uns freiwillig bei einer Kontaktaufnahme – etwa über unser Kontaktformular oder per E-Mail – mitteilen. Pflichtfelder werden deutlich gekennzeichnet, da diese Daten für die Bearbeitung Ihrer Anfrage unerlässlich sind. Ohne diese Angaben können wir Ihre Anfrage nicht bearbeiten.</p>
+  <p>Über unser Kontaktformular erheben wir insbesondere: Vor- und Nachname, Telefonnummer, E-Mail-Adresse, Angaben zu Ihrem Fahrzeug (Marke, Modell, Baujahr, Laufleistung) sowie Ihre Nachricht. Wir nutzen diese Daten ausschließlich zur Bearbeitung Ihrer Anfrage gemäß <strong>Art. 6 Abs. 1 lit. b DSGVO</strong> (Durchführung vorvertraglicher Maßnahmen).</p>
+  <p>Nach abschließender Bearbeitung Ihrer Anfrage werden Ihre Daten für weitere Verarbeitungszwecke eingeschränkt und nach Ablauf etwaiger steuer- und handelsrechtlicher Aufbewahrungsfristen gemäß <strong>Art. 6 Abs. 1 lit. c DSGVO</strong> gelöscht, sofern Sie nicht ausdrücklich in eine weitere Nutzung eingewilligt haben.</p>
+
+  <!-- 3. Safety Car-Check -->
+  <h2 id="check">3. Datenverarbeitung beim Safety Car-Check</h2>
+  <p>Im Rahmen des Safety Car-Checks prüft ein Kfz-Mechatroniker Ihr Fahrzeug vor Ort. Dabei erstellen wir ein Prüfprotokoll sowie Fotoaufnahmen des Fahrzeugs, die den dokumentierten Zustand belegen. Verarbeitet werden hierbei insbesondere Fahrzeugdaten, technische Befunde, Fahrzeug-Identifikationsmerkmale sowie die im Zuge der Begutachtung entstehenden Bildaufnahmen.</p>
+  <div class="ds-box">
+    <p>Die Fahrzeugfotos werden so erstellt, dass möglichst keine personenbezogenen Merkmale Dritter (z. B. erkennbare Personen) erfasst werden. Das amtliche Kennzeichen wird – soweit für die Auktion nicht erforderlich – unkenntlich gemacht. Die Aufnahmen dienen ausschließlich der Dokumentation des Fahrzeugzustands.</p>
+  </div>
+  <p>Rechtsgrundlage dieser Verarbeitung ist die Durchführung des Vertrags bzw. vorvertraglicher Maßnahmen gemäß <strong>Art. 6 Abs. 1 lit. b DSGVO</strong>. Das Prüfprotokoll bildet die Grundlage für die anschließende Händlerauktion (siehe Abschnitt 4).</p>
+
+  <!-- 4. AUKTION – Kernstück -->
+  <h2 id="auktion">4. Datenverarbeitung im Rahmen der Fahrzeugauktion</h2>
+  <p>Den Kern unseres Angebots bildet die Vermittlung Ihres Fahrzeugs an gewerbliche Händler über ein anonymes Auktionsverfahren. Hierbei verarbeiten wir Ihre Daten wie folgt:</p>
+
+  <h3>Anonyme Auktionsphase</h3>
+  <p>Während der Auktion erhalten die teilnehmenden Händler ausschließlich <strong>fahrzeugbezogene Informationen</strong> – das Prüfprotokoll, die Fahrzeugdaten und die Fotoaufnahmen. <strong>Ihre personenbezogenen Kontaktdaten (Name, Anschrift, Telefonnummer, E-Mail) werden in dieser Phase nicht offengelegt.</strong> Die Auktion erfolgt vollständig anonym.</p>
+
+  <h3>Übermittlung nach Zuschlag</h3>
+  <div class="ds-box">
+    <p>Erst <strong>nachdem Sie als Verkäufer ein Höchstgebot ausdrücklich angenommen haben</strong>, übermitteln wir die zur Vertragsabwicklung erforderlichen Kontaktdaten an den jeweiligen Händler, um den direkten Kaufabschluss zwischen Ihnen und dem Händler zu ermöglichen. Ohne Ihre Annahme erfolgt keine Weitergabe Ihrer personenbezogenen Daten.</p>
+  </div>
+  <p>Rechtsgrundlage für die Verarbeitung und die Übermittlung nach Zuschlag ist die Durchführung des Vertrags bzw. vorvertraglicher Maßnahmen gemäß <strong>Art. 6 Abs. 1 lit. b DSGVO</strong>. Es besteht zu keinem Zeitpunkt eine Verkaufspflicht; lehnen Sie ab, werden keine Kontaktdaten weitergegeben.</p>
+
+  <!-- 5. Händler -->
+  <h2 id="haendler">5. Datenverarbeitung gewerblicher Händler</h2>
+  <p>Für die Teilnahme am Auktionsverfahren verifizieren wir gewerbliche Händler. Hierzu verarbeiten wir Daten wie Firmenname, Anschrift, Gewerbe- bzw. Handelsregisterangaben, Ansprechpartner sowie Kontaktdaten. Diese Verarbeitung dient der Anbahnung und Durchführung des Partnerschaftsverhältnisses gemäß <strong>Art. 6 Abs. 1 lit. b DSGVO</strong> sowie der Sicherstellung eines vertrauenswürdigen, geprüften Händlernetzwerks im Rahmen unserer berechtigten Interessen gemäß <strong>Art. 6 Abs. 1 lit. f DSGVO</strong>.</p>
+  <p>Im Anschluss an eine Transaktion können Verkäufer den Händler bewerten. Unzuverlässige Händler können vom Verfahren ausgeschlossen werden, um die Qualität des Netzwerks zu sichern.</p>
+
+  <!-- 6. Zahlung -->
+  <h2 id="zahlung">6. Zahlungsabwicklung</h2>
+  <p>Soweit im Rahmen unserer kostenpflichtigen Zusatzleistungen (z. B. Prüfprotokoll zur Selbstvermarktung, Abmeldung &amp; Überführung) oder der Vermittlungsprovision Zahlungen abzuwickeln sind, übermitteln wir die hierfür erforderlichen Daten an die beauftragten Kreditinstitute bzw. Zahlungsdienstleister. Dies geschieht zur Erfüllung des Vertrags gemäß <strong>Art. 6 Abs. 1 lit. b DSGVO</strong>.</p>
+  <p>Einige Zahlungsdienstleister erheben die für die Abwicklung erforderlichen Daten teilweise selbst. In diesem Fall gilt die Datenschutzerklärung des jeweiligen Zahlungsdienstleisters. Bei Fragen zu unseren Zahlungspartnern erreichen Sie uns über die unten angegebene Kontaktmöglichkeit.</p>
+
+  <!-- 7. Cookies -->
+  <h2 id="cookies">7. Cookies und Einwilligungsverwaltung</h2>
+  <p>Um Ihren Aufenthalt auf unserer Webseite nutzerfreundlich zu gestalten, setzen wir technisch notwendige Technologien ein. Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert werden. Einige werden nach Beendigung Ihrer Browsersitzung automatisch gelöscht (Sitzungs-Cookies), andere verbleiben auf Ihrem Endgerät (persistente Cookies).</p>
+  <p>Für die Bereitstellung des ausdrücklich gewünschten Dienstes verwenden wir <strong>unbedingt notwendige Technologien</strong>. Die Speicherung dieser Informationen erfordert keine Einwilligung. Für nicht notwendige Funktionen holen wir Ihre Einwilligung gemäß <strong>Art. 6 Abs. 1 lit. a DSGVO</strong> ein. Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen.</p>
+  <p>Die Cookie-Einstellungen Ihres Browsers können Sie über dessen Hilfefunktionen verwalten. Bitte beachten Sie, dass die Nichtannahme von Cookies die Funktionalität unserer Webseite einschränken kann.</p>
+
+  <!-- 8. Google Fonts -->
+  <h2 id="fonts">8. Schriftarten (Google Fonts)</h2>
+  <p>Zur einheitlichen Darstellung von Schriftarten bindet diese Webseite Schriftarten des Anbieters Google (Google Ireland Ltd., Gordon House, Barrow Street, Dublin 4, Irland) ein. Beim Aufruf einer Seite lädt Ihr Browser die benötigten Schriftarten, um Texte korrekt darzustellen. Hierzu nimmt Ihr Browser eine Verbindung zu Servern von Google auf, wobei Ihre IP-Adresse übertragen werden kann.</p>
+  <p>Die Nutzung erfolgt im Interesse einer einheitlichen und ansprechenden Darstellung unseres Online-Angebots; dies stellt ein berechtigtes Interesse gemäß <strong>Art. 6 Abs. 1 lit. f DSGVO</strong> dar. Weitere Informationen finden Sie in der Datenschutzerklärung von Google: <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">policies.google.com/privacy</a>.</p>
+  <div class="ds-box">
+    <p><strong>Hinweis:</strong> Sobald die Schriftarten lokal auf unserem Server eingebunden sind, entfällt diese Datenübertragung an Google. Dieser Abschnitt wird in diesem Fall entfernt.</p>
+  </div>
+
+  <!-- 9. Rechte -->
+  <h2 id="rechte">9. Ihre Rechte &amp; Kontaktmöglichkeiten</h2>
+  <p>Als betroffene Person stehen Ihnen folgende Rechte zu:</p>
+  <ul>
+    <li><strong>Auskunft</strong> über die Verarbeitung Ihrer personenbezogenen Daten (Art. 15 DSGVO)</li>
+    <li><strong>Berichtigung</strong> unrichtiger oder unvollständiger Daten (Art. 16 DSGVO)</li>
+    <li><strong>Löschung</strong> Ihrer gespeicherten Daten (Art. 17 DSGVO), soweit keine gesetzlichen Aufbewahrungspflichten entgegenstehen</li>
+    <li><strong>Einschränkung</strong> der Verarbeitung (Art. 18 DSGVO)</li>
+    <li><strong>Datenübertragbarkeit</strong> in einem strukturierten, gängigen, maschinenlesbaren Format (Art. 20 DSGVO)</li>
+    <li><strong>Beschwerde</strong> bei einer Aufsichtsbehörde (Art. 77 DSGVO)</li>
+  </ul>
+
+  <h3>Widerspruchsrecht</h3>
+  <p>Sofern wir personenbezogene Daten zur Wahrung unserer überwiegenden berechtigten Interessen verarbeiten, haben Sie das Recht, dieser Verarbeitung mit Wirkung für die Zukunft zu widersprechen. Erfolgt die Verarbeitung zu Direktmarketingzwecken, können Sie dieses Recht jederzeit ausüben; wir werden Ihre Daten dann nicht mehr für diese Zwecke verarbeiten.</p>
+
+  <h3>Kontakt</h3>
+  <p>Bei Fragen zur Erfassung, Verarbeitung oder Verwendung Ihrer personenbezogenen Daten, zur Auskunft, Berichtigung, Einschränkung oder Löschung von Daten sowie zum Widerruf erteilter Einwilligungen wenden Sie sich bitte an:</p>
+  <p>Jenne, Zehner Safety Car GbR<br/>
+  Hauptstraße 40, 70825 Korntal-Münchingen<br/>
+  E-Mail: <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a><br/>
+  Telefon: <a href="tel:+4915757076079">+49 157 570 760 79</a></p>
+
+  <p style="margin-top:32px;font-size:.78rem;color:var(--muted);">Stand: Juni 2026</p>
+
+</main>
+
+<!-- ── Footer ── -->
+<footer class="ds-footer">
+  <div class="ds-footer-links">
+    <a href="index.html">Startseite</a>
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+    <a href="agb.html">AGB</a>
+  </div>
+  <p class="ds-footer-copy">© 2026 Safety Car · Jenne, Zehner Safety Car GbR · Korntal-Münchingen</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+/* ════════════════════════════════════════════════════════════
+   SAFETY CAR – LOKALE SCHRIFTEN (DSGVO-konform, keine Google-Übertragung)
+   ────────────────────────────────────────────────────────────
+   So bindest du diese Datei ein:
+
+   1. Lade die Schriftdateien herunter (siehe FONTS-ANLEITUNG.txt)
+   2. Lege sie in einen Ordner  /fonts/  neben deine HTML-Dateien
+   3. Ersetze in jeder HTML-Datei im <head> den Google-Fonts-Block:
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter..." rel="stylesheet" />
+
+      durch diese eine Zeile:
+
+        <link rel="stylesheet" href="fonts.css" />
+
+   4. Fertig – ab jetzt werden keine Daten mehr an Google gesendet.
+      Der Google-Fonts-Abschnitt in der Datenschutzerklärung kann entfernt werden.
+   ════════════════════════════════════════════════════════════ */
+
+
+/* ─────────────  INTER  (Body / Fließtext)  ───────────── */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('fonts/Inter-Light.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/Inter-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/Inter-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/Inter-SemiBold.woff2') format('woff2');
+}
+
+
+/* ─────────────  MONTSERRAT  (Headlines / Nav / Labels)  ───────────── */
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/Montserrat-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/Montserrat-SemiBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('fonts/Montserrat-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('fonts/Montserrat-ExtraBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('fonts/Montserrat-Black.woff2') format('woff2');
+}

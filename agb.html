@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Allgemeine Geschäftsbedingungen – Safety Car</title>
+  <meta name="description" content="Allgemeine Geschäftsbedingungen der Jenne, Zehner Safety Car GbR – Vermittlung, Fahrzeugauktion und Safety Car-Check." />
+
+  <!-- ═══════════════════════════════════════
+       FONTS
+       Sobald lokal eingebettet: durch <link href="fonts.css"> ersetzen.
+  ═══════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --red: #B00000;
+      --red-h: #C80000;
+      --ink: #0A0A0A;
+      --ink-b: #1C1C1C;
+      --text: #1a1a1a;
+      --mid: #444;
+      --muted: #777;
+      --border: #E4E4E4;
+      --bg: #fff;
+      --bg-off: #F8F8F8;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .ds-header {
+      background: var(--ink);
+      padding: 0 5%;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
+      border-bottom: 1px solid var(--ink-b);
+    }
+    .logo-mark { display:flex; flex-direction:column; line-height:1; gap:1px; text-decoration:none; }
+    .logo-mark .lw1 { font-family:'Montserrat',sans-serif; font-weight:600; font-size:.9rem; letter-spacing:.2em; text-transform:uppercase; color:var(--red); }
+    .logo-mark .lw2 { font-family:'Montserrat',sans-serif; font-weight:600; font-size:.9rem; letter-spacing:.2em; text-transform:uppercase; color:#fff; }
+    .back-link {
+      font-family:'Montserrat',sans-serif; font-weight:500;
+      font-size:.75rem; letter-spacing:.06em; text-transform:uppercase;
+      color:#A0A0A0; text-decoration:none;
+      display:inline-flex; align-items:center; gap:7px;
+      transition:color .2s;
+    }
+    .back-link:hover { color:#fff; }
+    .back-link svg { stroke:currentColor; fill:none; stroke-width:2; }
+
+    /* ── Hero ── */
+    .ds-hero {
+      background: var(--bg-off);
+      border-bottom: 1px solid var(--border);
+      padding: 56px 5% 48px;
+    }
+    .ds-hero-inner { max-width: 820px; margin: 0 auto; }
+    .ds-tag {
+      display:inline-block;
+      font-family:'Montserrat',sans-serif; font-weight:600;
+      font-size:.65rem; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--red); background:rgba(176,0,0,.08);
+      border:1px solid rgba(176,0,0,.2); padding:4px 13px;
+      border-radius:100px; margin-bottom:16px;
+    }
+    .ds-hero h1 {
+      font-family:'Montserrat',sans-serif; font-weight:800;
+      font-size:clamp(1.8rem,4vw,2.6rem); letter-spacing:-.03em;
+      line-height:1.1; margin-bottom:12px;
+    }
+    .ds-hero p { color:var(--muted); font-size:.92rem; max-width:560px; }
+
+    /* ── Content ── */
+    .ds-content {
+      max-width: 820px; margin: 0 auto;
+      padding: 56px 5% 80px;
+    }
+    .ds-part {
+      font-family:'Montserrat',sans-serif; font-weight:700;
+      font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--red); margin: 48px 0 8px;
+    }
+    .ds-content h2 {
+      font-family:'Montserrat',sans-serif; font-weight:700;
+      font-size:1.18rem; letter-spacing:-.02em;
+      margin: 32px 0 12px; padding-top: 22px;
+      border-top: 1px solid var(--border);
+      color: var(--text);
+    }
+    .ds-content h2.no-line { border-top:none; padding-top:0; }
+    .ds-content h3 {
+      font-family:'Montserrat',sans-serif; font-weight:600;
+      font-size:.98rem; margin: 22px 0 8px; color: var(--text);
+    }
+    .ds-content p {
+      font-size:.9rem; color:var(--mid); margin-bottom:13px;
+    }
+    .ds-content ul, .ds-content ol {
+      margin: 0 0 16px 0; padding-left: 22px;
+    }
+    .ds-content li {
+      font-size:.9rem; color:var(--mid); margin-bottom:8px;
+    }
+    .ds-content a { color:var(--red); text-decoration:none; }
+    .ds-content a:hover { text-decoration:underline; }
+    .ds-content strong { color:var(--text); font-weight:600; }
+
+    /* ── Highlight box ── */
+    .ds-box {
+      background: var(--bg-off);
+      border-left: 3px solid var(--red);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin: 16px 0 22px;
+    }
+    .ds-box p { margin-bottom: 0; font-size:.88rem; }
+
+    /* ── Widerruf box (kräftiger) ── */
+    .ds-widerruf {
+      background: #fff;
+      border: 2px solid var(--red);
+      border-radius: 10px;
+      padding: 24px 26px;
+      margin: 20px 0;
+    }
+    .ds-widerruf h3 { margin-top:0; }
+
+    /* ── Verantwortlicher Card ── */
+    .ds-resp {
+      background: var(--ink); color: #fff;
+      border-radius: 12px; padding: 24px 26px;
+      margin-bottom: 8px;
+    }
+    .ds-resp p { color:rgba(255,255,255,.7); font-size:.88rem; margin-bottom:4px; }
+    .ds-resp strong { color:#fff; }
+    .ds-resp a { color:#fff; }
+
+    /* ── TOC ── */
+    .ds-toc {
+      background: var(--bg-off); border:1px solid var(--border);
+      border-radius:10px; padding:20px 24px; margin-bottom:8px;
+    }
+    .ds-toc p {
+      font-family:'Montserrat',sans-serif; font-weight:600;
+      font-size:.7rem; letter-spacing:.1em; text-transform:uppercase;
+      color:var(--muted); margin-bottom:12px;
+    }
+    .ds-toc ol { padding-left:18px; }
+    .ds-toc li { font-size:.86rem; margin-bottom:6px; }
+    .ds-toc a { color:var(--mid); }
+    .ds-toc a:hover { color:var(--red); }
+
+    /* ── Footer ── */
+    .ds-footer {
+      background: var(--ink); color:rgba(255,255,255,.4);
+      padding: 32px 5%; text-align:center;
+      border-top:1px solid var(--ink-b);
+    }
+    .ds-footer a { color:rgba(255,255,255,.6); text-decoration:none; font-size:.8rem; }
+    .ds-footer a:hover { color:#fff; }
+    .ds-footer-links { display:flex; gap:20px; justify-content:center; margin-bottom:14px; flex-wrap:wrap; }
+    .ds-footer-copy { font-size:.75rem; }
+
+    @media(max-width:600px){
+      .ds-content h2 { font-size:1.05rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="ds-header">
+  <a href="index.html" class="logo-mark" aria-label="Safety Car – Zur Startseite">
+    <span class="lw1">Safety</span>
+    <span class="lw2">Car</span>
+  </a>
+  <a href="index.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Zurück zur Website
+  </a>
+</header>
+
+<!-- ── Hero ── -->
+<section class="ds-hero">
+  <div class="ds-hero-inner">
+    <span class="ds-tag">Rechtliches</span>
+    <h1>Allgemeine Geschäftsbedingungen</h1>
+    <p>Bedingungen für die Vermittlung von Fahrzeugen über die Safety Car-Auktion sowie für die Durchführung des Safety Car-Checks.</p>
+  </div>
+</section>
+
+<!-- ── Content ── -->
+<main class="ds-content">
+
+  <!-- Anbieter -->
+  <div class="ds-resp">
+    <p style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#B00000;margin-bottom:10px;">Anbieter</p>
+    <p><strong>Jenne, Zehner Safety Car GbR</strong></p>
+    <p>Hauptstraße 40, 70825 Korntal-Münchingen</p>
+    <p>E-Mail: <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a></p>
+    <p>Telefon: <a href="tel:+4915757076079" style="color:rgba(255,255,255,.7);">+49 157 570 760 79</a></p>
+  </div>
+
+  <!-- TOC -->
+  <div class="ds-toc">
+    <p>Inhalt</p>
+    <ol>
+      <li><a href="#geltung">Geltungsbereich &amp; Begriffe</a></li>
+      <li><a href="#leistung">Leistungen von Safety Car (Vermittlung)</a></li>
+      <li><a href="#vertrag">Vertragsschluss</a></li>
+      <li><a href="#auktion">Ablauf der Fahrzeugauktion</a></li>
+      <li><a href="#provision">Vergütung &amp; Provision</a></li>
+      <li><a href="#widerruf">Widerrufsrecht für Verbraucher</a></li>
+      <li><a href="#pflichten">Pflichten des Auftraggebers</a></li>
+      <li><a href="#haendler">Pflichten gewerblicher Händler</a></li>
+      <li><a href="#check">Der Safety Car-Check (Leistungsumfang)</a></li>
+      <li><a href="#gewaehr">Gewährleistung</a></li>
+      <li><a href="#haftung">Haftung</a></li>
+      <li><a href="#datenschutz">Datenschutz &amp; Nutzungsrechte</a></li>
+      <li><a href="#schluss">Schlussbestimmungen</a></li>
+    </ol>
+  </div>
+
+  <!-- ════ TEIL A – VERMITTLUNG ════ -->
+  <p class="ds-part">Teil A – Vermittlung &amp; Auktion</p>
+
+  <!-- 1 -->
+  <h2 id="geltung" class="no-line">§ 1 Geltungsbereich &amp; Begriffe</h2>
+  <p>Diese Allgemeinen Geschäftsbedingungen (nachfolgend „AGB") regeln die vertragliche Beziehung zwischen der Jenne, Zehner Safety Car GbR (nachfolgend „Safety Car") und ihren Kunden für die Vermittlung von Fahrzeugen über das Safety Car-Auktionsverfahren sowie für die Durchführung des Safety Car-Checks.</p>
+  <p>Kunden können Verbraucher (§ 13 BGB) oder Unternehmer (§ 14 BGB) sein. Im Folgenden bezeichnet „Verkäufer" die Person, die ihr Fahrzeug über Safety Car veräußern möchte, und „Händler" den am Auktionsverfahren teilnehmenden gewerblichen Fahrzeugankäufer.</p>
+  <p>Abweichende oder entgegenstehende Bedingungen des Kunden finden keine Anwendung, es sei denn, Safety Car stimmt ihrer Geltung ausdrücklich in Textform zu.</p>
+
+  <!-- 2 -->
+  <h2 id="leistung">§ 2 Leistungen von Safety Car (Vermittlung)</h2>
+  <p>Safety Car erbringt eine <strong>Vermittlungsleistung</strong>. Safety Car prüft das Fahrzeug des Verkäufers im Rahmen des Safety Car-Checks, erstellt ein Prüfprotokoll und stellt das Fahrzeug anschließend in einem zeitlich befristeten Auktionsverfahren verifizierten Händlern zur Abgabe von Geboten vor.</p>
+  <div class="ds-box">
+    <p><strong>Safety Car ist ausschließlich Vermittler.</strong> Der Kaufvertrag über das Fahrzeug kommt unmittelbar und ausschließlich zwischen dem Verkäufer und dem kaufenden Händler zustande. Safety Car wird nicht selbst Vertragspartei des Kaufvertrags, kauft das Fahrzeug nicht an und übernimmt keine Gewähr für die Erfüllung der Pflichten der Kaufvertragsparteien.</p>
+  </div>
+  <p>Safety Car schuldet keinen Vermittlungserfolg, sondern das ordnungsgemäße Bemühen um die Vermittlung. Ein Anspruch des Verkäufers auf das Zustandekommen eines Kaufvertrags oder auf Erzielung eines bestimmten Preises besteht nicht.</p>
+
+  <!-- 3 -->
+  <h2 id="vertrag">§ 3 Vertragsschluss</h2>
+  <p>Mit der Übermittlung einer Anfrage über das Kontaktformular, per E-Mail oder telefonisch gibt der Verkäufer ein unverbindliches Interesse an der Vermittlung ab. Der Vermittlungsvertrag zwischen dem Verkäufer und Safety Car kommt zustande, sobald Safety Car die Durchführung des Safety Car-Checks und die Aufnahme in das Auktionsverfahren bestätigt.</p>
+  <p>Der Kaufvertrag über das Fahrzeug kommt erst zustande, wenn der Verkäufer das ihm nach Abschluss der Auktion mitgeteilte Höchstgebot ausdrücklich annimmt (siehe § 4).</p>
+
+  <!-- 4 -->
+  <h2 id="auktion">§ 4 Ablauf der Fahrzeugauktion</h2>
+  <ol>
+    <li><strong>Prüfung &amp; Protokoll:</strong> Nach dem Safety Car-Check wird ein Prüfprotokoll erstellt und gemeinsam mit dem Verkäufer ein Startpreis festgelegt.</li>
+    <li><strong>Anonyme Auktion:</strong> Das Fahrzeug wird für einen befristeten Zeitraum (in der Regel 48 Stunden) verifizierten Händlern zur Gebotsabgabe vorgestellt. Während der Auktion erhalten Händler ausschließlich fahrzeugbezogene Informationen. <strong>Die personenbezogenen Kontaktdaten des Verkäufers werden in dieser Phase nicht offengelegt.</strong></li>
+    <li><strong>Ergebnis:</strong> Nach Ablauf der Auktion teilt Safety Car dem Verkäufer das Höchstgebot mit.</li>
+    <li><strong>Freie Entscheidung:</strong> Der Verkäufer entscheidet frei, ob er das Höchstgebot annimmt. <strong>Es besteht keine Verkaufspflicht.</strong></li>
+    <li><strong>Übermittlung &amp; Abwicklung:</strong> Erst nach Annahme des Gebots übermittelt Safety Car die zur Abwicklung erforderlichen Kontaktdaten an den betreffenden Händler. Der Kaufvertrag wird sodann unmittelbar zwischen Verkäufer und Händler geschlossen und abgewickelt.</li>
+  </ol>
+  <div class="ds-box">
+    <p>Lehnt der Verkäufer das Höchstgebot ab, kommt kein Kaufvertrag zustande, es werden keine Kontaktdaten weitergegeben, und es entstehen für den Verkäufer keine Kosten.</p>
+  </div>
+
+  <!-- 5 -->
+  <h2 id="provision">§ 5 Vergütung &amp; Provision</h2>
+  <h3>Für private Verkäufer</h3>
+  <p>Die Vermittlung über das Auktionsverfahren ist für private Verkäufer <strong>kostenlos</strong>. Es fallen weder Grundgebühren noch eine Provision an – weder vor, während noch nach der Auktion. Die Vermittlungsprovision in Höhe von in der Regel 2 % des Kaufpreises wird <strong>ausschließlich vom kaufenden Händler</strong> getragen und ist nur im Erfolgsfall, also bei tatsächlichem Zustandekommen des Kaufvertrags, zu entrichten.</p>
+  <h3>Kostenpflichtige Einzelleistungen</h3>
+  <p>Unabhängig vom kostenlosen Auktionsverfahren bietet Safety Car kostenpflichtige Einzelleistungen an, insbesondere:</p>
+  <ul>
+    <li>das <strong>Prüfprotokoll als Einzelleistung</strong> (z. B. zur Selbstvermarktung durch den Verkäufer), und</li>
+    <li>den optionalen Service <strong>Abmeldung &amp; Überführung</strong>.</li>
+  </ul>
+  <p>Die jeweils geltenden Preise ergeben sich aus dem Angebot bzw. der Auftragsbestätigung und verstehen sich, soweit gesetzlich anwendbar, inklusive der gesetzlichen Umsatzsteuer. Zahlungen für Einzelleistungen erfolgen, soweit nicht anders vereinbart, im Voraus.</p>
+
+  <!-- 6 – WIDERRUF -->
+  <h2 id="widerruf">§ 6 Widerrufsrecht für Verbraucher</h2>
+  <p>Verbrauchern steht bei im Fernabsatz geschlossenen Verträgen ein gesetzliches Widerrufsrecht zu.</p>
+  <div class="ds-widerruf">
+    <h3>Widerrufsbelehrung</h3>
+    <p><strong>Widerrufsrecht.</strong> Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.</p>
+    <p>Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Jenne, Zehner Safety Car GbR, Hauptstraße 40, 70825 Korntal-Münchingen, E-Mail: kontakt@safetycar.net, Telefon: +49 157 570 760 79) mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief oder eine E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.</p>
+    <p><strong>Folgen des Widerrufs.</strong> Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf bei uns eingegangen ist.</p>
+    <p><strong>Vorzeitiges Erlöschen.</strong> Das Widerrufsrecht erlischt bei einem Vertrag zur Erbringung von Dienstleistungen, wenn wir die Dienstleistung vollständig erbracht haben und mit der Ausführung erst begonnen haben, nachdem Sie dazu Ihre ausdrückliche Zustimmung gegeben und gleichzeitig Ihre Kenntnis davon bestätigt haben, dass Sie Ihr Widerrufsrecht bei vollständiger Vertragserfüllung verlieren.</p>
+  </div>
+  <p>Bei der kostenlosen Vermittlung entstehen dem Verbraucher keine Zahlungspflichten; das Widerrufsrecht betrifft insbesondere die kostenpflichtigen Einzelleistungen.</p>
+
+  <!-- 7 -->
+  <h2 id="pflichten">§ 7 Pflichten des Auftraggebers</h2>
+  <ul>
+    <li>Der Auftraggeber stellt alle für die Prüfung und Vermittlung notwendigen Informationen und Unterlagen (Fahrzeugpapiere, Wartungsnachweise etc.) vollständig, rechtzeitig und unentgeltlich bereit.</li>
+    <li>Das Fahrzeug ist zugänglich, betriebsbereit, sauber und in einem die Prüfung ermöglichenden Zustand bereitzuhalten.</li>
+    <li>Der Auftraggeber informiert Safety Car unaufgefordert über bekannte Vorschäden, Unfälle, Abweichungen des Kilometerstands, Manipulationen oder sonstige relevante Besonderheiten.</li>
+    <li>Der Auftraggeber sichert zu, zur Veräußerung des Fahrzeugs berechtigt zu sein bzw. die Einwilligung des Eigentümers eingeholt zu haben.</li>
+    <li>Sagt der Auftraggeber einen vereinbarten Termin weniger als 24 Stunden vorher ab oder erscheint nicht, ist Safety Car berechtigt, den nachweislich entstandenen Schaden (z. B. vergebliche Anfahrt) geltend zu machen. Dem Auftraggeber bleibt der Nachweis eines geringeren Schadens vorbehalten.</li>
+  </ul>
+  <p>Eine unterlassene Mitteilung relevanter Umstände geht zu Lasten des Auftraggebers, soweit Safety Car kein Mitverschulden trifft.</p>
+
+  <!-- 8 -->
+  <h2 id="haendler">§ 8 Pflichten gewerblicher Händler</h2>
+  <ul>
+    <li>Die Teilnahme am Auktionsverfahren setzt eine erfolgreiche Verifizierung des Gewerbestatus voraus.</li>
+    <li>Abgegebene Gebote sind verbindlich. Mit Erteilung des Zuschlags und Annahme durch den Verkäufer verpflichtet sich der Händler zur Abwicklung des Kaufvertrags zu den gebotenen Konditionen.</li>
+    <li>Der Händler schuldet Safety Car die vereinbarte Vermittlungsprovision im Erfolgsfall.</li>
+    <li>Safety Car ist berechtigt, Händler, die wiederholt gegen ihre Pflichten verstoßen, vom Verfahren auszuschließen.</li>
+  </ul>
+
+  <!-- ════ TEIL B – CHECK ════ -->
+  <p class="ds-part">Teil B – Safety Car-Check</p>
+
+  <!-- 9 -->
+  <h2 id="check" class="no-line">§ 9 Der Safety Car-Check (Leistungsumfang)</h2>
+  <p>Safety Car führt die Prüfleistung neutral und objektiv nach den allgemein anerkannten technischen Regeln zum Zeitpunkt der Auftragserteilung durch. Safety Car kann geeignete Subunternehmer einsetzen, bleibt aber für die ordnungsgemäße Durchführung verantwortlich.</p>
+  <div class="ds-box">
+    <p>Der Safety Car-Check ist <strong>kein vollumfängliches Sachverständigengutachten</strong>, sondern eine Momentaufnahme des Ist-Zustands zum Prüfzeitpunkt anhand festgelegter Prüfpunkte (Exterieur, Interieur, Fahrzeugtechnik, Motor &amp; Elektronik). Aussagen zum Fahrzeugwert oder zur künftigen Lebensdauer von Bauteilen werden nicht getroffen.</p>
+  </div>
+  <h3>Prüfumfang &amp; Grenzen</h3>
+  <p>Bestimmte Bereiche werden ausschließlich per Sichtprüfung oder Dokumentation erfasst, insbesondere: Innenraum (Polster, Sitze, Gurte, Klimaanlage, Infotainment, Komfortfunktionen), Lack &amp; Karosserie, Motor- und Antriebskomponenten (keine Verschleißprognose), Flüssigkeiten und Filter (keine Funktionsprüfung), Verschleißteile sowie Reifen und Fahrwerk. Eine Abgasmessung erfolgt nicht. Angaben zur Fahrzeughistorie, zu Serviceleistungen und zur Zulassung beruhen ausschließlich auf den Angaben des Verkäufers und werden nicht verifiziert.</p>
+  <h3>Probefahrt &amp; Fahrzeugzustand</h3>
+  <p>Der Auftraggeber stellt sicher, dass ein Probelauf des Motors und – soweit vorgesehen – eine Probefahrt durchgeführt werden können. Verhindern starke Verschmutzung oder andere Umstände eine sachgerechte Beurteilung, kann Safety Car die Leistung ablehnen; bis dahin entstandene Kosten sind zu erstatten.</p>
+  <h3>Prüfdokumentation</h3>
+  <p>Die Prüfergebnisse werden in einem Prüfprotokoll dokumentiert und dem Auftraggeber übergeben. Das Protokoll enthält Fahrzeug-, Kunden- und Prüfdaten.</p>
+
+  <!-- 10 -->
+  <h2 id="gewaehr">§ 10 Gewährleistung</h2>
+  <p>Safety Car erbringt die Prüfleistung als Dienstleistung nach bestem Wissen und Gewissen und schuldet keinen bestimmten Erfolg. Bei Verbrauchern gelten die gesetzlichen Gewährleistungsvorschriften. Für Unternehmer beträgt die Gewährleistungsfrist zwölf Monate ab Abnahme, es sei denn, ein Mangel wurde arglistig verschwiegen.</p>
+  <p>Eine Nacherfüllung erfolgt wahlweise durch Nachbesserung oder Neuerstellung. Erkennbare Mängel sind unverzüglich in Textform anzuzeigen. Geringfügige Mängel begründen kein Rücktrittsrecht.</p>
+
+  <!-- 11 -->
+  <h2 id="haftung">§ 11 Haftung</h2>
+  <p>Für Schäden aus der Verletzung von Leben, Körper oder Gesundheit sowie für Schäden aus Vorsatz oder grober Fahrlässigkeit haftet Safety Car nach den gesetzlichen Vorschriften.</p>
+  <p>Bei leichter Fahrlässigkeit haftet Safety Car nur bei Verletzung wesentlicher Vertragspflichten (Kardinalpflichten) und begrenzt auf den vertragstypischen, vorhersehbaren Schaden.</p>
+  <p>Eine Haftung für nicht erkennbare Mängel oder für Schäden, die außerhalb des vereinbarten Leistungsumfangs liegen, ist ausgeschlossen, soweit kein Vorsatz, keine grobe Fahrlässigkeit und keine zwingende gesetzliche Haftung vorliegt. Die Haftungsbegrenzungen gelten nicht bei zwingenden gesetzlichen Bestimmungen (z. B. Produkthaftung) oder übernommenen Garantien und gelten gleichermaßen für gesetzliche Vertreter und Erfüllungsgehilfen von Safety Car.</p>
+  <p>Da Safety Car ausschließlich als Vermittler tätig ist, haftet Safety Car nicht für die Erfüllung des zwischen Verkäufer und Händler geschlossenen Kaufvertrags, insbesondere nicht für Zahlung, Fahrzeugmängel oder Abwicklung.</p>
+
+  <!-- 12 -->
+  <h2 id="datenschutz">§ 12 Datenschutz &amp; Nutzungsrechte</h2>
+  <p>Safety Car verarbeitet personenbezogene Daten zur ordnungsgemäßen Vertragserfüllung gemäß Art. 6 Abs. 1 lit. b DSGVO. Einzelheiten – insbesondere zur anonymen Auktion und zur Übermittlung von Daten an Händler erst nach Annahme des Gebots – ergeben sich aus unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+  <p>Die Nutzung der Wort-/Bildmarke „Safety Car" sowie Hinweise auf die vertragliche Beziehung bedürfen der vorherigen Zustimmung in Textform. Die Ergebnisse des Safety Car-Checks dürfen nur für den vertraglich vereinbarten Zweck und nur vollständig, nicht auszugsweise, genutzt werden.</p>
+
+  <!-- 13 -->
+  <h2 id="schluss">§ 13 Schlussbestimmungen</h2>
+  <p>Änderungen, Ergänzungen und Nebenabreden bedürfen der Textform. Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts.</p>
+  <p>Gerichtsstand ist bei Verträgen mit Unternehmern der Sitz von Safety Car; gegenüber Verbrauchern gilt der gesetzliche Gerichtsstand. Sollte eine Bestimmung dieser AGB unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.</p>
+  <p><strong>Hinweis zur Streitbeilegung:</strong> Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noreferrer">ec.europa.eu/consumers/odr</a>. Safety Car ist zur Teilnahme an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle nicht verpflichtet und nicht bereit.</p>
+
+  <p style="margin-top:32px;font-size:.78rem;color:var(--muted);">Stand: Juni 2026</p>
+
+</main>
+
+<!-- ── Footer ── -->
+<footer class="ds-footer">
+  <div class="ds-footer-links">
+    <a href="index.html">Startseite</a>
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+    <a href="agb.html">AGB</a>
+  </div>
+  <p class="ds-footer-copy">© 2026 Safety Car · Jenne, Zehner Safety Car GbR · Korntal-Münchingen</p>
+</footer>
+
+</body>
+</html>
