@@ -2012,11 +2012,13 @@ async function saveAuction(status) {
       })
     });
     var saveData = await saveRes.json();
-    if (!saveRes.ok) { msgEl.textContent = 'Fehler: ' + (saveData.error || 'Speichern fehlgeschlagen'); msgEl.className = 'save-msg err'; return; }
+    if (!saveRes.ok) { msgEl.textContent = 'Fehler: ' + (saveData.error || 'Speichern fehlgeschlagen'); msgEl.className = 'save-msg err'; showAdminToast('✕ ' + (saveData.error || 'Speichern fehlgeschlagen'), 'err'); return; }
     if (saveData.auction) aData = saveData.auction;
-    msgEl.textContent = 'Gespeichert! Code: ' + code; msgEl.className = 'save-msg ok';
+    var successMsg = status === 'published' ? '✓ Auktion veröffentlicht! Code: ' + code : '✓ Entwurf gespeichert! Code: ' + code;
+    msgEl.textContent = successMsg; msgEl.className = 'save-msg ok';
+    showAdminToast(successMsg, 'ok');
     loadAdminAuctionList(); loadAdminStats();
-  } catch(e) { msgEl.textContent = 'Verbindungsfehler.'; msgEl.className = 'save-msg err'; }
+  } catch(e) { msgEl.textContent = 'Verbindungsfehler.'; msgEl.className = 'save-msg err'; showAdminToast('✕ Verbindungsfehler.', 'err'); }
 }
 
 async function confirmReset() {
@@ -2151,6 +2153,15 @@ renderDashboard = function() {
   if (sbBids) sbBids.textContent = myBidsAll.length;
   if (sbWatch) sbWatch.textContent = watchlistIds.length;
 };
+
+function showAdminToast(txt, type) {
+  var toast = document.getElementById('bidToast');
+  if (!toast) return;
+  toast.textContent = txt;
+  toast.className = 'show ' + (type || 'ok');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function() { toast.className = ''; }, 4000);
+}
 
 // Auto-Refresh alle 15 Sekunden
 setInterval(async function() {
