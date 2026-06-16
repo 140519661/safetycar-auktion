@@ -5,7 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safety Car Auktion</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+// Auto-Refresh alle 15 Sekunden
+setInterval(async function() {
+  try {
+    if (typeof loadAllAuctions === 'function') loadAllAuctions();
+    if (typeof loadAuctionList === 'function') loadAuctionList();
+    if (typeof loadNotifications === 'function') loadNotifications();
+    if (typeof aData !== 'undefined' && aData && typeof loadFullHistory === 'function') loadFullHistory();
+  } catch(e) {}
+}, 15000);
+
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 svg{overflow:visible}
