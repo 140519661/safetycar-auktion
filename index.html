@@ -483,6 +483,48 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
   .sidebar{display:none}
 }
 
+@media(max-width:600px){
+  /* Topbar: Logo kleiner, Nav scrollbar */
+  .topbar{padding:0 12px;height:52px}
+  .topbar-name{font-size:14px}
+  .topbar-logo-icon{width:28px;height:28px}
+  .topbar-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:0}
+  .topbar-nav::-webkit-scrollbar{display:none}
+  .topbar-nav-btn{padding:5px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
+  .topbar-right{gap:4px}
+  .notif-btn{width:32px;height:32px}
+  .user-avatar{width:32px;height:32px;font-size:12px}
+
+  /* Dashboard Statistiken */
+  .stats-grid{gap:8px}
+  .stat-card{padding:14px 12px}
+  .stat-val{font-size:26px}
+
+  /* Meine Gebote Tabelle */
+  .bids-card{padding:12px 10px;overflow-x:auto}
+  .bids-card table{min-width:480px;font-size:12px}
+  .bids-card th{font-size:10px;padding:0 0 8px}
+
+  /* Auktionskarten */
+  .auctions-grid{grid-template-columns:1fr}
+  .ac-name{font-size:14px}
+
+  /* Gebots-Seite */
+  .auction-left{padding:16px}
+  .v-name{font-size:20px}
+  .bid-input-row{flex-direction:column;gap:8px}
+  .bid-input{width:100%}
+  .bid-submit{width:100%;padding:14px}
+  .quick-row{gap:6px}
+  .qb{flex:1;padding:10px 6px;font-size:13px}
+
+  /* Auction Topbar (Bieterseite) */
+  .auction-topbar{padding:0 12px;flex-wrap:wrap;height:auto;min-height:52px;gap:6px}
+  .atb-right{gap:6px}
+  .atb-timer{display:none}
+  .btn-back{padding:6px 10px;font-size:12px}
+}
+
 
 /* Publish button */
 .btn-publish{background:var(--success);border:none;border-radius:var(--radius);padding:11px 20px;color:white;font-size:14px;font-weight:500;cursor:pointer;width:100%;font-family:inherit;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px}
