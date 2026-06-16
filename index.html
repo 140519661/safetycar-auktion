@@ -699,6 +699,10 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
         <div class="v-lot-row"><span class="v-lot" id="lotNum">LOS</span><span class="v-status active" id="statusTag">Aktiv</span><span class="v-code" id="auctionCodeTag2"></span></div>
         <div class="v-name" id="vName">Wird geladen...</div>
         <div class="v-sub" id="vSub"></div>
+        <a id="checklistPdfBtn" href="#" target="_blank" rel="noopener" style="display:none;margin-top:10px;display:inline-flex;align-items:center;gap:7px;background:var(--dark);color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;width:fit-content">
+          <svg fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+          Safety Car Check herunterladen
+        </a>
       </div>
       <div id="vDescBox" style="display:none;margin-bottom:20px"><div style="font-size:11px;color:var(--text4);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Fahrzeugbeschreibung</div><div id="vDesc" style="font-size:14px;line-height:1.6;color:var(--text2);white-space:pre-wrap"></div></div>
       <div class="specs-grid" id="spGrid"></div>
@@ -774,6 +778,15 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
             </button>
             <div id="uploadStatus" style="font-size:12px;color:var(--text3);margin-top:6px"></div>
             <div class="photo-grid" id="aPhotoGrid" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px"></div>
+          </div>
+          <div class="aff">
+            <label>Fahrzeug-Gutachten / Check-PDF <span style="font-weight:400;color:var(--text3)">(optional – für Händler downloadbar)</span></label>
+            <input type="file" id="aPdfFile" accept="application/pdf" style="display:none" onchange="handlePdfUpload(this.files)">
+            <button type="button" id="pdfUploadBtn" onclick="document.getElementById('aPdfFile').click()" style="width:100%;padding:14px;border:1.5px dashed var(--border2);border-radius:var(--radius);background:var(--off-white);cursor:pointer;font-family:inherit;font-size:13px;color:var(--text2);display:flex;align-items:center;justify-content:center;gap:8px" onmouseover="this.style.borderColor='var(--red)'" onmouseout="this.style.borderColor='var(--border2)'">
+              <svg fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              PDF auswählen (max. 15 MB)
+            </button>
+            <div id="pdfUploadStatus" style="font-size:12px;color:var(--text3);margin-top:6px"></div>
           </div>
           <div class="aff"><label>Technische Daten (Label|Wert pro Zeile)</label><textarea id="aSpecs" placeholder="Laufleistung|45.000 km&#10;Erstzulassung|03/2021&#10;Kraftstoff|Benzin&#10;Getriebe|Automatik (PDK)&#10;Leistung|450 PS&#10;Zustand|Sehr gut" style="min-height:120px"></textarea></div>
           <div class="aff"><label>Auktionsdauer</label><select id="aDur"><option value="172800">48 Stunden</option><option value="86400">24 Stunden</option><option value="3600">1 Stunde (Test)</option><option value="600">10 Minuten (Test)</option></select></div>
@@ -1357,6 +1370,8 @@ function loadUI() {
   document.getElementById('vName').textContent = aData.vehicle_name || '---';
   document.getElementById('vSub').textContent = aData.vehicle_sub || '';
   document.getElementById('auctionCodeTag').textContent = 'CODE: ' + (aData.auction_code || '---');
+  var pdfBtn = document.getElementById('checklistPdfBtn');
+  if (pdfBtn) { if (aData.checklist_pdf_url) { pdfBtn.href = aData.checklist_pdf_url; pdfBtn.style.display = 'inline-flex'; } else { pdfBtn.style.display = 'none'; } }
   var img = document.getElementById('vPhoto');
   var allPhotos = (aData.photos && aData.photos.length) ? aData.photos : (aData.photo_url ? [aData.photo_url] : []);
   window.detailPhotos = allPhotos;
@@ -1745,6 +1760,9 @@ function prefillForm() {
   document.getElementById('aSnipe').value = aData.snipe_extension || 120;
   uploadedPhotos = (aData.photos && aData.photos.length) ? aData.photos.slice() : (aData.photo_url ? [aData.photo_url] : []);
   renderPhotoGrid();
+  uploadedPdfUrl = aData.checklist_pdf_url || null;
+  var ps = document.getElementById('pdfUploadStatus');
+  if (ps) ps.textContent = uploadedPdfUrl ? '✓ PDF vorhanden: ' + (aData.checklist_pdf_url.split('/').pop().slice(0,40)) : '';
   document.getElementById('aSpecs').value = (aData.specs || []).map(function(s) { return s.label + '|' + s.value; }).join('\n');
   document.getElementById('aDesc').value = aData.description || '';
   document.getElementById('admFormTitle').textContent = 'AUKTION BEARBEITEN';
@@ -1754,7 +1772,9 @@ function newAuction() {
   aData = null;
   ['aCode','aName','aSub','aLot','aStart','aSpecs','aDesc'].forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ''; });
   uploadedPhotos = []; renderPhotoGrid();
+  uploadedPdfUrl = null;
   var us = document.getElementById('uploadStatus'); if (us) us.textContent = '';
+  var ps = document.getElementById('pdfUploadStatus'); if (ps) ps.textContent = '';
   document.getElementById('aInc').value = 500;
   document.getElementById('aSnipe').value = 120;
 
@@ -1854,6 +1874,7 @@ async function loadAdminStats() {
 
 // === FOTO-UPLOAD (Supabase Storage via Backend) ===
 var uploadedPhotos = [];
+var uploadedPdfUrl = null;
 
 function renderPhotoGrid() {
   var grid = document.getElementById('aPhotoGrid');
@@ -1916,6 +1937,39 @@ async function handlePhotoUpload(files) {
   document.getElementById('aPhotoFile').value = '';
 }
 
+async function handlePdfUpload(files) {
+  if (!files || !files.length) return;
+  var file = files[0];
+  var statusEl = document.getElementById('pdfUploadStatus');
+  statusEl.style.color = 'var(--text3)';
+  if (file.type !== 'application/pdf') { statusEl.style.color = '#C0392B'; statusEl.textContent = 'Nur PDF-Dateien erlaubt.'; return; }
+  if (file.size > 15 * 1024 * 1024) { statusEl.style.color = '#C0392B'; statusEl.textContent = 'PDF zu groß (max. 15 MB).'; return; }
+  statusEl.textContent = 'Lade PDF hoch...';
+  try {
+    var base64 = await fileToBase64(file);
+    var res = await fetch(BACKEND_URL + '/api/admin/upload-pdf', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'x-admin-token': adminToken},
+      body: JSON.stringify({pdf: base64, filename: file.name})
+    });
+    var data = await res.json();
+    if (!res.ok) {
+      statusEl.style.color = '#C0392B';
+      statusEl.textContent = 'Fehler: ' + (data.error || 'Upload fehlgeschlagen');
+      return;
+    }
+    uploadedPdfUrl = data.url;
+    statusEl.style.color = 'var(--success)';
+    statusEl.textContent = '✓ PDF hochgeladen: ' + file.name;
+    var btn = document.getElementById('pdfUploadBtn');
+    if (btn) btn.textContent = '✓ ' + file.name.slice(0, 40) + ' – ersetzen';
+  } catch(e) {
+    statusEl.style.color = '#C0392B';
+    statusEl.textContent = 'Upload-Fehler: ' + e.message;
+  }
+  document.getElementById('aPdfFile').value = '';
+}
+
 function fileToBase64(file) {
   return new Promise(function(resolve, reject) {
     var reader = new FileReader();
@@ -1953,6 +2007,7 @@ async function saveAuction(status) {
         current_bid: start, min_increment: inc, snipe_extension: snipe,
         photos: uploadedPhotos, specs: specs, duration_seconds: dur,
         description: document.getElementById('aDesc').value.trim(),
+        checklist_pdf_url: uploadedPdfUrl || null,
         status: status
       })
     });
