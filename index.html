@@ -361,6 +361,11 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .bmsg.ok{color:var(--success);background:var(--success-bg);border:0.5px solid var(--success-border)}
 .bmsg.err{color:var(--red);background:var(--red-pale);border:0.5px solid var(--red-border)}
 .bmsg.warn{color:var(--warning);background:var(--warning-bg);border:0.5px solid #EFC87A}
+#bidToast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);background:#1a1a1a;color:#fff;padding:14px 28px;border-radius:40px;font-size:15px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.35);z-index:900;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap}
+#bidToast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#bidToast.ok{background:#1a6b3a}
+#bidToast.err{background:#B00000}
+#bidToast.warn{background:#8a5a00}
 .bid-form{display:flex;flex-direction:column;gap:8px}
 .bid-input-row{display:flex;gap:8px}
 .bid-input{flex:1;background:var(--white);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 14px;font-size:14px;color:var(--text);outline:none;transition:border-color .2s;font-family:inherit}
@@ -620,8 +625,6 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
       <div class="sidebar-section">
         <div class="sidebar-lbl">Konto</div>
         <div class="sidebar-item" onclick="toggleNotifPanel()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>Benachrichtigungen<span class="sidebar-badge red" id="sb-notif" style="display:none">!</span></div>
-        <div class="sidebar-item" onclick="showSelector()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Auktion beitreten</div>
-        <div class="sidebar-item" onclick="exportMyData()" style="font-size:12px"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Daten exportieren</div>
         <div class="sidebar-item" style="color:#E24B4A" onclick="doLogout()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Ausloggen</div>
       </div>
     </div>
@@ -1524,6 +1527,15 @@ function quickBid(inc) { document.getElementById('bidInput').value = (aData ? aD
 function showMsg(txt, type) {
   var el = document.getElementById('bidMsg'); el.textContent = txt; el.className = 'bmsg ' + type;
   clearTimeout(el._t); el._t = setTimeout(function() { el.textContent = ''; el.className = 'bmsg'; }, 6000);
+  // Toast-Benachrichtigung
+  var toast = document.getElementById('bidToast');
+  if (toast) {
+    var icon = type === 'ok' ? '✓ ' : type === 'err' ? '✕ ' : '⚠ ';
+    toast.textContent = icon + txt;
+    toast.className = 'show ' + type;
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function() { toast.className = ''; }, 3500);
+  }
 }
 
 function clearTimer() { clearInterval(tInt); }
@@ -2096,6 +2108,7 @@ setInterval(async function() {
   } catch(e) {}
 }, 15000);
 </script>
+<div id="bidToast"></div>
 <!-- GLOBAL OVERLAYS – außerhalb aller Screen-Divs damit position:fixed funktioniert -->
 <div id="bidConfirmOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:700;align-items:center;justify-content:center;padding:20px">
   <div style="background:var(--white);border-radius:var(--radius-2xl);width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden">
