@@ -484,14 +484,14 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 }
 
 @media(max-width:600px){
-  /* Topbar: Logo kleiner, Nav scrollbar */
+  /* Topbar: Logo kompakt, Nav scrollbar */
   .topbar{padding:0 12px;height:52px}
-  .topbar-name{font-size:14px}
-  .topbar-logo-icon{width:28px;height:28px}
-  .topbar-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:0}
+  .topbar-logo-icon{display:none}
+  .topbar-name{font-size:13px;white-space:nowrap}
+  .topbar-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:0;flex:1;margin:0 8px}
   .topbar-nav::-webkit-scrollbar{display:none}
   .topbar-nav-btn{padding:5px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
-  .topbar-right{gap:4px}
+  .topbar-right{gap:4px;flex-shrink:0}
   .notif-btn{width:32px;height:32px}
   .user-avatar{width:32px;height:32px;font-size:12px}
 
