@@ -488,7 +488,9 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
   .topbar{padding:0 12px;height:52px}
   .topbar-logo-icon{display:none}
   .topbar-name{font-size:13px;white-space:nowrap}
-  .topbar-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:0;flex:1;margin:0 8px}
+  .topbar-nav-wrap{position:relative;flex:1;margin:0 8px;overflow:hidden}
+  .topbar-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:0;width:100%}
+  .topbar-nav-fade{position:absolute;right:0;top:0;bottom:0;width:28px;background:linear-gradient(to right,rgba(255,255,255,0),#fff 70%);display:flex;align-items:center;justify-content:flex-end;padding-right:2px;color:var(--red);font-size:18px;font-weight:700;pointer-events:none;line-height:1}
   .topbar-nav::-webkit-scrollbar{display:none}
   .topbar-nav-btn{padding:5px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
   .topbar-right{gap:4px;flex-shrink:0}
@@ -640,11 +642,14 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 <div id="dashboardScreen">
   <div class="topbar">
     <div class="topbar-logo"><div class="topbar-name"><span>Safety</span> Car</div></div>
-    <div class="topbar-nav">
-      <button class="topbar-nav-btn active" onclick="showDashTab('overview',this)">Übersicht</button>
-      <button class="topbar-nav-btn" onclick="showDashTab('mybids',this)">Meine Gebote</button>
-      <button class="topbar-nav-btn" onclick="showDashTab('watchlist',this)">Watchlist</button>
-      <button class="topbar-nav-btn" onclick="showDashTab('auctions',this)">Alle Auktionen</button>
+    <div class="topbar-nav-wrap">
+      <div class="topbar-nav">
+        <button class="topbar-nav-btn active" onclick="showDashTab('overview',this)">Übersicht</button>
+        <button class="topbar-nav-btn" onclick="showDashTab('mybids',this)">Meine Gebote</button>
+        <button class="topbar-nav-btn" onclick="showDashTab('watchlist',this)">Watchlist</button>
+        <button class="topbar-nav-btn" onclick="showDashTab('auctions',this)">Alle Auktionen</button>
+      </div>
+      <div class="topbar-nav-fade" aria-hidden="true">›</div>
     </div>
     <div class="topbar-right">
       <div class="notif-btn" onclick="toggleNotifPanel()" id="notifBtn"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><div class="notif-dot" id="notifDot"></div></div>
@@ -2204,6 +2209,17 @@ function showAdminToast(txt, type) {
   clearTimeout(toast._t);
   toast._t = setTimeout(function() { toast.className = ''; }, 4000);
 }
+
+// Mobile Nav Scroll-Indikator
+(function() {
+  var nav = document.querySelector('.topbar-nav');
+  var fade = document.querySelector('.topbar-nav-fade');
+  if (!nav || !fade) return;
+  nav.addEventListener('scroll', function() {
+    var atEnd = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 4;
+    fade.style.display = atEnd ? 'none' : 'flex';
+  });
+})();
 
 // Auto-Refresh alle 15 Sekunden
 setInterval(async function() {
