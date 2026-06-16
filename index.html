@@ -1023,9 +1023,8 @@ async function showDashboard() {
   showScreen('dashboardScreen');
   var name = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
   var duEl = document.getElementById('dashUser'); if (duEl) duEl.textContent = name;
-  // Freigabe-Banner anzeigen wenn Händler noch nicht freigeschaltet
   var banner = document.getElementById('approvalBanner');
-  if (banner) banner.style.display = (cProfile && cProfile.approved === false) ? 'block' : 'none';
+  if (banner) banner.style.display = 'none';
   await loadAllAuctions();
   await loadMyBidsAll();
   await loadWatchlist();
@@ -1062,6 +1061,8 @@ async function loadProfile() {
 }
 
 async function loadAllAuctions() {
+  // Nicht freigegebene Händler sehen keine Auktionen (null = noch nicht geprüft, false = widerrufen)
+  if (!cProfile || cProfile.approved !== true) { allAuctions = []; return; }
   var res = await sb.from('auction').select('*').order('created_at', {ascending: false});
   allAuctions = res.data || [];
 }
@@ -1080,6 +1081,23 @@ async function loadWatchlist() {
 }
 
 function renderDashboard() {
+  // Nicht freigegebene Händler: Warteseite
+  var dashContent = document.getElementById('tab-overview');
+  if (!cProfile || cProfile.approved !== true) {
+    var waitMsg = (cProfile && cProfile.approved === false)
+      ? '<div style="font-size:20px;font-weight:600;margin-bottom:12px">Zugang deaktiviert</div><div style="font-size:14px;color:var(--text3);max-width:340px;margin:0 auto;line-height:1.6">Ihr Zugang wurde deaktiviert. Bitte wenden Sie sich an SafetyCar falls Sie Fragen haben.</div>'
+      : '<div style="font-size:20px;font-weight:600;margin-bottom:12px">Zugang wird geprüft</div><div style="font-size:14px;color:var(--text3);max-width:340px;margin:0 auto;line-height:1.6">Ihre Registrierung wurde erhalten. Unser Team prüft Ihren Händlerstatus und schaltet Sie in Kürze frei.<br><br>Sie erhalten eine E-Mail sobald Ihr Zugang aktiviert wurde.</div>';
+    if (dashContent) dashContent.innerHTML = '<div style="text-align:center;padding:60px 20px"><div style="font-size:48px;margin-bottom:20px">⏳</div>' + waitMsg + '<div style="margin-top:28px"><button onclick="doLogout()" style="background:none;border:0.5px solid var(--border2);border-radius:8px;padding:10px 20px;font-size:13px;color:var(--text2);cursor:pointer;font-family:inherit">Ausloggen</button></div></div>';
+    document.getElementById('ds-active').textContent = '–';
+    document.getElementById('ds-leading').textContent = '–';
+    document.getElementById('ds-won').textContent = '–';
+    document.getElementById('ds-watch').textContent = '–';
+    document.getElementById('activeCount').textContent = '';
+    return;
+  }
+  if (dashContent && dashContent.querySelector('[style*="Zugang wird geprüft"]')) {
+    dashContent.innerHTML = '<div class="stats-grid"><div class="stat-card"><div class="stat-icon red"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="stat-val" id="ds-active">0</div><div class="stat-lbl">Aktive Gebote</div></div></div><div class="section-hdr"><div class="section-title">Aktive Auktionen</div><div class="section-link" id="activeCount"></div></div><div class="auctions-grid" id="overviewActiveGrid"><div class="hemp">Keine aktiven Auktionen</div></div>';
+  }
   var now = new Date();
   var active = allAuctions.filter(function(a) { return now < new Date(a.ends_at); });
   var myName = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
@@ -1871,10 +1889,11 @@ async function loadAdminUsers() {
       var actionBtn = u.approved
         ? '<button onclick="revokeUser(\'' + u.id + '\')" style="background:none;border:0.5px solid var(--border2);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--text2);cursor:pointer;font-family:inherit;margin-top:8px">Freigabe widerrufen</button>'
         : '<button onclick="approveUser(\'' + u.id + '\')" style="background:#3B7A1A;border:none;border-radius:8px;padding:6px 12px;font-size:12px;color:#fff;cursor:pointer;font-family:inherit;margin-top:8px;font-weight:600">✓ Freigeben</button>';
+      var deleteBtn = '<button onclick="deleteUser(\'' + u.id + '\',\'' + esc(u.display_name || u.email || 'diesen Händler') + '\')" style="background:none;border:0.5px solid #e53e3e;border-radius:8px;padding:6px 12px;font-size:12px;color:#e53e3e;cursor:pointer;font-family:inherit;margin-top:8px;margin-left:6px">Löschen</button>';
       card.innerHTML = '<div class="user-card-name">' + esc(u.display_name || '---') + '</div>' +
         '<div style="margin:6px 0">' + statusBadge + '</div>' +
         '<div class="user-card-stats"><div class="user-stat">Gebote: <span>' + (u.bid_count || 0) + '</span></div></div>' +
-        actionBtn;
+        '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">' + actionBtn + deleteBtn + '</div>';
       container.appendChild(card);
     }
   } catch(e) {
@@ -1903,6 +1922,18 @@ async function revokeUser(userId) {
       body: JSON.stringify({userId: userId})
     });
     if (!res.ok) { alert('Widerruf fehlgeschlagen.'); return; }
+    loadAdminUsers();
+  } catch(e) { alert('Verbindungsfehler.'); }
+}
+
+async function deleteUser(userId, name) {
+  if (!confirm('Händler "' + name + '" wirklich dauerhaft löschen?\n\nDiese Aktion kann nicht rückgängig gemacht werden.')) return;
+  try {
+    var res = await fetch(BACKEND_URL + '/api/admin/delete-user/' + userId, {
+      method: 'DELETE',
+      headers: {'x-admin-token': adminToken}
+    });
+    if (!res.ok) { var d = await res.json(); alert('Fehler: ' + (d.error || 'Löschen fehlgeschlagen')); return; }
     loadAdminUsers();
   } catch(e) { alert('Verbindungsfehler.'); }
 }
