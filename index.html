@@ -691,7 +691,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
       </div>
       <div id="tab-mybids" style="display:none">
         <div class="section-hdr"><div class="section-title">Meine Gebote</div></div>
-        <div class="bids-card"><table style="width:100%;border-collapse:collapse"><thead><tr><th style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 0 10px;text-align:left;font-weight:500">Fahrzeug</th><th style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 0 10px;text-align:left;font-weight:500">Mein Gebot</th><th style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 0 10px;text-align:left;font-weight:500">Höchstgebot</th><th style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 0 10px;text-align:left;font-weight:500">Status</th><th style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 0 10px;text-align:left;font-weight:500">Endet</th><th style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 0 10px;text-align:left;font-weight:500"></th></tr></thead><tbody id="myBidsBody"><tr><td colspan="6" class="hemp">Noch keine Gebote</td></tr></tbody></table></div>
+        <div class="bids-card"><table style="width:100%;border-collapse:collapse"><thead><tr><th style="font-size:11px;color:var(--text3);letter-spacing:.3px;padding:0 0 10px;text-align:left;font-weight:500">Fahrzeug</th><th style="font-size:11px;color:var(--text3);letter-spacing:.3px;padding:0 0 10px;text-align:left;font-weight:500">Mein Gebot</th><th style="font-size:11px;color:var(--text3);letter-spacing:.3px;padding:0 0 10px;text-align:left;font-weight:500">Aktuelles Höchstgebot</th><th style="font-size:11px;color:var(--text3);letter-spacing:.3px;padding:0 0 10px;text-align:left;font-weight:500">Status</th><th style="font-size:11px;color:var(--text3);letter-spacing:.3px;padding:0 0 10px;text-align:left;font-weight:500">Auktion endet</th><th style="font-size:11px;color:var(--text3);padding:0 0 10px;text-align:left;font-weight:500"></th></tr></thead><tbody id="myBidsBody"><tr><td colspan="6" class="hemp">Noch keine Gebote</td></tr></tbody></table></div>
       </div>
       <div id="tab-watchlist" style="display:none">
         <div class="section-hdr"><div class="section-title">Watchlist</div></div>
@@ -1178,12 +1178,12 @@ function renderMyBidsTable() {
     var ended = now >= new Date(b.auction.ends_at);
     var isLeading = b.auction.top_bidder === myName;
     var statusClass = '', statusText = '';
-    if (!ended) { statusClass = isLeading ? 'winning' : 'losing'; statusText = isLeading ? 'FUEHREND' : 'UEBERBOTEN'; }
-    else { statusClass = isLeading ? 'winning' : 'losing'; statusText = isLeading ? 'ERSTEIGERT' : 'NICHT ERSTEIGERT'; }
+    if (!ended) { statusClass = isLeading ? 'winning' : 'losing'; statusText = isLeading ? 'Höchstbietend' : 'Überboten'; }
+    else { statusClass = isLeading ? 'winning' : 'losing'; statusText = isLeading ? 'Ersteigert' : 'Nicht ersteigert'; }
     if (seen[aKey]) continue;
     seen[aKey] = true;
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td>' + esc(b.auction.vehicle_name || '---') + '</td><td class="amt">' + fmtEur(b.amount) + '</td><td class="amt">' + fmtEur(b.auction.current_bid || 0) + '</td><td class="' + statusClass + '">' + statusText + '</td><td style="font-size:10px">' + (ended ? 'Beendet' : fmtCountdown(b.auction.ends_at)) + '</td><td>' + (!ended ? '<button style="background:var(--red);border:none;padding:4px 10px;color:#fff;font-family:\'Bebas Neue\',sans-serif;font-size:13px;cursor:pointer;letter-spacing:1px" onclick="joinAuctionById(\'' + b.auction_id + '\')">BIETEN</button>' : '') + '</td>';
+    tr.innerHTML = '<td>' + esc(b.auction.vehicle_name || '---') + '</td><td class="amt">' + fmtEur(b.amount) + '</td><td class="amt">' + fmtEur(b.auction.current_bid || 0) + '</td><td class="' + statusClass + '">' + statusText + '</td><td style="font-size:10px">' + (ended ? 'Beendet' : fmtCountdown(b.auction.ends_at)) + '</td><td>' + (!ended ? '<button style="background:var(--red);border:none;padding:6px 14px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;border-radius:8px;font-family:inherit;white-space:nowrap" onclick="joinAuctionById(\'' + b.auction_id + '\')">Jetzt bieten</button>' : '') + '</td>';
     tbody.appendChild(tr);
   }
 }
