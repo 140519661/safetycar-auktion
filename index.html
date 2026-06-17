@@ -764,13 +764,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     <div class="auction-right">
       <div class="timer-card">
         <div><div class="timer-lbl">Verbleibende Zeit</div><div class="timer-val" id="timerDisp">--:--:--</div></div>
-        <div class="timer-countdown">
-          <div class="tc-unit"><span class="tc-num" id="tc-h">00</span><span class="tc-lbl">Std</span></div>
-          <div class="tc-sep">:</div>
-          <div class="tc-unit"><span class="tc-num" id="tc-m">00</span><span class="tc-lbl">Min</span></div>
-          <div class="tc-sep">:</div>
-          <div class="tc-unit"><span class="tc-num" id="tc-s">00</span><span class="tc-lbl">Sek</span></div>
-        </div>
+        <span style="display:none"><span id="tc-h"></span><span id="tc-m"></span><span id="tc-s"></span></span>
       </div>
       <div class="bid-card"><div class="bid-lbl">Aktuelles Höchstgebot</div><div class="bid-amount" id="curBid">---</div><div class="bid-anon" id="curBy">Noch kein Gebot</div></div>
       <div class="my-status-card none" id="myStatusBox"><div class="msc-lbl" id="myStatusLbl">Mein letztes Gebot</div><div class="msc-val" id="myStatusVal">---</div><div class="msc-info" id="myStatusInfo"></div></div>
@@ -2325,13 +2319,13 @@ setInterval(async function() {
       <div style="border-top:0.5px solid var(--border);padding-top:20px;margin-bottom:24px">
         <div style="font-size:14px;font-weight:600;margin-bottom:12px">E-Mail ändern</div>
         <div class="pw-wrap" style="margin-bottom:10px"><input type="email" id="newEmail" placeholder="Neue E-Mail-Adresse" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"></div>
-        <button onclick="changeEmail()" style="background:var(--dark);border:none;border-radius:var(--radius);padding:10px 18px;color:#fff;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500">E-Mail ändern</button>
+        <button onclick="changeEmail()" style="background:var(--red);border:none;border-radius:var(--radius);padding:10px 18px;color:#fff;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500">E-Mail ändern</button>
         <div id="emailMsg" style="font-size:12px;margin-top:8px;min-height:14px"></div>
       </div>
       <div style="border-top:0.5px solid var(--border);padding-top:20px">
         <div style="font-size:14px;font-weight:600;margin-bottom:12px">Passwort ändern</div>
         <div class="pw-wrap" style="margin-bottom:10px"><input type="password" id="newPassword" placeholder="Neues Passwort (min. 8 Zeichen)" style="width:100%;padding:11px 42px 11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"><button type="button" class="pw-toggle" onclick="togglePw('newPassword',this)"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
-        <button onclick="changePassword()" style="background:var(--dark);border:none;border-radius:var(--radius);padding:10px 18px;color:#fff;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500">Passwort ändern</button>
+        <button onclick="changePassword()" style="background:var(--red);border:none;border-radius:var(--radius);padding:10px 18px;color:#fff;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500">Passwort ändern</button>
         <div id="passwordMsg" style="font-size:12px;margin-top:8px;min-height:14px"></div>
       </div>
     </div>
