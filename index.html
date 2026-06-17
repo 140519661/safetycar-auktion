@@ -902,7 +902,7 @@ var SBKEY = 'sb_publishable_QhSJ5XSC3xLWNXXWjFZEqQ_r08Hwy69';
 var SITE = 'https://safetycar-auktion.netlify.app';
 var sb = supabase.createClient(SBURL, SBKEY);
 
-var cUser = null, cProfile = null, adminToken = null, aData = null, allAuctions = [], myBidsAll = [], watchlistIds = [], tInt = null, rtSub = null, notifSub = null, _watchPending = false;
+var cUser = null, cProfile = null, adminToken = null, aData = null, allAuctions = [], myBidsAll = [], watchlistIds = [], tInt = null, rtSub = null, notifSub = null;
 
 var lbPhotos = [];
 var lbIndex = 0;
@@ -1079,8 +1079,8 @@ async function loadMyBidsAll() {
   myBidsAll = res.data || [];
 }
 
-async function loadWatchlist(force) {
-  if (!cUser || (!force && _watchPending)) return;
+async function loadWatchlist() {
+  if (!cUser) return;
   var res = await sb.from('watchlist').select('auction_id').eq('user_id', cUser.id);
   watchlistIds = (res.data || []).map(function(w) { return w.auction_id; });
 }
@@ -1195,29 +1195,23 @@ function renderWatchlistGrid() {
 }
 
 async function toggleWatch(auctionId, btn) {
-  if (!cUser || _watchPending) return;
-  _watchPending = true;
+  if (!cUser) return;
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
+  var idx = watchlistIds.indexOf(auctionId);
   try {
-    var idx = watchlistIds.indexOf(auctionId);
     if (idx >= 0) {
+      await sb.from('watchlist').delete().eq('user_id', cUser.id).eq('auction_id', auctionId);
       watchlistIds.splice(idx, 1);
       if (btn) { btn.textContent = 'Watchlist'; btn.classList.remove('watched-btn'); }
-      renderWatchlistGrid();
-      await sb.from('watchlist').delete().eq('user_id', cUser.id).eq('auction_id', auctionId);
     } else {
+      await sb.from('watchlist').insert({user_id: cUser.id, auction_id: auctionId});
       watchlistIds.push(auctionId);
       if (btn) { btn.textContent = 'Gespeichert ✓'; btn.classList.add('watched-btn'); }
       showToast('Gespeichert ✓', 'ok');
-      renderWatchlistGrid();
-      await sb.from('watchlist').insert({user_id: cUser.id, auction_id: auctionId});
     }
-    await loadWatchlist(true);
-    renderWatchlistGrid();
-  } catch(e) {
-    console.error('Watchlist error:', e);
-  } finally {
-    _watchPending = false;
-  }
+  } catch(e) { console.error('Watchlist error:', e); }
+  if (btn) { btn.disabled = false; btn.style.opacity = ''; }
+  renderWatchlistGrid();
 }
 
 async function joinAuctionById(auctionId) {
