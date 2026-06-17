@@ -982,8 +982,8 @@ function togglePw(id, btn) {
   }
 }
 
-function fmtEur(n) { return 'EUR ' + Math.round(n).toLocaleString('de-DE'); }
-function fmtPrice(n) { return Math.round(n).toLocaleString('de-DE') + ',- €'; }
+function fmtEur(n) { return Math.round(n).toLocaleString('de-DE') + ',- €'; }
+function fmtPrice(n) { return fmtEur(n); }
 function esc(str) {
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
