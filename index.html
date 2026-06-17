@@ -569,13 +569,15 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
   <div class="auth-logo"><div class="auth-logo-name"><span>Safety</span> Car</div></div>
   <div class="auth-card">
     <div class="auth-title">Konto erstellen</div>
-    <div class="auth-desc">Einmalig registrieren – dauerhafter Zugang zu allen Auktionen</div>
-    <div class="fi"><label>Name oder Firma</label><input type="text" id="su_name" placeholder="Ihr Name oder Firma" autocomplete="off"></div>
-    <div class="fi"><label>E-Mail</label><input type="email" id="su_email" placeholder="ihre@email.de" autocomplete="email"></div>
-    <div class="fi"><label>Passwort</label><div class="pw-wrap"><input type="password" id="su_pw" placeholder="Mindestens 8 Zeichen" autocomplete="new-password"><button type="button" class="pw-toggle" onclick="togglePw('su_pw',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="pwhint">Min. 8 Zeichen empfohlen</div></div>
-    <div class="fi"><label>Passwort bestätigen</label><div class="pw-wrap"><input type="password" id="su_pw2" placeholder="Wiederholen"><button type="button" class="pw-toggle" onclick="togglePw('su_pw2',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
-    <div class="fi"><div class="fi-check"><input type="checkbox" id="su_dsgvo"><label for="su_dsgvo">Ich stimme der Verarbeitung meiner Daten gemäß Datenschutzerklärung zu (DSGVO)</label></div></div>
-    <button class="btn-primary" id="suBtn" onclick="doSignup()">Registrieren</button>
+    <div class="auth-desc">Einmalig registrieren – dauerhafter Zugang zu allen Auktionen.</div>
+    <div class="fi"><label>Name des Unternehmens</label><input type="text" id="su_name" placeholder="Name des Unternehmens" autocomplete="organization"></div>
+    <div class="fi"><label>Ansprechpartner (Vor- &amp; Zuname)</label><input type="text" id="su_contact" placeholder="Ansprechpartner (Vor- &amp; Zuname)" autocomplete="name"></div>
+    <div class="fi"><label>E-Mail-Adresse</label><input type="email" id="su_email" placeholder="E-Mail-Adresse" autocomplete="email"></div>
+    <div class="fi"><label>Telefonnummer</label><input type="tel" id="su_phone" placeholder="Telefonnummer" autocomplete="tel"></div>
+    <div class="fi"><label>Passwort</label><div class="pw-wrap"><input type="password" id="su_pw" placeholder="Passwort" autocomplete="new-password"><button type="button" class="pw-toggle" onclick="togglePw('su_pw',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="pwhint">Min. 8 Zeichen empfohlen</div></div>
+    <div class="fi"><label>Passwort bestätigen</label><div class="pw-wrap"><input type="password" id="su_pw2" placeholder="Passwort bestätigen"><button type="button" class="pw-toggle" onclick="togglePw('su_pw2',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+    <div class="fi"><p style="font-size:12px;color:var(--text3);margin:0">Mit der Registrierung stimmen Sie der Verarbeitung Ihrer Daten gemäß unserer Datenschutzerklärung zu. Diese lässt sich aus dem Footer der Webseite entnehmen.</p></div>
+    <button class="btn-primary" id="suBtn" onclick="doSignup()">Jetzt registrieren</button>
     <div class="aerr" id="suErr"></div><div class="aok" id="suOk"></div>
     <div class="auth-switch">Bereits registriert? <a onclick="showLogin()">Einloggen</a></div>
   </div>
@@ -1332,27 +1334,28 @@ function joinAuction(auction) {
 // AUTH
 async function doSignup() {
   var name = document.getElementById('su_name').value.trim();
+  var contact = document.getElementById('su_contact').value.trim();
   var email = document.getElementById('su_email').value.trim().toLowerCase();
+  var phone = document.getElementById('su_phone').value.trim();
   var pw = document.getElementById('su_pw').value;
   var pw2 = document.getElementById('su_pw2').value;
-  var dsgvo = document.getElementById('su_dsgvo').checked;
   var errEl = document.getElementById('suErr'), okEl = document.getElementById('suOk');
   errEl.textContent = ''; okEl.textContent = '';
-  if (!name) { errEl.textContent = 'Bitte Namen eingeben.'; return; }
+  if (!name) { errEl.textContent = 'Bitte Unternehmensname eingeben.'; return; }
+  if (!contact) { errEl.textContent = 'Bitte Ansprechpartner eingeben.'; return; }
   if (!email || email.indexOf('@') < 0) { errEl.textContent = 'Gueltige E-Mail eingeben.'; return; }
-  if (pw.length < 8) { errEl.textContent = 'Passwort mindestens 6 Zeichen.'; return; }
+  if (!phone) { errEl.textContent = 'Bitte Telefonnummer eingeben.'; return; }
+  if (pw.length < 8) { errEl.textContent = 'Passwort mindestens 8 Zeichen.'; return; }
   if (pw !== pw2) { errEl.textContent = 'Passwoerter stimmen nicht ueberein.'; return; }
-  if (!dsgvo) { errEl.textContent = 'Bitte Datenschutzerklaerung akzeptieren.'; return; }
   var btn = document.getElementById('suBtn'); btn.disabled = true; btn.textContent = 'BITTE WARTEN...';
-  // FIX 2: Registration via BACKEND (rate-limiting, validation, welcome email, dsgvo_date)
   try {
     var regRes = await fetch(BACKEND_URL + '/api/auth/register', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({email: email, password: pw, name: name, dsgvo: 'true'})
+      body: JSON.stringify({email: email, password: pw, name: name, contact_name: contact, phone: phone, dsgvo: 'true'})
     });
     var regData = await regRes.json();
-    if (!regRes.ok) { errEl.textContent = regData.error || 'Registrierung fehlgeschlagen.'; btn.disabled = false; btn.textContent = 'Registrieren'; return; }
+    if (!regRes.ok) { errEl.textContent = regData.error || 'Registrierung fehlgeschlagen.'; btn.disabled = false; btn.textContent = 'Jetzt registrieren'; return; }
     // Now log in automatically
     var loginRes = await sb.auth.signInWithPassword({email: email, password: pw});
     if (loginRes.error) {
@@ -1905,6 +1908,8 @@ async function loadAdminUsers() {
         : '<button onclick="approveUser(\'' + u.id + '\')" style="background:#3B7A1A;border:none;border-radius:8px;padding:6px 12px;font-size:12px;color:#fff;cursor:pointer;font-family:inherit;margin-top:8px;font-weight:600">✓ Freigeben</button>';
       var deleteBtn = '<button onclick="deleteUser(\'' + u.id + '\',\'' + esc(u.display_name || u.email || 'diesen Händler') + '\')" style="background:none;border:0.5px solid #e53e3e;border-radius:8px;padding:6px 12px;font-size:12px;color:#e53e3e;cursor:pointer;font-family:inherit;margin-top:8px;margin-left:6px">Löschen</button>';
       card.innerHTML = '<div class="user-card-name">' + esc(u.display_name || '---') + '</div>' +
+        (u.contact_name ? '<div style="font-size:12px;color:var(--text3);margin-bottom:2px">👤 ' + esc(u.contact_name) + '</div>' : '') +
+        (u.phone ? '<div style="font-size:12px;color:var(--text3);margin-bottom:6px">📞 ' + esc(u.phone) + '</div>' : '') +
         '<div style="margin:6px 0">' + statusBadge + '</div>' +
         '<div class="user-card-stats"><div class="user-stat">Gebote: <span>' + (u.bid_count || 0) + '</span></div></div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">' + actionBtn + deleteBtn + '</div>';
