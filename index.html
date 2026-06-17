@@ -1198,12 +1198,12 @@ async function toggleWatch(auctionId) {
   var idx = watchlistIds.indexOf(auctionId);
   if (idx >= 0) {
     watchlistIds.splice(idx, 1);
-    renderDashboard();
+    setTimeout(renderDashboard, 0);
     await sb.from('watchlist').delete().eq('user_id', cUser.id).eq('auction_id', auctionId);
   } else {
     watchlistIds.push(auctionId);
     showToast('Gespeichert ✓', 'ok');
-    renderDashboard();
+    setTimeout(renderDashboard, 0);
     await sb.from('watchlist').insert({user_id: cUser.id, auction_id: auctionId});
   }
 }
