@@ -860,7 +860,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     CSV Export
   </button>
 </div>
-      <div style="overflow-x:auto"><table class="btbl"><thead><tr><th>#</th><th>Bieter</th><th>E-Mail</th><th>Betrag</th><th>Auktion</th><th>Zeit</th></tr></thead><tbody id="admBody"><tr><td colspan="6" class="hemp">Keine Gebote</td></tr></tbody></table></div>
+      <div style="overflow-x:auto"><table class="btbl"><thead><tr><th>#</th><th>Bieter</th><th>E-Mail</th><th>Betrag</th><th>Auktion</th><th>Zeit</th><th></th></tr></thead><tbody id="admBody"><tr><td colspan="7" class="hemp">Keine Gebote</td></tr></tbody></table></div>
     </div>
     <div class="admin-pane" id="adm-users">
       <div class="admin-form-title">Registrierte Bieter</div>
@@ -1813,6 +1813,19 @@ async function deleteAuction(id, name) {
   } catch(e) { alert('Verbindungsfehler.'); }
 }
 
+async function deleteBid(bidId, amount) {
+  if (!confirm('Gebot über ' + fmtEur(amount) + ' wirklich löschen?\n\nDas Höchstgebot wird automatisch neu berechnet.')) return;
+  try {
+    var res = await fetch(BACKEND_URL + '/api/admin/bids/' + bidId, {
+      method: 'DELETE',
+      headers: {'x-admin-token': adminToken}
+    });
+    if (!res.ok) { var d = await res.json(); alert('Fehler: ' + (d.error || 'Löschen fehlgeschlagen')); return; }
+    loadAuctionBids(aData);
+    loadAdminStats();
+  } catch(e) { alert('Verbindungsfehler.'); }
+}
+
 function prefillForm() {
   if (!aData) return;
   document.getElementById('aCode').value = aData.auction_code || '';
@@ -1864,7 +1877,7 @@ async function refreshAdminBids() {
   tbody.innerHTML = '';
   for (var j = 0; j < all.length; j++) {
     var tr = document.createElement('tr'); if (j === 0) tr.className = 'tbest';
-    tr.innerHTML = '<td><span class="brank' + (j === 0 ? ' first' : '') + '">' + (j+1) + '</span></td><td>' + esc(all[j].bidder) + '</td><td style="font-size:10px;color:var(--t3)">' + esc(all[j].bidder_email || '---') + '</td><td class="tamt">' + fmtEur(all[j].amount) + '</td><td style="font-size:10px;color:var(--t3)">' + (all[j].auction_code || '---') + '</td><td style="font-size:10px">' + fmtTime(all[j].created_at) + '</td>';
+    tr.innerHTML = '<td><span class="brank' + (j === 0 ? ' first' : '') + '">' + (j+1) + '</span></td><td>' + esc(all[j].bidder) + '</td><td style="font-size:10px;color:var(--t3)">' + esc(all[j].bidder_email || '---') + '</td><td class="tamt">' + fmtEur(all[j].amount) + '</td><td style="font-size:10px;color:var(--t3)">' + (all[j].auction_code || '---') + '</td><td style="font-size:10px">' + fmtTime(all[j].created_at) + '</td><td><button onclick="deleteBid(\'' + all[j].id + '\',' + all[j].amount + ')" style="background:none;border:0.5px solid #e53e3e;border-radius:6px;padding:3px 8px;font-size:11px;color:#e53e3e;cursor:pointer;font-family:inherit">Löschen</button></td>';
     tbody.appendChild(tr);
   }
 }
