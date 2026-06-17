@@ -587,11 +587,11 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 <div class="auth-screen" id="loginScreen">
   <div class="auth-logo"><div class="auth-logo-name"><span>Safety</span> Car</div></div>
   <div class="auth-card">
-    <div class="auth-title">Willkommen zurück</div>
-    <div class="auth-desc">Melden Sie sich an um an Auktionen teilzunehmen</div>
-    <div class="fi"><label>E-Mail</label><input type="email" id="li_email" placeholder="ihre@email.de" autocomplete="email"></div>
-    <div class="fi"><label>Passwort</label><div class="pw-wrap"><input type="password" id="li_pw" placeholder="Ihr Passwort" autocomplete="current-password"><button type="button" class="pw-toggle" onclick="togglePw('li_pw',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
-    <button class="btn-primary" id="liBtn" onclick="doLogin()">Einloggen</button>
+    <div class="auth-title">Willkommen zurück!</div>
+    <div class="auth-desc">Melden Sie sich an, um an unseren Auktionen teilzunehmen.</div>
+    <div class="fi"><label>E-Mail-Adresse</label><input type="email" id="li_email" placeholder="E-Mail-Adresse" autocomplete="email"></div>
+    <div class="fi"><label>Passwort</label><div class="pw-wrap"><input type="password" id="li_pw" placeholder="Passwort" autocomplete="current-password"><button type="button" class="pw-toggle" onclick="togglePw('li_pw',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+    <button class="btn-primary" id="liBtn" onclick="doLogin()">Jetzt einloggen</button>
     <div class="aerr" id="liErr"></div>
     <div class="auth-switch">Noch kein Konto? <a onclick="showSignup()">Registrieren</a><br><a onclick="showForgot()">Passwort vergessen?</a></div>
   </div>
@@ -1379,7 +1379,7 @@ async function doLogin() {
   var btn = document.getElementById('liBtn'); btn.disabled = true; btn.textContent = 'Bitte warten...';
   try {
     var res = await sb.auth.signInWithPassword({email: email, password: pw});
-    if (res.error) { errEl.textContent = 'E-Mail oder Passwort falsch.'; btn.disabled = false; btn.textContent = 'Einloggen'; return; }
+    if (res.error) { errEl.textContent = 'E-Mail oder Passwort falsch.'; btn.disabled = false; btn.textContent = 'Jetzt einloggen'; return; }
     cUser = res.data.user;
     try { await loadProfile(); } catch(e) { console.error('Profile load error:', e); }
     await showDashboard();
@@ -1387,7 +1387,7 @@ async function doLogin() {
     console.error('Login error:', e);
     errEl.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
   }
-  btn.disabled = false; btn.textContent = 'Einloggen';
+  btn.disabled = false; btn.textContent = 'Jetzt einloggen';
 }
 
 async function doForgot() {
