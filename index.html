@@ -213,7 +213,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .spec-chip{background:var(--light);border-radius:4px;padding:3px 8px;font-size:11px;color:var(--text2)}
 .ac-divider{height:0.5px;background:var(--border);margin-bottom:12px}
 .ac-bottom{display:flex;justify-content:space-between;align-items:flex-end}
-.ac-bid-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
+.ac-bid-lbl{font-size:11px;color:var(--text3);letter-spacing:.2px;margin-bottom:3px}
 .ac-bid-val{font-size:18px;font-weight:600;color:var(--red);letter-spacing:-0.3px}
 .ac-bid-count{font-size:11px;color:var(--text4);margin-top:2px}
 .btn-bid{background:var(--red);color:white;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s}
@@ -1142,7 +1142,7 @@ function renderAuctionsGrid(containerId, auctions, activeOnly) {
     var timerClass = !ended && Math.floor((new Date(a.ends_at) - now) / 1000) < 300 ? ' urgent' : '';
     var mainImg = a.photo_url || (a.photos && a.photos.length ? a.photos[0] : '');
     var imgHtml = mainImg ? '<img src="' + mainImg + '" onerror="this.style.display=\'none\';this.parentNode.querySelector(\'.ac-img-ph\')&&(this.parentNode.querySelector(\'.ac-img-ph\').style.display=\'flex\')">' : '<div class="ac-img-ph" style="display:flex"><svg viewBox="0 0 520 200" style="width:70%;opacity:.3"><rect x="70" y="90" width="380" height="70" rx="8" fill="#333"/><rect x="140" y="55" width="220" height="70" rx="12" fill="#444"/><circle cx="140" cy="162" r="26" fill="#222"/><circle cx="380" cy="162" r="26" fill="#222"/></svg></div>';
-    card.innerHTML = '<div class="ac-img">' + imgHtml + '<div class="ac-timer-overlay' + timerClass + '">' + timerStr + '</div></div><div class="ac-body"><div class="ac-badges">' + badges + '</div><div class="ac-name">' + (a.vehicle_name || '---') + '</div><div class="ac-sub">' + esc(a.vehicle_sub || '') + '</div><div class="ac-bid-row"><div><div class="ac-bid-lbl">Aktuelles Höchstgebot</div><div class="ac-bid-val">' + fmtPrice(a.current_bid || 0) + '</div></div><div style="text-align:right"><div class="ac-bid-lbl">Auktionscode</div><div style="font-family:\'DM Mono\',monospace;font-size:12px;color:var(--t3)">' + esc(a.lot_number || '---') + '</div></div></div></div><div class="ac-actions">' + (!ended ? '<button class="ac-btn" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Jetzt bieten</button>' : '<button class="ac-btn secondary" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Details</button>') + '<button class="ac-btn secondary ' + (isWatched ? 'watched-btn' : '') + '" onclick="event.stopPropagation();toggleWatch(\'' + a.id + '\')">' + (isWatched ? 'Gespeichert ✓' : 'Watchlist') + '</button></div>';
+    card.innerHTML = '<div class="ac-img">' + imgHtml + '<div class="ac-timer-overlay' + timerClass + '">' + timerStr + '</div></div><div class="ac-body" style="padding-top:14px"><div class="ac-name">' + (a.vehicle_name || '---') + '</div><div class="ac-sub">' + esc(a.vehicle_sub || '') + '</div><div class="ac-bid-row"><div><div class="ac-bid-lbl">Aktuelles Höchstgebot</div><div class="ac-bid-val">' + fmtPrice(a.current_bid || 0) + '</div></div><div style="text-align:right"><div class="ac-bid-lbl">Auktionscode</div><div style="font-family:\'DM Mono\',monospace;font-size:12px;color:var(--t3)">' + esc(a.lot_number || '---') + '</div></div></div></div><div class="ac-actions">' + (!ended ? '<button class="ac-btn" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Jetzt bieten</button>' : '<button class="ac-btn secondary" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Details</button>') + '<button class="ac-btn secondary ' + (isWatched ? 'watched-btn' : '') + '" onclick="event.stopPropagation();toggleWatch(\'' + a.id + '\')">' + (isWatched ? 'Gespeichert ✓' : 'Watchlist') + '</button></div>';
     card.style.cursor = 'pointer';
     card.onclick = (function(auc){ return function(){ joinAuction(auc); }; })(a);
     container.appendChild(card);
@@ -1197,14 +1197,15 @@ async function toggleWatch(auctionId) {
   if (!cUser) return;
   var idx = watchlistIds.indexOf(auctionId);
   if (idx >= 0) {
-    await sb.from('watchlist').delete().eq('user_id', cUser.id).eq('auction_id', auctionId);
     watchlistIds.splice(idx, 1);
+    renderDashboard();
+    await sb.from('watchlist').delete().eq('user_id', cUser.id).eq('auction_id', auctionId);
   } else {
-    await sb.from('watchlist').insert({user_id: cUser.id, auction_id: auctionId});
     watchlistIds.push(auctionId);
     showToast('Gespeichert ✓', 'ok');
+    renderDashboard();
+    await sb.from('watchlist').insert({user_id: cUser.id, auction_id: auctionId});
   }
-  renderDashboard();
 }
 
 async function joinAuctionById(auctionId) {
