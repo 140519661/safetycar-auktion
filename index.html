@@ -1561,7 +1561,8 @@ var pendingBidAmount = 0;
 async function placeBid() {
   if (!aData || !cUser) return;
   if (new Date() > new Date(aData.ends_at)) { endAuction(); return; }
-  var val = parseFloat(document.getElementById('bidInput').value);
+  var rawInput = document.getElementById('bidInput').value.replace(/\./g, '').replace(',', '.');
+  var val = parseFloat(rawInput);
   var mn = (aData.current_bid || 0) + (aData.min_increment || 500);
   if (!val || isNaN(val)) { showMsg('Bitte gueltigen Betrag eingeben.', 'err'); return; }
   if (val < mn) { showMsg('Gebot zu niedrig - Mindestgebot: ' + fmtEur(mn), 'err'); return; }
