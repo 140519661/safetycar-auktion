@@ -646,9 +646,9 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     <div class="topbar-nav-wrap">
       <div class="topbar-nav">
         <button class="topbar-nav-btn active" onclick="showDashTab('overview',this)">Übersicht</button>
-        <button class="topbar-nav-btn" onclick="showDashTab('mybids',this)">Meine Gebote</button>
-        <button class="topbar-nav-btn" onclick="showDashTab('watchlist',this)">Watchlist</button>
         <button class="topbar-nav-btn" onclick="showDashTab('auctions',this)">Alle Auktionen</button>
+        <button class="topbar-nav-btn" onclick="showDashTab('watchlist',this)">Watchlist</button>
+        <button class="topbar-nav-btn" onclick="showDashTab('mybids',this)">Meine Gebote</button>
       </div>
       <div class="topbar-nav-fade" aria-hidden="true">›</div>
     </div>
@@ -679,7 +679,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     <div class="dash-content">
       <div id="tab-overview">
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-icon red"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="stat-val" id="ds-active">0</div><div class="stat-lbl">Aktive Gebote</div></div>
+          <div class="stat-card"><div class="stat-icon red"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="stat-val" id="ds-active">0</div><div class="stat-lbl">Ich biete mit</div></div>
           <div class="stat-card"><div class="stat-icon green"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="stat-val" id="ds-leading">0</div><div class="stat-lbl">Aktuell führend</div></div>
           <div class="stat-card"><div class="stat-icon blue"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div class="stat-val" id="ds-won">0</div><div class="stat-lbl">Ersteigert</div></div>
           <div class="stat-card"><div class="stat-icon amber"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div><div class="stat-val" id="ds-watch">0</div><div class="stat-lbl">Watchlist</div></div>
@@ -1101,9 +1101,10 @@ function renderDashboard() {
   var now = new Date();
   var active = allAuctions.filter(function(a) { return now < new Date(a.ends_at); });
   var myName = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
+  var myActiveAuctions = active.filter(function(a) { return myBidsAll.some(function(b) { return b.auction_id === a.id; }); });
   var leading = active.filter(function(a) { return a.top_bidder === myName; });
   var won = allAuctions.filter(function(a) { return now >= new Date(a.ends_at) && a.top_bidder === myName; });
-  document.getElementById('ds-active').textContent = active.length;
+  document.getElementById('ds-active').textContent = myActiveAuctions.length;
   document.getElementById('ds-leading').textContent = leading.length;
   document.getElementById('ds-won').textContent = won.length;
   document.getElementById('ds-watch').textContent = watchlistIds.length;
@@ -1959,7 +1960,7 @@ async function loadAdminStats() {
   var row = document.getElementById('admStatsRow');
   row.innerHTML = '<div class="statcard"><div class="statlbl">Auktionen gesamt</div><div class="statval">' + auctions.length + '</div></div><div class="statcard"><div class="statlbl">Aktive Auktionen</div><div class="statval">' + active.length + '</div></div><div class="statcard"><div class="statlbl">Gebote gesamt</div><div class="statval">' + totalBids + '</div></div><div class="statcard"><div class="statlbl">Abgeschlossen</div><div class="statval">' + (auctions.length - active.length) + '</div></div>';
   var detail = document.getElementById('admStatsDetail');
-  detail.innerHTML = '<div style="overflow-x:auto"><table class="btbl"><thead><tr><th>Fahrzeug</th><th>Code</th><th>Gebote</th><th>Hoechstgebot</th><th>Gewinner</th><th>Status</th></tr></thead><tbody>' + auctions.map(function(a) { var ended = now >= new Date(a.ends_at); return '<tr><td>' + (a.vehicle_name || '---') + '</td><td style="font-family:\'DM Mono\',monospace">' + esc(a.auction_code || '---') + '</td><td>' + (a.bids ? a.bids[0].count : 0) + '</td><td class="tamt">' + fmtEur(a.current_bid || 0) + '</td><td>' + (a.top_bidder || '---') + '</td><td>' + (ended ? '<span style="color:var(--greenl)">BEENDET</span>' : '<span style="color:var(--red)">AKTIV</span>') + '</td></tr>'; }).join('') + '</tbody></table></div>';
+  detail.innerHTML = '<div style="overflow-x:auto"><table class="btbl"><thead><tr><th>Fahrzeug</th><th>Code</th><th>Gebote</th><th>Hoechstgebot</th><th>Gewinner</th><th>Status</th><th></th></tr></thead><tbody>' + auctions.map(function(a) { var ended = now >= new Date(a.ends_at); return '<tr><td>' + (a.vehicle_name || '---') + '</td><td style="font-family:\'DM Mono\',monospace">' + esc(a.auction_code || '---') + '</td><td>' + (a.bids ? a.bids[0].count : 0) + '</td><td class="tamt">' + fmtEur(a.current_bid || 0) + '</td><td>' + (a.top_bidder || '---') + '</td><td>' + (ended ? '<span style="color:var(--greenl)">BEENDET</span>' : '<span style="color:var(--red)">AKTIV</span>') + '</td><td><button onclick="deleteAuction(\'' + a.id + '\',\'' + esc(a.vehicle_name || '') + '\')" style="background:none;border:0.5px solid #e53e3e;border-radius:6px;padding:3px 8px;font-size:11px;color:#e53e3e;cursor:pointer;font-family:inherit">Löschen</button></td></tr>'; }).join('') + '</tbody></table></div>';
 }
 
 // === FOTO-UPLOAD (Supabase Storage via Backend) ===
