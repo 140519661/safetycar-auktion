@@ -335,11 +335,11 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .timer-lbl{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
 .timer-val{font-size:26px;font-weight:600;color:white;font-family:"DM Mono",monospace;letter-spacing:1px}
 .timer-val.urgent{color:#FCA5A5}
-.timer-countdown{display:flex;gap:6px}
-.tc-unit{text-align:center;background:rgba(255,255,255,.1);border-radius:6px;padding:4px 8px;min-width:38px}
-.tc-num{font-size:16px;font-weight:600;color:white;font-family:"DM Mono",monospace;display:block}
-.tc-lbl{font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;display:block}
-.tc-sep{font-size:18px;color:rgba(255,255,255,.3);font-weight:600;align-self:flex-start;margin-top:4px}
+.timer-countdown{display:flex;gap:8px;align-items:center}
+.tc-unit{text-align:center;background:rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;min-width:54px}
+.tc-num{font-size:28px;font-weight:700;color:white;font-family:"DM Mono",monospace;display:block;line-height:1}
+.tc-lbl{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.8px;display:block;margin-top:4px}
+.tc-sep{font-size:24px;color:rgba(255,255,255,.3);font-weight:600;margin-bottom:14px}
 .bid-card{background:var(--off-white);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:14px;border-left:3px solid var(--red)}
 .bid-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
 .bid-amount{font-size:28px;font-weight:600;color:var(--red);letter-spacing:-0.5px}
@@ -730,7 +730,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     </div>
     <div class="atb-right">
       <div class="snipe-badge" id="snipeNotice">Anti-Sniping aktiv</div>
-      <div class="atb-timer"><div><div class="atb-timer-lbl">ENDET IN</div><div class="atb-timer-val" id="topTimer">--:--:--</div></div></div>
+      <span style="display:none" id="topTimer"></span>
       <button class="btn-back" onclick="showDashboard()">Dashboard</button>
       <button class="btn-back" onclick="showSelector()">Wechseln</button>
       <div class="user-chip" onclick="doLogout()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span id="topUser"></span></div>
@@ -763,8 +763,15 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     </div>
     <div class="auction-right">
       <div class="timer-card">
-        <div><div class="timer-lbl">Verbleibende Zeit</div><div class="timer-val" id="timerDisp">--:--:--</div></div>
-        <span style="display:none"><span id="tc-h"></span><span id="tc-m"></span><span id="tc-s"></span></span>
+        <div class="timer-lbl">Verbleibende Zeit</div>
+        <div class="timer-countdown" style="margin-top:8px">
+          <div class="tc-unit"><span class="tc-num" id="tc-h">00</span><span class="tc-lbl">Std</span></div>
+          <div class="tc-sep">:</div>
+          <div class="tc-unit"><span class="tc-num" id="tc-m">00</span><span class="tc-lbl">Min</span></div>
+          <div class="tc-sep">:</div>
+          <div class="tc-unit"><span class="tc-num" id="tc-s">00</span><span class="tc-lbl">Sek</span></div>
+        </div>
+        <span style="display:none" id="timerDisp"></span>
       </div>
       <div class="bid-card"><div class="bid-lbl">Aktuelles Höchstgebot</div><div class="bid-amount" id="curBid">---</div><div class="bid-anon" id="curBy">Noch kein Gebot</div></div>
       <div class="my-status-card none" id="myStatusBox"><div class="msc-lbl" id="myStatusLbl">Mein letztes Gebot</div><div class="msc-val" id="myStatusVal">---</div><div class="msc-info" id="myStatusInfo"></div></div>
