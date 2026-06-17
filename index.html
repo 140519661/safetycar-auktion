@@ -983,6 +983,7 @@ function togglePw(id, btn) {
 }
 
 function fmtEur(n) { return 'EUR ' + Math.round(n).toLocaleString('de-DE'); }
+function fmtPrice(n) { return Math.round(n).toLocaleString('de-DE') + ',- €'; }
 function esc(str) {
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
@@ -1132,17 +1133,16 @@ function renderAuctionsGrid(containerId, auctions, activeOnly) {
     var card = document.createElement('div');
     card.className = 'auction-card' + (isWatched ? ' watched' : '');
     var badges = '';
-    if (!ended) badges += '<span class="ac-badge live">LIVE</span>';
-    else if (isLeading) badges += '<span class="ac-badge won">ERSTEIGERT</span>';
-    else if (hasBid) badges += '<span class="ac-badge lost">NICHT ERSTEIGERT</span>';
-    if (isLeading && !ended) badges += '<span class="ac-badge mybid">FUEHREND</span>';
-    else if (hasBid && !ended && !isLeading) badges += '<span class="ac-badge mybid">UEBERBOTEN</span>';
-    if (isWatched) badges += '<span class="ac-badge watching">WATCHLIST</span>';
+    if (isLeading && !ended) badges += '<span class="ac-badge mybid">Führend</span>';
+    else if (hasBid && !ended && !isLeading) badges += '<span class="ac-badge mybid">Überboten</span>';
+    else if (isLeading && ended) badges += '<span class="ac-badge won">Ersteigert</span>';
+    else if (hasBid && ended && !isLeading) badges += '<span class="ac-badge lost">Nicht ersteigert</span>';
+    if (isWatched) badges += '<span class="ac-badge watching">Watchlist</span>';
     var timerStr = ended ? 'Beendet' : fmtCountdown(a.ends_at);
     var timerClass = !ended && Math.floor((new Date(a.ends_at) - now) / 1000) < 300 ? ' urgent' : '';
     var mainImg = a.photo_url || (a.photos && a.photos.length ? a.photos[0] : '');
     var imgHtml = mainImg ? '<img src="' + mainImg + '" onerror="this.style.display=\'none\';this.parentNode.querySelector(\'.ac-img-ph\')&&(this.parentNode.querySelector(\'.ac-img-ph\').style.display=\'flex\')">' : '<div class="ac-img-ph" style="display:flex"><svg viewBox="0 0 520 200" style="width:70%;opacity:.3"><rect x="70" y="90" width="380" height="70" rx="8" fill="#333"/><rect x="140" y="55" width="220" height="70" rx="12" fill="#444"/><circle cx="140" cy="162" r="26" fill="#222"/><circle cx="380" cy="162" r="26" fill="#222"/></svg></div>';
-    card.innerHTML = '<div class="ac-img">' + imgHtml + '<div class="ac-timer-overlay' + timerClass + '">' + timerStr + '</div></div><div class="ac-body"><div class="ac-badges">' + badges + '</div><div class="ac-name">' + (a.vehicle_name || '---') + '</div><div class="ac-sub">' + esc(a.vehicle_sub || '') + '</div><div class="ac-bid-row"><div><div class="ac-bid-lbl">Hoechstgebot</div><div class="ac-bid-val">' + fmtEur(a.current_bid || 0) + '</div></div><div style="text-align:right"><div class="ac-bid-lbl">Los</div><div style="font-family:\'DM Mono\',monospace;font-size:12px;color:var(--t3)">' + esc(a.lot_number || '---') + '</div></div></div></div><div class="ac-actions">' + (!ended ? '<button class="ac-btn" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">BIETEN</button>' : '<button class="ac-btn secondary" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">DETAILS</button>') + '<button class="ac-btn secondary ' + (isWatched ? 'watched-btn' : '') + '" onclick="event.stopPropagation();toggleWatch(\'' + a.id + '\')">' + (isWatched ? 'BEOBACHTET' : 'WATCHLIST') + '</button></div>';
+    card.innerHTML = '<div class="ac-img">' + imgHtml + '<div class="ac-timer-overlay' + timerClass + '">' + timerStr + '</div></div><div class="ac-body"><div class="ac-badges">' + badges + '</div><div class="ac-name">' + (a.vehicle_name || '---') + '</div><div class="ac-sub">' + esc(a.vehicle_sub || '') + '</div><div class="ac-bid-row"><div><div class="ac-bid-lbl">Aktuelles Höchstgebot</div><div class="ac-bid-val">' + fmtPrice(a.current_bid || 0) + '</div></div><div style="text-align:right"><div class="ac-bid-lbl">Auktionscode</div><div style="font-family:\'DM Mono\',monospace;font-size:12px;color:var(--t3)">' + esc(a.lot_number || '---') + '</div></div></div></div><div class="ac-actions">' + (!ended ? '<button class="ac-btn" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Jetzt bieten</button>' : '<button class="ac-btn secondary" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Details</button>') + '<button class="ac-btn secondary ' + (isWatched ? 'watched-btn' : '') + '" onclick="event.stopPropagation();toggleWatch(\'' + a.id + '\')">' + (isWatched ? 'Gespeichert ✓' : 'Watchlist') + '</button></div>';
     card.style.cursor = 'pointer';
     card.onclick = (function(auc){ return function(){ joinAuction(auc); }; })(a);
     container.appendChild(card);
@@ -1202,6 +1202,7 @@ async function toggleWatch(auctionId) {
   } else {
     await sb.from('watchlist').insert({user_id: cUser.id, auction_id: auctionId});
     watchlistIds.push(auctionId);
+    showToast('Gespeichert ✓', 'ok');
   }
   renderDashboard();
 }
