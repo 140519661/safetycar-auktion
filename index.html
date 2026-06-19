@@ -1339,6 +1339,8 @@ async function joinByCode() {
 }
 
 function joinAuction(auction) {
+  var bb = document.getElementById('auctionBackBar');
+  if (bb) bb.style.display = 'block';
   aData = auction;
   clearTimer();
   if (rtSub) sb.removeChannel(rtSub);
