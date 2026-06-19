@@ -1352,10 +1352,10 @@ async function doSignup() {
   errEl.textContent = ''; okEl.textContent = '';
   if (!name) { errEl.textContent = 'Bitte Unternehmensname eingeben.'; return; }
   if (!contact) { errEl.textContent = 'Bitte Ansprechpartner eingeben.'; return; }
-  if (!email || email.indexOf('@') < 0) { errEl.textContent = 'Gueltige E-Mail eingeben.'; return; }
+  if (!email || email.indexOf('@') < 0) { errEl.textContent = 'Gültige E-Mail-Adresse eingeben.'; return; }
   if (!phone) { errEl.textContent = 'Bitte Telefonnummer eingeben.'; return; }
   if (pw.length < 8) { errEl.textContent = 'Passwort mindestens 8 Zeichen.'; return; }
-  if (pw !== pw2) { errEl.textContent = 'Passwoerter stimmen nicht ueberein.'; return; }
+  if (pw !== pw2) { errEl.textContent = 'Passwörter stimmen nicht überein.'; return; }
   if (!document.getElementById('su_dsgvo').checked) { errEl.textContent = 'Bitte Datenschutzerklärung akzeptieren.'; return; }
   var btn = document.getElementById('suBtn'); btn.disabled = true; btn.textContent = 'BITTE WARTEN...';
   try {
@@ -1418,7 +1418,7 @@ async function doReset() {
   var errEl = document.getElementById('rsErr'), okEl = document.getElementById('rsOk');
   errEl.textContent = ''; okEl.textContent = '';
   if (pw.length < 8) { errEl.textContent = 'Passwort mindestens 6 Zeichen.'; return; }
-  if (pw !== pw2) { errEl.textContent = 'Passwoerter stimmen nicht ueberein.'; return; }
+  if (pw !== pw2) { errEl.textContent = 'Passwörter stimmen nicht überein.'; return; }
   var btn = document.getElementById('rsBtn'); btn.disabled = true; btn.textContent = 'WIRD GESPEICHERT...';
   var res = await sb.auth.updateUser({password: pw});
   btn.disabled = false; btn.textContent = 'PASSWORT SPEICHERN';
@@ -1530,9 +1530,9 @@ function updateMyStatus(currentBid) {
   var leading = aData.top_bidder === myName;
   box.style.display = 'block';
   box.className = 'my-status-card ' + (leading ? 'leading' : 'outbid');
-  document.getElementById('myStatusLbl').textContent = leading ? 'SIE FUEHREN' : 'SIE WURDEN UEBERBOTEN';
+  document.getElementById('myStatusLbl').textContent = leading ? 'Sie sind der Höchstbietende' : 'Sie wurden überboten';
   document.getElementById('myStatusVal').textContent = fmtEur(myBest);
-  document.getElementById('myStatusInfo').textContent = leading ? 'Ihr Gebot ist aktuell das hoechste' : 'Hoechstgebot ist jetzt ' + fmtEur(currentBid);
+  document.getElementById('myStatusInfo').textContent = leading ? 'Ihr Gebot ist aktuell das höchste' : 'Höchstgebot ist jetzt' + fmtEur(currentBid);
 }
 
 async function loadFullHistory() {
@@ -1976,7 +1976,7 @@ async function loadAdminStats() {
   var row = document.getElementById('admStatsRow');
   row.innerHTML = '<div class="statcard"><div class="statlbl">Auktionen gesamt</div><div class="statval">' + auctions.length + '</div></div><div class="statcard"><div class="statlbl">Aktive Auktionen</div><div class="statval">' + active.length + '</div></div><div class="statcard"><div class="statlbl">Gebote gesamt</div><div class="statval">' + totalBids + '</div></div><div class="statcard"><div class="statlbl">Abgeschlossen</div><div class="statval">' + (auctions.length - active.length) + '</div></div>';
   var detail = document.getElementById('admStatsDetail');
-  detail.innerHTML = '<div style="overflow-x:auto"><table class="btbl"><thead><tr><th>Fahrzeug</th><th>Code</th><th>Gebote</th><th>Hoechstgebot</th><th>Gewinner</th><th>Status</th><th></th></tr></thead><tbody>' + auctions.map(function(a) { var ended = now >= new Date(a.ends_at); return '<tr><td>' + (a.vehicle_name || '---') + '</td><td style="font-family:\'DM Mono\',monospace">' + esc(a.auction_code || '---') + '</td><td>' + (a.bids ? a.bids[0].count : 0) + '</td><td class="tamt">' + fmtEur(a.current_bid || 0) + '</td><td>' + (a.top_bidder || '---') + '</td><td>' + (ended ? '<span style="color:var(--greenl)">BEENDET</span>' : '<span style="color:var(--red)">AKTIV</span>') + '</td><td><button onclick="deleteAuction(\'' + a.id + '\',\'' + esc(a.vehicle_name || '') + '\')" style="background:none;border:0.5px solid #e53e3e;border-radius:6px;padding:3px 8px;font-size:11px;color:#e53e3e;cursor:pointer;font-family:inherit">Löschen</button></td></tr>'; }).join('') + '</tbody></table></div>';
+  detail.innerHTML = '<div style="overflow-x:auto"><table class="btbl"><thead><tr><th>Fahrzeug</th><th>Code</th><th>Gebote</th><th>Höchstgebot</th><th>Gewinner</th><th>Status</th><th></th></tr></thead><tbody>' + auctions.map(function(a) { var ended = now >= new Date(a.ends_at); return '<tr><td>' + (a.vehicle_name || '---') + '</td><td style="font-family:\'DM Mono\',monospace">' + esc(a.auction_code || '---') + '</td><td>' + (a.bids ? a.bids[0].count : 0) + '</td><td class="tamt">' + fmtEur(a.current_bid || 0) + '</td><td>' + (a.top_bidder || '---') + '</td><td>' + (ended ? '<span style="color:var(--greenl)">BEENDET</span>' : '<span style="color:var(--red)">AKTIV</span>') + '</td><td><button onclick="deleteAuction(\'' + a.id + '\',\'' + esc(a.vehicle_name || '') + '\')" style="background:none;border:0.5px solid #e53e3e;border-radius:6px;padding:3px 8px;font-size:11px;color:#e53e3e;cursor:pointer;font-family:inherit">Löschen</button></td></tr>'; }).join('') + '</tbody></table></div>';
 }
 
 // === FOTO-UPLOAD (Supabase Storage via Backend) ===
@@ -2129,7 +2129,7 @@ async function saveAuction(status) {
 }
 
 async function confirmReset() {
-  if (!confirm('Wirklich alle Gebote dieser Auktion loeschen?')) return;
+  if (!confirm('Wirklich alle Gebote dieser Auktion löschen?')) return;
   if (!aData) return;
   // FIX 1b: Reset via BACKEND (admin JWT required)
   try {
