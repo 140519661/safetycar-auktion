@@ -570,13 +570,13 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
   <div class="auth-card">
     <div class="auth-title">Konto erstellen</div>
     <div class="auth-desc">Einmalig registrieren – dauerhafter Zugang zu allen Auktionen.</div>
-    <div class="fi"><label>Name des Unternehmens</label><input type="text" id="su_name" placeholder="Name des Unternehmens" autocomplete="organization"></div>
+    <div class="fi"><label>Name Ihres Unternehmens</label><input type="text" id="su_name" placeholder="Name Ihres Unternehmens" autocomplete="organization"></div>
     <div class="fi"><label>Ansprechpartner (Vor- &amp; Zuname)</label><input type="text" id="su_contact" placeholder="Ansprechpartner (Vor- &amp; Zuname)" autocomplete="name"></div>
     <div class="fi"><label>E-Mail-Adresse</label><input type="email" id="su_email" placeholder="E-Mail-Adresse" autocomplete="email"></div>
     <div class="fi"><label>Telefonnummer</label><input type="tel" id="su_phone" placeholder="Telefonnummer" autocomplete="tel"></div>
     <div class="fi"><label>Passwort</label><div class="pw-wrap"><input type="password" id="su_pw" placeholder="Passwort" autocomplete="new-password"><button type="button" class="pw-toggle" onclick="togglePw('su_pw',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="pwhint">Min. 8 Zeichen empfohlen</div></div>
     <div class="fi"><label>Passwort bestätigen</label><div class="pw-wrap"><input type="password" id="su_pw2" placeholder="Passwort bestätigen"><button type="button" class="pw-toggle" onclick="togglePw('su_pw2',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
-    <div class="fi"><p style="font-size:12px;color:var(--text3);margin:0">Mit der Registrierung stimmen Sie der Verarbeitung Ihrer Daten gemäß unserer Datenschutzerklärung zu. Diese lässt sich aus dem Footer der Webseite entnehmen.</p></div>
+    <div class="fi"><div class="fi-check"><input type="checkbox" id="su_dsgvo"><label for="su_dsgvo" style="font-size:12px;line-height:1.5">Hiermit stimme ich der Verarbeitung meiner Daten gemäß der Datenschutzerklärung zu. Die Datenschutzerklärung lässt sich aus dem Footer der Webseite entnehmen.</label></div></div>
     <button class="btn-primary" id="suBtn" onclick="doSignup()">Jetzt registrieren</button>
     <div class="aerr" id="suErr"></div><div class="aok" id="suOk"></div>
     <div class="auth-switch">Bereits registriert? <a onclick="showLogin()">Einloggen</a></div>
@@ -1355,6 +1355,7 @@ async function doSignup() {
   if (!phone) { errEl.textContent = 'Bitte Telefonnummer eingeben.'; return; }
   if (pw.length < 8) { errEl.textContent = 'Passwort mindestens 8 Zeichen.'; return; }
   if (pw !== pw2) { errEl.textContent = 'Passwoerter stimmen nicht ueberein.'; return; }
+  if (!document.getElementById('su_dsgvo').checked) { errEl.textContent = 'Bitte Datenschutzerklärung akzeptieren.'; return; }
   var btn = document.getElementById('suBtn'); btn.disabled = true; btn.textContent = 'BITTE WARTEN...';
   try {
     var regRes = await fetch(BACKEND_URL + '/api/auth/register', {
