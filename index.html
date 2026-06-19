@@ -5,7 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safety Car Auktion</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+// Karten-Timer: jede Sekunde aktualisieren
+setInterval(function() {
+  document.querySelectorAll('.ac-timer-overlay[data-ends-at]').forEach(function(el) {
+    var endsAt = el.getAttribute('data-ends-at');
+    if (!endsAt) return;
+    var diff = Math.max(0, Math.floor((new Date(endsAt) - new Date()) / 1000));
+    if (diff === 0) { el.textContent = 'Beendet'; return; }
+    var h = Math.floor(diff/3600), m = Math.floor((diff%3600)/60), s = diff%60;
+    el.textContent = (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  });
+}, 1000);
+
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 svg{overflow:visible}
