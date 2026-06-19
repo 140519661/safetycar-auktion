@@ -2258,7 +2258,7 @@ renderDashboard = function() {
   var sbBids = document.getElementById('sb-bids');
   var sbWatch = document.getElementById('sb-watch');
   if (sbCount) sbCount.textContent = allAuctions.length;
-  if (sbBids) sbBids.textContent = [...new Set(myBidsAll.map(function(b){return b.auction_id;}))].length;
+  if (sbBids) var _activeIds = allAuctions.filter(function(a){ return a.status === "published" && new Date(a.ends_at) > new Date(); }).map(function(a){ return a.id; }); sbBids.textContent = [...new Set(myBidsAll.map(function(b){return b.auction_id;}).filter(function(id){ return _activeIds.indexOf(id) > -1; }))].length;
   if (sbWatch) sbWatch.textContent = watchlistIds.length;
 };
 
