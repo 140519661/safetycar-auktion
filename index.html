@@ -1172,8 +1172,8 @@ function renderMyBidsTable() {
   var now = new Date();
   var seen = {};
   tbody.innerHTML = '';
-  for (var i = 0; i < myBidsAll.length; i++) {
-    var b = myBidsAll[i];
+  var _seen = {}; var myBidsDedup = myBidsAll.filter(function(b){ if(!_seen[b.auction_id]||b.amount>_seen[b.auction_id]){_seen[b.auction_id]=b.amount;return true;}return false;}); for (var i = 0; i < myBidsDedup.length; i++) {
+    var b = myBidsDedup[i];
     if (!b.auction) continue;
     var aKey = b.auction_id;
     var ended = now >= new Date(b.auction.ends_at);
@@ -2256,7 +2256,7 @@ renderDashboard = function() {
   var sbBids = document.getElementById('sb-bids');
   var sbWatch = document.getElementById('sb-watch');
   if (sbCount) sbCount.textContent = allAuctions.length;
-  if (sbBids) sbBids.textContent = myBidsAll.length;
+  if (sbBids) sbBids.textContent = [...new Set(myBidsAll.map(function(b){return b.auction_id;}))].length;
   if (sbWatch) sbWatch.textContent = watchlistIds.length;
 };
 
