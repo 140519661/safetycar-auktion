@@ -723,6 +723,11 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 
 <!-- AUCTION SCREEN -->
 <div id="auctionScreen">
+  <div style="display:none;padding:12px 24px 0;" id="auctionBackBar">
+    <button onclick="showDashboard()" style="background:none;border:none;cursor:pointer;color:var(--text2);font-size:14px;display:flex;align-items:center;gap:6px;padding:0;">
+      ← Zurück zur Übersicht
+    </button>
+  </div>
   <div class="auction-topbar">
     <div class="atb-left">
       
@@ -1025,6 +1030,8 @@ function showForgot() { showScreen('forgotScreen'); }
 function showSelector() { clearTimer(); showScreen('selectorScreen'); loadAuctionList(); }
 
 async function showDashboard() {
+  var bb = document.getElementById('auctionBackBar');
+  if (bb) bb.style.display = 'none';
   try {
   clearTimer();
   showScreen('dashboardScreen');
@@ -1660,7 +1667,7 @@ async function endAuction() {
   document.getElementById('bidBtn').disabled = true;
   document.querySelectorAll('.qb').forEach(function(b) { b.disabled = true; });
   document.getElementById('soldOv').style.display = 'flex';
-  document.getElementById('soldWin').textContent = 'Zuschlag: ' + fmtEur(aData ? aData.current_bid || 0 : 0);
+  document.getElementById('soldWin').textContent = 'für ' + fmtEur(aData ? aData.current_bid || 0 : 0);
   var myName = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
   if (aData && aData.top_bidder === myName) {
     document.getElementById('wonBadge').style.display = 'block';
