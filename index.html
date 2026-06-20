@@ -753,7 +753,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
       </div>
       <div id="photoThumbs" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
       <div class="vehicle-header">
-        <div class="v-lot-row"><span class="v-lot" id="lotNum">LOS</span><span class="v-status active" id="statusTag">Aktiv</span><span class="v-code" id="auctionCodeTag2"></span></div>
+        <div class="v-lot-row"><span class="v-lot" id="lotNum">LOS</span><span class="v-status active" id="statusTag">Aktiv</span></div>
         <div class="v-name" id="vName">Wird geladen...</div>
         <div class="v-sub" id="vSub"></div>
         <a id="checklistPdfBtn" href="#" target="_blank" rel="noopener" style="display:none;margin-top:10px;display:inline-flex;align-items:center;gap:7px;background:var(--dark);color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;width:fit-content">
@@ -2248,8 +2248,7 @@ startTimer = function() {
 var _origLoadUI = loadUI;
 loadUI = function() {
   _origLoadUI();
-  var ct2 = document.getElementById('auctionCodeTag2');
-  if (ct2 && aData) ct2.textContent = aData.auction_code || '';
+  
 };
 // Update dashboard user avatar initials
 var _origLoadProfile = loadProfile;
