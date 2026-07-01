@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safety Car Auktion</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 svg{overflow:visible}
@@ -120,6 +122,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .topbar-name{font-size:16px;font-weight:600;letter-spacing:-0.2px}
 .topbar-name span{color:var(--red)}
 .topbar-nav{display:flex;gap:2px}
+.topbar-nav-fade{display:none}
 .topbar-nav-btn{padding:6px 14px;border-radius:6px;font-size:13px;color:var(--text2);cursor:pointer;transition:all .15s;border:none;background:none;font-family:inherit}
 .topbar-nav-btn:hover{background:var(--light);color:var(--text)}
 .topbar-nav-btn.active{background:var(--red-pale);color:var(--red);font-weight:500}
@@ -150,7 +153,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .stat-icon.blue{background:var(--info-bg)} .stat-icon.blue svg{stroke:var(--info)}
 .stat-icon.amber{background:var(--warning-bg)} .stat-icon.amber svg{stroke:var(--warning)}
 .stat-val{font-size:26px;font-weight:600;color:var(--text);margin-bottom:2px;letter-spacing:-0.5px}
-.stat-lbl{font-size:12px;color:var(--text3)}
+.stat-lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px}
 .stat-change{font-size:11px;margin-top:6px;display:flex;align-items:center;gap:3px}
 .stat-change.up{color:var(--success)}.stat-change.down{color:var(--red)}
 .section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
@@ -171,11 +174,13 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .auction-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s;box-shadow:var(--shadow)}
 .auction-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--border2)}
 .auction-card.leading{border-color:var(--success-border);border-width:1.5px}
-.ac-img{position:relative;background:var(--dark2);height:150px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.ac-img img{width:100%;height:100%;object-fit:cover}
-.ac-img-ph{opacity:.2}
+.ac-img{position:relative;background:var(--dark2);height:150px;overflow:hidden}
+.ac-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ac-img-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.2}
 .ac-img-ph svg{width:180px}
-.ac-actions{display:flex;gap:8px;padding:0 14px 14px}
+.ac-timer-overlay{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.7);color:#fff;font-size:11px;padding:3px 10px;border-radius:20px;font-family:"DM Mono",monospace;z-index:2;pointer-events:none}
+.ac-timer-overlay.urgent{background:rgba(176,0,0,.85)}
+.ac-actions{display:flex;gap:8px;padding:10px 14px 14px}
 .ac-btn{flex:1;background:var(--red);color:#fff;border:none;padding:12px 14px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.3px;transition:background .2s,transform .1s}
 .ac-btn:hover{background:var(--red-h)}
 .ac-btn:active{transform:scale(.97)}
@@ -202,16 +207,16 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .ac-fav svg{width:15px;height:15px;fill:none;stroke:var(--text3);stroke-width:2;transition:all .2s}
 .ac-fav.active svg{stroke:var(--red);fill:var(--red)}
 .ac-status-badge{position:absolute;top:8px;left:8px}
-.ac-body{padding:14px}
+.ac-body{padding:12px 14px 0}
 .ac-lot{font-size:10px;color:var(--text4);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;font-family:"DM Mono",monospace}
-.ac-name{font-size:15px;font-weight:600;color:var(--text);margin-bottom:2px;letter-spacing:-0.2px}
-.ac-sub{font-size:12px;color:var(--text3);margin-bottom:10px}
+.ac-name{font-size:16px;font-weight:700;color:var(--text);margin-bottom:1px;letter-spacing:-0.3px}
+.ac-sub{font-size:12px;color:var(--text3);margin-bottom:8px}
 .ac-specs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .spec-chip{background:var(--light);border-radius:4px;padding:3px 8px;font-size:11px;color:var(--text2)}
 .ac-divider{height:0.5px;background:var(--border);margin-bottom:12px}
 .ac-bottom{display:flex;justify-content:space-between;align-items:flex-end}
-.ac-bid-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
-.ac-bid-val{font-size:18px;font-weight:600;color:var(--red);letter-spacing:-0.3px}
+.ac-bid-lbl{font-size:11px;color:var(--text3);letter-spacing:.2px;margin-bottom:2px}
+.ac-bid-val{font-size:26px;font-weight:700;color:var(--red);letter-spacing:-0.5px;line-height:1.1}
 .ac-bid-count{font-size:11px;color:var(--text4);margin-top:2px}
 .btn-bid{background:var(--red);color:white;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s}
 .btn-bid:hover{background:var(--red-h)}
@@ -328,15 +333,15 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .panel-section{margin-bottom:0}
 .ph{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .ph::after{content:"";flex:1;height:0.5px;background:var(--border)}
-.timer-card{background:var(--dark);border-radius:var(--radius-lg);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.timer-card{background:var(--dark);border-radius:var(--radius-lg);padding:16px 18px;display:flex;flex-direction:column;gap:10px}
 .timer-lbl{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
 .timer-val{font-size:26px;font-weight:600;color:white;font-family:"DM Mono",monospace;letter-spacing:1px}
 .timer-val.urgent{color:#FCA5A5}
-.timer-countdown{display:flex;gap:6px}
-.tc-unit{text-align:center;background:rgba(255,255,255,.1);border-radius:6px;padding:4px 8px;min-width:38px}
-.tc-num{font-size:16px;font-weight:600;color:white;font-family:"DM Mono",monospace;display:block}
-.tc-lbl{font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;display:block}
-.tc-sep{font-size:18px;color:rgba(255,255,255,.3);font-weight:600;align-self:flex-start;margin-top:4px}
+.timer-countdown{display:flex;gap:8px;align-items:center}
+.tc-unit{text-align:center;background:rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;min-width:54px}
+.tc-num{font-size:28px;font-weight:700;color:white;font-family:"DM Mono",monospace;display:block;line-height:1}
+.tc-lbl{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.8px;display:block;margin-top:4px}
+.tc-sep{font-size:24px;color:rgba(255,255,255,.3);font-weight:600;margin-bottom:14px}
 .bid-card{background:var(--off-white);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:14px;border-left:3px solid var(--red)}
 .bid-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
 .bid-amount{font-size:28px;font-weight:600;color:var(--red);letter-spacing:-0.5px}
@@ -359,6 +364,11 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .bmsg.ok{color:var(--success);background:var(--success-bg);border:0.5px solid var(--success-border)}
 .bmsg.err{color:var(--red);background:var(--red-pale);border:0.5px solid var(--red-border)}
 .bmsg.warn{color:var(--warning);background:var(--warning-bg);border:0.5px solid #EFC87A}
+#bidToast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);background:#1a1a1a;color:#fff;padding:14px 28px;border-radius:40px;font-size:15px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.35);z-index:900;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap}
+#bidToast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#bidToast.ok{background:#1a6b3a}
+#bidToast.err{background:#B00000}
+#bidToast.warn{background:#8a5a00}
 .bid-form{display:flex;flex-direction:column;gap:8px}
 .bid-input-row{display:flex;gap:8px}
 .bid-input{flex:1;background:var(--white);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 14px;font-size:14px;color:var(--text);outline:none;transition:border-color .2s;font-family:inherit}
@@ -381,11 +391,10 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .ha.top{color:var(--red)}
 .hu{color:var(--text3);font-family:"DM Mono",monospace;font-size:11px}
 .ht{color:var(--text4);font-size:11px;font-family:"DM Mono",monospace}
-.ticker{border-top:0.5px solid var(--border);background:var(--white);padding:7px 24px;display:flex;align-items:center;gap:14px;overflow:hidden}
-.ticker-lbl{font-size:10px;color:var(--red);letter-spacing:2px;text-transform:uppercase;font-weight:500;white-space:nowrap}
-.ticker-sep{color:var(--border2);font-size:16px}
-.ticker-text{font-size:11px;color:var(--text3);animation:ticker 22s linear infinite;white-space:nowrap}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker{border-top:0.5px solid var(--border);background:var(--white);padding:8px 24px;display:flex;align-items:center;gap:10px}
+.ticker-lbl{font-size:11px;color:var(--red);letter-spacing:2px;text-transform:uppercase;font-weight:700;white-space:nowrap}
+.ticker-dot{width:8px;height:8px;background:var(--red);border-radius:50%;animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
 /* ── ADMIN OVERLAY ── */
 #adminOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;overflow-y:auto;padding:20px;-webkit-overflow-scrolling:touch}
@@ -476,6 +485,51 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
   .sidebar{display:none}
 }
 
+@media(max-width:600px){
+  .profile-logout-mobile{display:block !important}
+  /* Topbar: Logo kompakt, Nav scrollbar */
+  .topbar{padding:0 12px;height:52px}
+  .topbar-logo-icon{display:none}
+  .topbar-name{font-size:13px;white-space:nowrap}
+  .topbar-nav-wrap{position:relative;flex:1;margin:0 8px;overflow:hidden}
+  .topbar-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:0;width:100%}
+  .topbar-nav-fade{position:absolute;right:0;top:0;bottom:0;width:28px;background:linear-gradient(to right,rgba(255,255,255,0),#fff 70%);display:flex;align-items:center;justify-content:flex-end;padding-right:2px;color:var(--red);font-size:18px;font-weight:700;pointer-events:none;line-height:1}
+  .topbar-nav::-webkit-scrollbar{display:none}
+  .topbar-nav-btn{padding:5px 10px;font-size:12px;white-space:nowrap;flex-shrink:0}
+  .topbar-right{gap:4px;flex-shrink:0}
+  .notif-btn{width:32px;height:32px}
+  .user-avatar{width:32px;height:32px;font-size:12px}
+
+  /* Dashboard Statistiken */
+  .stats-grid{gap:8px}
+  .stat-card{padding:14px 12px}
+  .stat-val{font-size:26px}
+
+  /* Meine Gebote Tabelle */
+  .bids-card{padding:12px 10px;overflow-x:auto}
+  .bids-card table{min-width:480px;font-size:12px}
+  .bids-card th{font-size:10px;padding:0 0 8px}
+
+  /* Auktionskarten */
+  .auctions-grid{grid-template-columns:1fr}
+  .ac-name{font-size:14px}
+
+  /* Gebots-Seite */
+  .auction-left{padding:16px}
+  .v-name{font-size:20px}
+  .bid-input-row{flex-direction:column;gap:8px}
+  .bid-input{width:100%}
+  .bid-submit{width:100%;padding:14px}
+  .quick-row{gap:6px}
+  .qb{flex:1;padding:10px 6px;font-size:13px}
+
+  /* Auction Topbar (Bieterseite) */
+  .auction-topbar{padding:0 12px;flex-wrap:wrap;height:auto;min-height:52px;gap:6px}
+  .atb-right{gap:6px}
+  .atb-timer{display:none}
+  .btn-back{padding:6px 10px;font-size:12px}
+}
+
 
 /* Publish button */
 .btn-publish{background:var(--success);border:none;border-radius:var(--radius);padding:11px 20px;color:white;font-size:14px;font-weight:500;cursor:pointer;width:100%;font-family:inherit;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px}
@@ -517,13 +571,15 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
   <div class="auth-logo"><div class="auth-logo-name"><span>Safety</span> Car</div></div>
   <div class="auth-card">
     <div class="auth-title">Konto erstellen</div>
-    <div class="auth-desc">Einmalig registrieren – dauerhafter Zugang zu allen Auktionen</div>
-    <div class="fi"><label>Name oder Firma</label><input type="text" id="su_name" placeholder="Ihr Name oder Firma" autocomplete="off"></div>
-    <div class="fi"><label>E-Mail</label><input type="email" id="su_email" placeholder="ihre@email.de" autocomplete="email"></div>
-    <div class="fi"><label>Passwort</label><div class="pw-wrap"><input type="password" id="su_pw" placeholder="Mindestens 8 Zeichen" autocomplete="new-password"><button type="button" class="pw-toggle" onclick="togglePw('su_pw',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="pwhint">Min. 8 Zeichen empfohlen</div></div>
-    <div class="fi"><label>Passwort bestätigen</label><div class="pw-wrap"><input type="password" id="su_pw2" placeholder="Wiederholen"><button type="button" class="pw-toggle" onclick="togglePw('su_pw2',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
-    <div class="fi"><div class="fi-check"><input type="checkbox" id="su_dsgvo"><label for="su_dsgvo">Ich stimme der Verarbeitung meiner Daten gemäß Datenschutzerklärung zu (DSGVO)</label></div></div>
-    <button class="btn-primary" id="suBtn" onclick="doSignup()">Registrieren</button>
+    <div class="auth-desc">Einmalig registrieren – dauerhafter Zugang zu allen Auktionen.</div>
+    <div class="fi"><label>Name Ihres Unternehmens</label><input type="text" id="su_name" placeholder="Name Ihres Unternehmens" autocomplete="organization"></div>
+    <div class="fi"><label>Ansprechpartner (Vor- &amp; Zuname)</label><input type="text" id="su_contact" placeholder="Ansprechpartner (Vor- &amp; Zuname)" autocomplete="name"></div>
+    <div class="fi"><label>E-Mail-Adresse</label><input type="email" id="su_email" placeholder="E-Mail-Adresse" autocomplete="email"></div>
+    <div class="fi"><label>Telefonnummer</label><input type="tel" id="su_phone" placeholder="Telefonnummer" autocomplete="tel"></div>
+    <div class="fi"><label>Passwort</label><div class="pw-wrap"><input type="password" id="su_pw" placeholder="Passwort" autocomplete="new-password"><button type="button" class="pw-toggle" onclick="togglePw('su_pw',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="pwhint">Min. 8 Zeichen empfohlen</div></div>
+    <div class="fi"><label>Passwort bestätigen</label><div class="pw-wrap"><input type="password" id="su_pw2" placeholder="Passwort bestätigen"><button type="button" class="pw-toggle" onclick="togglePw('su_pw2',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+    <div class="fi"><div class="fi-check"><input type="checkbox" id="su_dsgvo"><label for="su_dsgvo" style="font-size:12px;line-height:1.5">Hiermit stimme ich der Verarbeitung meiner Daten gemäß der Datenschutzerklärung zu. Die Datenschutzerklärung lässt sich aus dem Footer der Webseite entnehmen.</label></div></div>
+    <button class="btn-primary" id="suBtn" onclick="doSignup()">Jetzt registrieren</button>
     <div class="aerr" id="suErr"></div><div class="aok" id="suOk"></div>
     <div class="auth-switch">Bereits registriert? <a onclick="showLogin()">Einloggen</a></div>
   </div>
@@ -533,13 +589,13 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 <div class="auth-screen" id="loginScreen">
   <div class="auth-logo"><div class="auth-logo-name"><span>Safety</span> Car</div></div>
   <div class="auth-card">
-    <div class="auth-title">Willkommen zurück</div>
-    <div class="auth-desc">Melden Sie sich an um an Auktionen teilzunehmen</div>
-    <div class="fi"><label>E-Mail</label><input type="email" id="li_email" placeholder="ihre@email.de" autocomplete="email"></div>
-    <div class="fi"><label>Passwort</label><div class="pw-wrap"><input type="password" id="li_pw" placeholder="Ihr Passwort" autocomplete="current-password"><button type="button" class="pw-toggle" onclick="togglePw('li_pw',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
-    <button class="btn-primary" id="liBtn" onclick="doLogin()">Einloggen</button>
+    <div class="auth-title">Willkommen zurück!</div>
+    <div class="auth-desc">Melden Sie sich an, um an unseren Auktionen teilzunehmen.</div>
+    <div class="fi"><label>E-Mail-Adresse</label><input type="email" id="li_email" placeholder="E-Mail-Adresse" autocomplete="email"></div>
+    <div class="fi"><label>Passwort</label><div class="pw-wrap"><input type="password" id="li_pw" placeholder="Passwort" autocomplete="current-password"><button type="button" class="pw-toggle" onclick="togglePw('li_pw',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+    <button class="btn-primary" id="liBtn" onclick="doLogin()">Jetzt einloggen</button>
     <div class="aerr" id="liErr"></div>
-    <div class="auth-switch">Noch kein Konto? <a onclick="showSignup()">Registrieren</a><br><a onclick="showForgot()">Passwort vergessen?</a></div>
+    <div class="auth-switch">Noch kein Konto? <a onclick="showSignup()">Registrieren</a><br><a onclick="showForgot()">Passwort zurücksetzen</a></div>
   </div>
 </div>
 
@@ -548,10 +604,10 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
   <div class="auth-logo"><div class="auth-logo-name"><span>Safety</span> Car</div></div>
   <div class="auth-card">
     <div class="auth-title">Passwort zurücksetzen</div>
-    <div class="auth-desc">Wir senden Ihnen einen Reset-Link per E-Mail</div>
-    <div class="fi"><label>Ihre E-Mail</label><input type="email" id="fg_email" placeholder="ihre@email.de"></div>
+    <div class="auth-desc">Wir senden Ihnen einen Reset-Link per E-Mail zu.</div>
+    <div class="fi"><label>Ihre E-Mail-Adresse</label><input type="email" id="fg_email" placeholder="E-Mail-Adresse"></div>
     <button class="btn-primary" id="fgBtn" onclick="doForgot()">Reset-Link senden</button>
-    <div style="font-size:12px;color:var(--text3);text-align:center;margin-top:10px;line-height:1.5">Bitte auch den <strong>Spam-Ordner</strong> prüfen, falls die E-Mail nicht ankommt.</div>
+    <div style="font-size:12px;color:var(--text3);text-align:center;margin-top:10px;line-height:1.5">Bitte prüfen Sie auch Ihren Spam-Ordner, falls die E-Mail nicht ankommen sollte.</div>
     <div class="aerr" id="fgErr"></div><div class="aok" id="fgOk"></div>
     <div class="auth-switch"><a onclick="showLogin()">Zurück zum Login</a></div>
   </div>
@@ -591,11 +647,14 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 <div id="dashboardScreen">
   <div class="topbar">
     <div class="topbar-logo"><div class="topbar-name"><span>Safety</span> Car</div></div>
-    <div class="topbar-nav">
-      <button class="topbar-nav-btn active" onclick="showDashTab('overview',this)">Übersicht</button>
-      <button class="topbar-nav-btn" onclick="showDashTab('mybids',this)">Meine Gebote</button>
-      <button class="topbar-nav-btn" onclick="showDashTab('watchlist',this)">Watchlist</button>
-      <button class="topbar-nav-btn" onclick="showDashTab('auctions',this)">Alle Auktionen</button>
+    <div class="topbar-nav-wrap">
+      <div class="topbar-nav">
+        <button class="topbar-nav-btn active" onclick="showDashTab('overview',this)">Übersicht</button>
+        <button class="topbar-nav-btn" onclick="showDashTab('auctions',this)">Alle Auktionen</button>
+        <button class="topbar-nav-btn" onclick="showDashTab('watchlist',this)">Watchlist</button>
+        <button class="topbar-nav-btn" onclick="showDashTab('mybids',this)">Meine Gebote</button>
+      </div>
+      <div class="topbar-nav-fade" aria-hidden="true">›</div>
     </div>
     <div class="topbar-right">
       <div class="notif-btn" onclick="toggleNotifPanel()" id="notifBtn"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><div class="notif-dot" id="notifDot"></div></div>
@@ -606,43 +665,6 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     <strong>Konto wird geprüft.</strong> Sie können Auktionen ansehen, aber erst nach Freigabe durch unser Team mitbieten.
   </div>
 
-  <div class="lightbox" id="lightbox">
-    <button class="lb-close" onclick="closeLightbox()">×</button>
-    <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
-    <img id="lbImg" src="" alt="Fahrzeugbild">
-    <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
-    <div class="lb-counter" id="lbCounter"></div>
-  </div>
-
-  <div id="profileOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;overflow-y:auto;padding:20px">
-    <div style="background:var(--white);border-radius:var(--radius-2xl);width:100%;max-width:460px;margin:40px auto;box-shadow:0 20px 60px rgba(0,0,0,.2)">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:0.5px solid var(--border)">
-        <strong style="font-size:16px">Profil-Einstellungen</strong>
-        <button onclick="closeProfileSettings()" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text3);line-height:1">×</button>
-      </div>
-      <div style="padding:24px">
-        <div style="margin-bottom:24px">
-          <div style="font-size:13px;font-weight:600;margin-bottom:4px">Angemeldet als</div>
-          <div id="profileEmail" style="font-size:13px;color:var(--text2)">---</div>
-          <div id="profileName" style="font-size:12px;color:var(--text3);margin-top:2px"></div>
-        </div>
-
-        <div style="border-top:0.5px solid var(--border);padding-top:20px;margin-bottom:24px">
-          <div style="font-size:14px;font-weight:600;margin-bottom:12px">E-Mail ändern</div>
-          <div class="pw-wrap" style="margin-bottom:10px"><input type="email" id="newEmail" placeholder="Neue E-Mail-Adresse" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"></div>
-          <button onclick="changeEmail()" style="background:var(--dark);border:none;border-radius:var(--radius);padding:10px 18px;color:#fff;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500">E-Mail aktualisieren</button>
-          <div id="emailMsg" style="font-size:12px;margin-top:8px;min-height:14px"></div>
-        </div>
-
-        <div style="border-top:0.5px solid var(--border);padding-top:20px">
-          <div style="font-size:14px;font-weight:600;margin-bottom:12px">Passwort ändern</div>
-          <div class="pw-wrap" style="margin-bottom:10px"><input type="password" id="newPassword" placeholder="Neues Passwort (min. 8 Zeichen)" style="width:100%;padding:11px 42px 11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"><button type="button" class="pw-toggle" onclick="togglePw('newPassword',this)"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
-          <button onclick="changePassword()" style="background:var(--dark);border:none;border-radius:var(--radius);padding:10px 18px;color:#fff;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500">Passwort aktualisieren</button>
-          <div id="passwordMsg" style="font-size:12px;margin-top:8px;min-height:14px"></div>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="dash-layout">
     <div class="sidebar">
       <div class="sidebar-section">
@@ -655,25 +677,23 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
       <div class="sidebar-section">
         <div class="sidebar-lbl">Konto</div>
         <div class="sidebar-item" onclick="toggleNotifPanel()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>Benachrichtigungen<span class="sidebar-badge red" id="sb-notif" style="display:none">!</span></div>
-        <div class="sidebar-item" onclick="showSelector()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Auktion beitreten</div>
-        <div class="sidebar-item" onclick="exportMyData()" style="font-size:12px"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Daten exportieren</div>
         <div class="sidebar-item" style="color:#E24B4A" onclick="doLogout()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Ausloggen</div>
       </div>
     </div>
     <div class="dash-content">
       <div id="tab-overview">
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-icon red"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="stat-val" id="ds-active">0</div><div class="stat-lbl">Aktive Gebote</div></div>
+          <div class="stat-card"><div class="stat-icon red"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="stat-val" id="ds-active">0</div><div class="stat-lbl">Ich biete mit</div></div>
           <div class="stat-card"><div class="stat-icon green"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="stat-val" id="ds-leading">0</div><div class="stat-lbl">Aktuell führend</div></div>
-          <div class="stat-card"><div class="stat-icon blue"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div class="stat-val" id="ds-won">0</div><div class="stat-lbl">Gewonnen</div></div>
+          <div class="stat-card"><div class="stat-icon blue"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div class="stat-val" id="ds-won">0</div><div class="stat-lbl">Ersteigert</div></div>
           <div class="stat-card"><div class="stat-icon amber"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div><div class="stat-val" id="ds-watch">0</div><div class="stat-lbl">Watchlist</div></div>
         </div>
-        <div class="section-hdr"><div class="section-title">Aktive Auktionen</div><div class="section-link" id="activeCount"></div></div>
+        <div class="section-hdr"><div class="section-title">Aktive Auktionen</div></div>
         <div class="auctions-grid" id="overviewActiveGrid"><div class="hemp">Keine aktiven Auktionen</div></div>
       </div>
       <div id="tab-mybids" style="display:none">
         <div class="section-hdr"><div class="section-title">Meine Gebote</div></div>
-        <div class="bids-card"><table style="width:100%;border-collapse:collapse"><thead><tr><th style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 0 10px;text-align:left;font-weight:500">Fahrzeug</th><th style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 0 10px;text-align:left;font-weight:500">Mein Gebot</th><th style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 0 10px;text-align:left;font-weight:500">Höchstgebot</th><th style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 0 10px;text-align:left;font-weight:500">Status</th><th style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 0 10px;text-align:left;font-weight:500">Endet</th><th style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:0 0 10px;text-align:left;font-weight:500"></th></tr></thead><tbody id="myBidsBody"><tr><td colspan="6" class="hemp">Noch keine Gebote</td></tr></tbody></table></div>
+        <div class="bids-card"><table style="width:100%;border-collapse:collapse"><thead><tr><th style="font-size:11px;color:var(--text3);letter-spacing:.3px;padding:0 0 10px;text-align:left;font-weight:500">Fahrzeug</th><th style="font-size:11px;color:var(--text3);letter-spacing:.3px;padding:0 0 10px;text-align:left;font-weight:500">Mein Gebot</th><th style="font-size:11px;color:var(--text3);letter-spacing:.3px;padding:0 0 10px;text-align:left;font-weight:500">Aktuelles Höchstgebot</th><th style="font-size:11px;color:var(--text3);letter-spacing:.3px;padding:0 0 10px;text-align:left;font-weight:500">Status</th><th style="font-size:11px;color:var(--text3);letter-spacing:.3px;padding:0 0 10px;text-align:left;font-weight:500">Auktion endet</th><th style="font-size:11px;color:var(--text3);padding:0 0 10px;text-align:left;font-weight:500"></th></tr></thead><tbody id="myBidsBody"><tr><td colspan="6" class="hemp">Noch keine Gebote</td></tr></tbody></table></div>
       </div>
       <div id="tab-watchlist" style="display:none">
         <div class="section-hdr"><div class="section-title">Watchlist</div></div>
@@ -703,6 +723,11 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 
 <!-- AUCTION SCREEN -->
 <div id="auctionScreen">
+  <div style="display:none;padding:12px 24px 0;" id="auctionBackBar">
+    <button onclick="showDashboard()" style="background:none;border:none;cursor:pointer;color:var(--text2);font-size:14px;display:flex;align-items:center;gap:6px;padding:0;">
+      ← Zurück zur Übersicht
+    </button>
+  </div>
   <div class="auction-topbar">
     <div class="atb-left">
       
@@ -712,10 +737,10 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     </div>
     <div class="atb-right">
       <div class="snipe-badge" id="snipeNotice">Anti-Sniping aktiv</div>
-      <div class="atb-timer"><div><div class="atb-timer-lbl">ENDET IN</div><div class="atb-timer-val" id="topTimer">--:--:--</div></div></div>
+      <span style="display:none" id="topTimer"></span>
       <button class="btn-back" onclick="showDashboard()">Dashboard</button>
       <button class="btn-back" onclick="showSelector()">Wechseln</button>
-      <div class="user-chip" onclick="doLogout()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span id="topUser"></span></div>
+      <div class="user-chip" onclick="openProfileSettings()" title="Profil-Einstellungen"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span id="topUser"></span></div>
     </div>
   </div>
   <div class="auction-main">
@@ -728,9 +753,13 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
       </div>
       <div id="photoThumbs" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
       <div class="vehicle-header">
-        <div class="v-lot-row"><span class="v-lot" id="lotNum">LOS</span><span class="v-status active" id="statusTag">Aktiv</span><span class="v-code" id="auctionCodeTag2"></span></div>
+        <div class="v-lot-row"><span class="v-lot" id="lotNum">LOS</span><span class="v-status active" id="statusTag">Aktiv</span></div>
         <div class="v-name" id="vName">Wird geladen...</div>
         <div class="v-sub" id="vSub"></div>
+        <a id="checklistPdfBtn" href="#" target="_blank" rel="noopener" style="display:none;margin-top:10px;display:inline-flex;align-items:center;gap:7px;background:var(--dark);color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;width:fit-content">
+          <svg fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+          Safety Car-Check herunterladen
+        </a>
       </div>
       <div id="vDescBox" style="display:none;margin-bottom:20px"><div style="font-size:11px;color:var(--text4);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Fahrzeugbeschreibung</div><div id="vDesc" style="font-size:14px;line-height:1.6;color:var(--text2);white-space:pre-wrap"></div></div>
       <div class="specs-grid" id="spGrid"></div>
@@ -741,7 +770,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     </div>
     <div class="auction-right">
       <div class="timer-card">
-        <div><div class="timer-lbl">Verbleibende Zeit</div><div class="timer-val" id="timerDisp">--:--:--</div></div>
+        <div class="timer-lbl">Verbleibende Zeit</div>
         <div class="timer-countdown">
           <div class="tc-unit"><span class="tc-num" id="tc-h">00</span><span class="tc-lbl">Std</span></div>
           <div class="tc-sep">:</div>
@@ -749,10 +778,11 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
           <div class="tc-sep">:</div>
           <div class="tc-unit"><span class="tc-num" id="tc-s">00</span><span class="tc-lbl">Sek</span></div>
         </div>
+        <span style="display:none" id="timerDisp"></span>
       </div>
       <div class="bid-card"><div class="bid-lbl">Aktuelles Höchstgebot</div><div class="bid-amount" id="curBid">---</div><div class="bid-anon" id="curBy">Noch kein Gebot</div></div>
       <div class="my-status-card none" id="myStatusBox"><div class="msc-lbl" id="myStatusLbl">Mein letztes Gebot</div><div class="msc-val" id="myStatusVal">---</div><div class="msc-info" id="myStatusInfo"></div></div>
-      <div id="wonBadge">Glückwunsch – Sie haben gewonnen!</div>
+      <div id="wonBadge">Unverbindlich ersteigert – wir melden uns zur Abwicklung</div>
       <div class="bmsg" id="bidMsg"></div>
       <div class="bid-form">
         <div class="ph">Gebot abgeben</div>
@@ -766,7 +796,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
       </div>
     </div>
   </div>
-  <div class="ticker"><span class="ticker-lbl">Live</span><span class="ticker-sep">|</span><span class="ticker-text">SAFETY CAR AUKTION – ECHTZEIT-GEBOTE – ANTI-SNIPING AKTIV – NUR REGISTRIERTE BIETER – SAFETY CAR AUKTION – ECHTZEIT-GEBOTE – ANTI-SNIPING AKTIV – NUR REGISTRIERTE BIETER – </span></div>
+  <div class="ticker"><span class="ticker-dot"></span><span class="ticker-lbl">Live</span></div>
 </div>
 
 <!-- ADMIN -->
@@ -795,7 +825,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
           <div class="aff"><label>Fahrzeugname</label><input type="text" id="aName" placeholder="z.B. Porsche 911 Carrera S"></div>
           <div class="aff"><label>Untertitel</label><input type="text" id="aSub" placeholder="z.B. 992.2 · 2024 · 3.000 km"></div>
           <div class="aff"><label>Fahrzeugbeschreibung</label><textarea id="aDesc" placeholder="Ausführliche Beschreibung des Fahrzeugs, Zustand, Besonderheiten, Historie..." style="min-height:90px"></textarea></div>
-          <div class="aff"><label>Los-Nummer</label><input type="text" id="aLot" placeholder="z.B. 2024-047"></div>
+          <div class="aff"><label>Auktionscode (intern)</label><input type="text" id="aLot" placeholder="z.B. 2024-047"></div>
           <div class="aff-row"><div class="aff"><label>Startgebot (EUR)</label><input type="number" id="aStart" placeholder="100000"></div><div class="aff"><label>Min. Erhöhung (EUR)</label><input type="number" id="aInc" placeholder="500"></div></div>
           <div class="aff"><label>Anti-Sniping (Sekunden)</label><input type="number" id="aSnipe" placeholder="120" value="120"></div>
           <div class="aff"><label>Fahrzeugfotos (mehrere möglich, erstes = Hauptbild)</label>
@@ -806,6 +836,15 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
             </button>
             <div id="uploadStatus" style="font-size:12px;color:var(--text3);margin-top:6px"></div>
             <div class="photo-grid" id="aPhotoGrid" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px"></div>
+          </div>
+          <div class="aff">
+            <label>Fahrzeug-Gutachten / Check-PDF <span style="font-weight:400;color:var(--text3)">(optional – für Händler downloadbar)</span></label>
+            <input type="file" id="aPdfFile" accept="application/pdf" style="display:none" onchange="handlePdfUpload(this.files)">
+            <button type="button" id="pdfUploadBtn" onclick="document.getElementById('aPdfFile').click()" style="width:100%;padding:14px;border:1.5px dashed var(--border2);border-radius:var(--radius);background:var(--off-white);cursor:pointer;font-family:inherit;font-size:13px;color:var(--text2);display:flex;align-items:center;justify-content:center;gap:8px" onmouseover="this.style.borderColor='var(--red)'" onmouseout="this.style.borderColor='var(--border2)'">
+              <svg fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              PDF auswählen (max. 50 MB)
+            </button>
+            <div id="pdfUploadStatus" style="font-size:12px;color:var(--text3);margin-top:6px"></div>
           </div>
           <div class="aff"><label>Technische Daten (Label|Wert pro Zeile)</label><textarea id="aSpecs" placeholder="Laufleistung|45.000 km&#10;Erstzulassung|03/2021&#10;Kraftstoff|Benzin&#10;Getriebe|Automatik (PDK)&#10;Leistung|450 PS&#10;Zustand|Sehr gut" style="min-height:120px"></textarea></div>
           <div class="aff"><label>Auktionsdauer</label><select id="aDur"><option value="172800">48 Stunden</option><option value="86400">24 Stunden</option><option value="3600">1 Stunde (Test)</option><option value="600">10 Minuten (Test)</option></select></div>
@@ -831,7 +870,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     CSV Export
   </button>
 </div>
-      <div style="overflow-x:auto"><table class="btbl"><thead><tr><th>#</th><th>Bieter</th><th>E-Mail</th><th>Betrag</th><th>Auktion</th><th>Zeit</th></tr></thead><tbody id="admBody"><tr><td colspan="6" class="hemp">Keine Gebote</td></tr></tbody></table></div>
+      <div style="overflow-x:auto"><table class="btbl"><thead><tr><th>#</th><th>Bieter</th><th>E-Mail</th><th>Betrag</th><th>Auktion</th><th>Zeit</th><th></th></tr></thead><tbody id="admBody"><tr><td colspan="7" class="hemp">Keine Gebote</td></tr></tbody></table></div>
     </div>
     <div class="admin-pane" id="adm-users">
       <div class="admin-form-title">Registrierte Bieter</div>
@@ -848,7 +887,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 <div id="pinModal">
   <div class="pin-card">
     <div class="pin-title">Admin-Zugang</div>
-    <div class="pin-desc">Bitte PIN eingeben um fortzufahren</div>
+    <div class="pin-desc">Bitte Pin eingeben um fortzufahren.</div>
     <div class="fi"><label>Admin-PIN</label><div class="pw-wrap"><input type="password" id="pinIn" placeholder="PIN eingeben" maxlength="64"><button type="button" class="pw-toggle" onclick="togglePw('pinIn',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
     <button class="btn-primary" onclick="checkPin()">Weiter</button>
     <div class="pin-err" id="pinErr"></div>
@@ -951,7 +990,8 @@ function togglePw(id, btn) {
   }
 }
 
-function fmtEur(n) { return 'EUR ' + Math.round(n).toLocaleString('de-DE'); }
+function fmtEur(n) { return Math.round(n).toLocaleString('de-DE') + ',- €'; }
+function fmtPrice(n) { return fmtEur(n); }
 function esc(str) {
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
@@ -990,14 +1030,15 @@ function showForgot() { showScreen('forgotScreen'); }
 function showSelector() { clearTimer(); showScreen('selectorScreen'); loadAuctionList(); }
 
 async function showDashboard() {
+  var bb = document.getElementById('auctionBackBar');
+  if (bb) bb.style.display = 'none';
   try {
   clearTimer();
   showScreen('dashboardScreen');
   var name = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
   var duEl = document.getElementById('dashUser'); if (duEl) duEl.textContent = name;
-  // Freigabe-Banner anzeigen wenn Händler noch nicht freigeschaltet
   var banner = document.getElementById('approvalBanner');
-  if (banner) banner.style.display = (cProfile && cProfile.approved === false) ? 'block' : 'none';
+  if (banner) banner.style.display = 'none';
   await loadAllAuctions();
   await loadMyBidsAll();
   await loadWatchlist();
@@ -1034,6 +1075,8 @@ async function loadProfile() {
 }
 
 async function loadAllAuctions() {
+  // Nicht freigegebene Händler sehen keine Auktionen (null = noch nicht geprüft, false = widerrufen)
+  if (!cProfile || cProfile.approved !== true) { allAuctions = []; return; }
   var res = await sb.from('auction').select('*').order('created_at', {ascending: false});
   allAuctions = res.data || [];
 }
@@ -1052,16 +1095,32 @@ async function loadWatchlist() {
 }
 
 function renderDashboard() {
+  // Nicht freigegebene Händler: Warteseite
+  var dashContent = document.getElementById('tab-overview');
+  if (!cProfile || cProfile.approved !== true) {
+    var waitMsg = (cProfile && cProfile.approved === false)
+      ? '<div style="font-size:20px;font-weight:600;margin-bottom:12px">Zugang deaktiviert</div><div style="font-size:14px;color:var(--text3);max-width:340px;margin:0 auto;line-height:1.6">Ihr Zugang wurde deaktiviert. Bitte wenden Sie sich an SafetyCar falls Sie Fragen haben.</div>'
+      : '<div style="font-size:20px;font-weight:600;margin-bottom:12px">Zugang wird geprüft</div><div style="font-size:14px;color:var(--text3);max-width:340px;margin:0 auto;line-height:1.6">Ihre Registrierung wurde erhalten. Unser Team prüft Ihren Händlerstatus und schaltet Sie in Kürze frei.<br><br>Sie erhalten eine E-Mail sobald Ihr Zugang aktiviert wurde.</div>';
+    if (dashContent) dashContent.innerHTML = '<div style="text-align:center;padding:60px 20px"><div style="font-size:48px;margin-bottom:20px">⏳</div>' + waitMsg + '<div style="margin-top:28px"><button onclick="doLogout()" style="background:none;border:0.5px solid var(--border2);border-radius:8px;padding:10px 20px;font-size:13px;color:var(--text2);cursor:pointer;font-family:inherit">Ausloggen</button></div></div>';
+    document.getElementById('ds-active').textContent = '–';
+    document.getElementById('ds-leading').textContent = '–';
+    document.getElementById('ds-won').textContent = '–';
+    document.getElementById('ds-watch').textContent = '–';
+    return;
+  }
+  if (dashContent && dashContent.querySelector('[style*="Zugang wird geprüft"]')) {
+    dashContent.innerHTML = '<div class="stats-grid"><div class="stat-card"><div class="stat-icon red"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="stat-val" id="ds-active">0</div><div class="stat-lbl">Aktive Gebote</div></div></div><div class="section-hdr"><div class="section-title">Aktive Auktionen</div><div class="section-link" id="activeCount"></div></div><div class="auctions-grid" id="overviewActiveGrid"><div class="hemp">Keine aktiven Auktionen</div></div>';
+  }
   var now = new Date();
   var active = allAuctions.filter(function(a) { return now < new Date(a.ends_at); });
   var myName = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
+  var myActiveAuctions = active.filter(function(a) { return myBidsAll.some(function(b) { return b.auction_id === a.id; }); });
   var leading = active.filter(function(a) { return a.top_bidder === myName; });
   var won = allAuctions.filter(function(a) { return now >= new Date(a.ends_at) && a.top_bidder === myName; });
-  document.getElementById('ds-active').textContent = active.length;
+  document.getElementById('ds-active').textContent = myActiveAuctions.length;
   document.getElementById('ds-leading').textContent = leading.length;
   document.getElementById('ds-won').textContent = won.length;
   document.getElementById('ds-watch').textContent = watchlistIds.length;
-  document.getElementById('activeCount').textContent = '(' + active.length + ')';
   renderAuctionsGrid('overviewActiveGrid', active, true);
   renderAllAuctions();
   renderMyBidsTable();
@@ -1084,17 +1143,16 @@ function renderAuctionsGrid(containerId, auctions, activeOnly) {
     var card = document.createElement('div');
     card.className = 'auction-card' + (isWatched ? ' watched' : '');
     var badges = '';
-    if (!ended) badges += '<span class="ac-badge live">LIVE</span>';
-    else if (isLeading) badges += '<span class="ac-badge won">GEWONNEN</span>';
-    else if (hasBid) badges += '<span class="ac-badge lost">NICHT GEWONNEN</span>';
-    if (isLeading && !ended) badges += '<span class="ac-badge mybid">FUEHREND</span>';
-    else if (hasBid && !ended && !isLeading) badges += '<span class="ac-badge mybid">UEBERBOTEN</span>';
-    if (isWatched) badges += '<span class="ac-badge watching">WATCHLIST</span>';
+    if (isLeading && !ended) badges += '<span class="ac-badge mybid">Führend</span>';
+    else if (hasBid && !ended && !isLeading) badges += '<span class="ac-badge mybid">Überboten</span>';
+    else if (isLeading && ended) badges += '<span class="ac-badge won">Ersteigert</span>';
+    else if (hasBid && ended && !isLeading) badges += '<span class="ac-badge lost">Nicht ersteigert</span>';
+    if (isWatched) badges += '<span class="ac-badge watching">Watchlist</span>';
     var timerStr = ended ? 'Beendet' : fmtCountdown(a.ends_at);
     var timerClass = !ended && Math.floor((new Date(a.ends_at) - now) / 1000) < 300 ? ' urgent' : '';
     var mainImg = a.photo_url || (a.photos && a.photos.length ? a.photos[0] : '');
     var imgHtml = mainImg ? '<img src="' + mainImg + '" onerror="this.style.display=\'none\';this.parentNode.querySelector(\'.ac-img-ph\')&&(this.parentNode.querySelector(\'.ac-img-ph\').style.display=\'flex\')">' : '<div class="ac-img-ph" style="display:flex"><svg viewBox="0 0 520 200" style="width:70%;opacity:.3"><rect x="70" y="90" width="380" height="70" rx="8" fill="#333"/><rect x="140" y="55" width="220" height="70" rx="12" fill="#444"/><circle cx="140" cy="162" r="26" fill="#222"/><circle cx="380" cy="162" r="26" fill="#222"/></svg></div>';
-    card.innerHTML = '<div class="ac-img">' + imgHtml + '<div class="ac-timer-overlay' + timerClass + '">' + timerStr + '</div></div><div class="ac-body"><div class="ac-badges">' + badges + '</div><div class="ac-name">' + (a.vehicle_name || '---') + '</div><div class="ac-sub">' + esc(a.vehicle_sub || '') + '</div><div class="ac-bid-row"><div><div class="ac-bid-lbl">Hoechstgebot</div><div class="ac-bid-val">' + fmtEur(a.current_bid || 0) + '</div></div><div style="text-align:right"><div class="ac-bid-lbl">Los</div><div style="font-family:\'DM Mono\',monospace;font-size:12px;color:var(--t3)">' + esc(a.lot_number || '---') + '</div></div></div></div><div class="ac-actions">' + (!ended ? '<button class="ac-btn" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">BIETEN</button>' : '') + '<button class="ac-btn secondary ' + (isWatched ? 'watched-btn' : '') + '" onclick="event.stopPropagation();toggleWatch(\'' + a.id + '\')">' + (isWatched ? 'BEOBACHTET' : 'WATCHLIST') + '</button></div>';
+    card.innerHTML = '<div class="ac-img">' + imgHtml + '<div class="ac-timer-overlay' + timerClass + '" data-ends-at="' + (a.ends_at||'') + '">' + timerStr + '</div></div><div class="ac-body"><div class="ac-name">' + (a.vehicle_name || '---') + '</div><div class="ac-sub">' + esc(a.vehicle_sub || '') + '</div><div style="font-size:11px;color:var(--text3);font-family:\'DM Mono\',monospace;margin:3px 0 10px">' + esc(a.auction_code || '---') + '</div><div style="border-top:0.5px solid var(--border);margin-bottom:10px"></div><div class="ac-bid-lbl">' + (ended ? 'Verkauft für' : 'Aktuelles Höchstgebot') + '</div><div class="ac-bid-val">' + fmtPrice(a.current_bid || 0) + '</div></div><div class="ac-actions">' + (!ended ? '<button class="ac-btn" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Jetzt bieten</button>' : '<button class="ac-btn secondary" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Details</button>') + '<button class="ac-btn secondary ' + (isWatched ? 'watched-btn' : '') + '" onclick="event.stopPropagation();toggleWatch(\'' + a.id + '\',this)">' + (isWatched ? 'Gespeichert ✓' : 'Watchlist') + '</button></div>';
     card.style.cursor = 'pointer';
     card.onclick = (function(auc){ return function(){ joinAuction(auc); }; })(a);
     container.appendChild(card);
@@ -1123,19 +1181,19 @@ function renderMyBidsTable() {
   var now = new Date();
   var seen = {};
   tbody.innerHTML = '';
-  for (var i = 0; i < myBidsAll.length; i++) {
-    var b = myBidsAll[i];
+  var _seen = {}; var myBidsDedup = myBidsAll.filter(function(b){ if(!_seen[b.auction_id]||b.amount>_seen[b.auction_id]){_seen[b.auction_id]=b.amount;return true;}return false;}); for (var i = 0; i < myBidsDedup.length; i++) {
+    var b = myBidsDedup[i];
     if (!b.auction) continue;
     var aKey = b.auction_id;
     var ended = now >= new Date(b.auction.ends_at);
     var isLeading = b.auction.top_bidder === myName;
     var statusClass = '', statusText = '';
-    if (!ended) { statusClass = isLeading ? 'winning' : 'losing'; statusText = isLeading ? 'FUEHREND' : 'UEBERBOTEN'; }
-    else { statusClass = isLeading ? 'winning' : 'losing'; statusText = isLeading ? 'GEWONNEN' : 'VERLOREN'; }
+    if (!ended) { statusClass = isLeading ? 'winning' : 'losing'; statusText = isLeading ? 'Höchstbietend' : 'Überboten'; }
+    else { statusClass = isLeading ? 'winning' : 'losing'; statusText = isLeading ? 'Ersteigert' : 'Nicht ersteigert'; }
     if (seen[aKey]) continue;
     seen[aKey] = true;
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td>' + esc(b.auction.vehicle_name || '---') + '</td><td class="amt">' + fmtEur(b.amount) + '</td><td class="amt">' + fmtEur(b.auction.current_bid || 0) + '</td><td class="' + statusClass + '">' + statusText + '</td><td style="font-size:10px">' + (ended ? 'Beendet' : fmtCountdown(b.auction.ends_at)) + '</td><td>' + (!ended ? '<button style="background:var(--red);border:none;padding:4px 10px;color:#fff;font-family:\'Bebas Neue\',sans-serif;font-size:13px;cursor:pointer;letter-spacing:1px" onclick="joinAuctionById(\'' + b.auction_id + '\')">BIETEN</button>' : '') + '</td>';
+    tr.innerHTML = '<td>' + esc(b.auction.vehicle_name || '---') + '</td><td class="amt">' + fmtEur(b.amount) + '</td><td class="amt">' + fmtEur(b.auction.current_bid || 0) + '</td><td class="' + statusClass + '">' + statusText + '</td><td style="font-size:10px">' + (ended ? 'Beendet' : fmtCountdown(b.auction.ends_at)) + '</td><td>' + (!ended ? '<button style="background:var(--red);border:none;padding:6px 14px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;border-radius:8px;font-family:inherit;white-space:nowrap" onclick="joinAuctionById(\'' + b.auction_id + '\')">Jetzt bieten</button>' : '') + '</td>';
     tbody.appendChild(tr);
   }
 }
@@ -1145,17 +1203,24 @@ function renderWatchlistGrid() {
   renderAuctionsGrid('watchlistGrid', watched, false);
 }
 
-async function toggleWatch(auctionId) {
+async function toggleWatch(auctionId, btn) {
   if (!cUser) return;
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
   var idx = watchlistIds.indexOf(auctionId);
-  if (idx >= 0) {
-    await sb.from('watchlist').delete().eq('user_id', cUser.id).eq('auction_id', auctionId);
-    watchlistIds.splice(idx, 1);
-  } else {
-    await sb.from('watchlist').insert({user_id: cUser.id, auction_id: auctionId});
-    watchlistIds.push(auctionId);
-  }
-  renderDashboard();
+  try {
+    if (idx >= 0) {
+      await sb.from('watchlist').delete().eq('user_id', cUser.id).eq('auction_id', auctionId);
+      watchlistIds.splice(idx, 1);
+      if (btn) { btn.textContent = 'Watchlist'; btn.classList.remove('watched-btn'); }
+    } else {
+      await sb.from('watchlist').insert({user_id: cUser.id, auction_id: auctionId});
+      watchlistIds.push(auctionId);
+      if (btn) { btn.textContent = 'Gespeichert ✓'; btn.classList.add('watched-btn'); }
+      showToast('Gespeichert ✓', 'ok');
+    }
+  } catch(e) { console.error('Watchlist error:', e); }
+  if (btn) { btn.disabled = false; btn.style.opacity = ''; }
+  renderWatchlistGrid();
 }
 
 async function joinAuctionById(auctionId) {
@@ -1274,6 +1339,10 @@ async function joinByCode() {
 }
 
 function joinAuction(auction) {
+  var bb = document.getElementById('auctionBackBar');
+  if (bb) bb.style.display = 'block';
+  var bb = document.getElementById('auctionBackBar');
+  if (bb) bb.style.display = 'block';
   aData = auction;
   clearTimer();
   if (rtSub) sb.removeChannel(rtSub);
@@ -1286,27 +1355,29 @@ function joinAuction(auction) {
 // AUTH
 async function doSignup() {
   var name = document.getElementById('su_name').value.trim();
+  var contact = document.getElementById('su_contact').value.trim();
   var email = document.getElementById('su_email').value.trim().toLowerCase();
+  var phone = document.getElementById('su_phone').value.trim();
   var pw = document.getElementById('su_pw').value;
   var pw2 = document.getElementById('su_pw2').value;
-  var dsgvo = document.getElementById('su_dsgvo').checked;
   var errEl = document.getElementById('suErr'), okEl = document.getElementById('suOk');
   errEl.textContent = ''; okEl.textContent = '';
-  if (!name) { errEl.textContent = 'Bitte Namen eingeben.'; return; }
-  if (!email || email.indexOf('@') < 0) { errEl.textContent = 'Gueltige E-Mail eingeben.'; return; }
-  if (pw.length < 8) { errEl.textContent = 'Passwort mindestens 6 Zeichen.'; return; }
-  if (pw !== pw2) { errEl.textContent = 'Passwoerter stimmen nicht ueberein.'; return; }
-  if (!dsgvo) { errEl.textContent = 'Bitte Datenschutzerklaerung akzeptieren.'; return; }
+  if (!name) { errEl.textContent = 'Bitte Unternehmensname eingeben.'; return; }
+  if (!contact) { errEl.textContent = 'Bitte Ansprechpartner eingeben.'; return; }
+  if (!email || email.indexOf('@') < 0) { errEl.textContent = 'Gültige E-Mail-Adresse eingeben.'; return; }
+  if (!phone) { errEl.textContent = 'Bitte Telefonnummer eingeben.'; return; }
+  if (pw.length < 8) { errEl.textContent = 'Passwort mindestens 8 Zeichen.'; return; }
+  if (pw !== pw2) { errEl.textContent = 'Passwörter stimmen nicht überein.'; return; }
+  if (!document.getElementById('su_dsgvo').checked) { errEl.textContent = 'Bitte Datenschutzerklärung akzeptieren.'; return; }
   var btn = document.getElementById('suBtn'); btn.disabled = true; btn.textContent = 'BITTE WARTEN...';
-  // FIX 2: Registration via BACKEND (rate-limiting, validation, welcome email, dsgvo_date)
   try {
     var regRes = await fetch(BACKEND_URL + '/api/auth/register', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({email: email, password: pw, name: name, dsgvo: 'true'})
+      body: JSON.stringify({email: email, password: pw, name: name, contact_name: contact, phone: phone, dsgvo: 'true'})
     });
     var regData = await regRes.json();
-    if (!regRes.ok) { errEl.textContent = regData.error || 'Registrierung fehlgeschlagen.'; btn.disabled = false; btn.textContent = 'Registrieren'; return; }
+    if (!regRes.ok) { errEl.textContent = regData.error || 'Registrierung fehlgeschlagen.'; btn.disabled = false; btn.textContent = 'Jetzt registrieren'; return; }
     // Now log in automatically
     var loginRes = await sb.auth.signInWithPassword({email: email, password: pw});
     if (loginRes.error) {
@@ -1330,7 +1401,7 @@ async function doLogin() {
   var btn = document.getElementById('liBtn'); btn.disabled = true; btn.textContent = 'Bitte warten...';
   try {
     var res = await sb.auth.signInWithPassword({email: email, password: pw});
-    if (res.error) { errEl.textContent = 'E-Mail oder Passwort falsch.'; btn.disabled = false; btn.textContent = 'Einloggen'; return; }
+    if (res.error) { errEl.textContent = 'E-Mail oder Passwort falsch.'; btn.disabled = false; btn.textContent = 'Jetzt einloggen'; return; }
     cUser = res.data.user;
     try { await loadProfile(); } catch(e) { console.error('Profile load error:', e); }
     await showDashboard();
@@ -1338,7 +1409,7 @@ async function doLogin() {
     console.error('Login error:', e);
     errEl.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
   }
-  btn.disabled = false; btn.textContent = 'Einloggen';
+  btn.disabled = false; btn.textContent = 'Jetzt einloggen';
 }
 
 async function doForgot() {
@@ -1359,7 +1430,7 @@ async function doReset() {
   var errEl = document.getElementById('rsErr'), okEl = document.getElementById('rsOk');
   errEl.textContent = ''; okEl.textContent = '';
   if (pw.length < 8) { errEl.textContent = 'Passwort mindestens 6 Zeichen.'; return; }
-  if (pw !== pw2) { errEl.textContent = 'Passwoerter stimmen nicht ueberein.'; return; }
+  if (pw !== pw2) { errEl.textContent = 'Passwörter stimmen nicht überein.'; return; }
   var btn = document.getElementById('rsBtn'); btn.disabled = true; btn.textContent = 'WIRD GESPEICHERT...';
   var res = await sb.auth.updateUser({password: pw});
   btn.disabled = false; btn.textContent = 'PASSWORT SPEICHERN';
@@ -1385,10 +1456,12 @@ async function doLogout() {
 // AUCTION UI
 function loadUI() {
   if (!aData) return;
-  document.getElementById('lotNum').textContent = 'LOS #' + (aData.lot_number || '---');
+  document.getElementById('lotNum').textContent = 'Auktionscode: ' + (aData.auction_code || '---');
   document.getElementById('vName').textContent = aData.vehicle_name || '---';
   document.getElementById('vSub').textContent = aData.vehicle_sub || '';
   document.getElementById('auctionCodeTag').textContent = 'CODE: ' + (aData.auction_code || '---');
+  var pdfBtn = document.getElementById('checklistPdfBtn');
+  if (pdfBtn) { if (aData.checklist_pdf_url) { pdfBtn.href = aData.checklist_pdf_url; pdfBtn.style.display = 'inline-flex'; } else { pdfBtn.style.display = 'none'; } }
   var img = document.getElementById('vPhoto');
   var allPhotos = (aData.photos && aData.photos.length) ? aData.photos : (aData.photo_url ? [aData.photo_url] : []);
   window.detailPhotos = allPhotos;
@@ -1469,9 +1542,9 @@ function updateMyStatus(currentBid) {
   var leading = aData.top_bidder === myName;
   box.style.display = 'block';
   box.className = 'my-status-card ' + (leading ? 'leading' : 'outbid');
-  document.getElementById('myStatusLbl').textContent = leading ? 'SIE FUEHREN' : 'SIE WURDEN UEBERBOTEN';
+  document.getElementById('myStatusLbl').textContent = leading ? 'Sie sind der Höchstbietende' : 'Sie wurden überboten';
   document.getElementById('myStatusVal').textContent = fmtEur(myBest);
-  document.getElementById('myStatusInfo').textContent = leading ? 'Ihr Gebot ist aktuell das hoechste' : 'Hoechstgebot ist jetzt ' + fmtEur(currentBid);
+  document.getElementById('myStatusInfo').textContent = leading ? 'Ihr Gebot ist aktuell das höchste' : 'Höchstgebot ist jetzt' + fmtEur(currentBid);
 }
 
 async function loadFullHistory() {
@@ -1508,15 +1581,33 @@ async function loadMyBids() {
   }
 }
 
+var pendingBidAmount = 0;
+
 async function placeBid() {
   if (!aData || !cUser) return;
   if (new Date() > new Date(aData.ends_at)) { endAuction(); return; }
-  var val = parseFloat(document.getElementById('bidInput').value);
+  var rawInput = document.getElementById('bidInput').value.replace(/\./g, '').replace(',', '.');
+  var val = parseFloat(rawInput);
   var mn = (aData.current_bid || 0) + (aData.min_increment || 500);
   if (!val || isNaN(val)) { showMsg('Bitte gueltigen Betrag eingeben.', 'err'); return; }
   if (val < mn) { showMsg('Gebot zu niedrig - Mindestgebot: ' + fmtEur(mn), 'err'); return; }
+  pendingBidAmount = Math.round(val);
+  document.getElementById('bidConfirmAmount').textContent = fmtEur(pendingBidAmount);
+  document.getElementById('bidConfirmVehicle').textContent = aData.vehicle_name || '';
+  document.getElementById('bidConfirmOverlay').style.display = 'flex';
+}
+
+function cancelBidConfirm() {
+  document.getElementById('bidConfirmOverlay').style.display = 'none';
+  pendingBidAmount = 0;
+}
+
+async function confirmBidSubmit() {
+  document.getElementById('bidConfirmOverlay').style.display = 'none';
+  if (!aData || !cUser || !pendingBidAmount) return;
+  if (new Date() > new Date(aData.ends_at)) { endAuction(); return; }
+  var amount = pendingBidAmount; pendingBidAmount = 0;
   var btn = document.getElementById('bidBtn'); btn.disabled = true;
-  var amount = Math.round(val);
   try {
     var sessionRes = await sb.auth.getSession();
     var token = sessionRes.data.session ? sessionRes.data.session.access_token : null;
@@ -1542,6 +1633,15 @@ function quickBid(inc) { document.getElementById('bidInput').value = (aData ? aD
 function showMsg(txt, type) {
   var el = document.getElementById('bidMsg'); el.textContent = txt; el.className = 'bmsg ' + type;
   clearTimeout(el._t); el._t = setTimeout(function() { el.textContent = ''; el.className = 'bmsg'; }, 6000);
+  // Toast-Benachrichtigung
+  var toast = document.getElementById('bidToast');
+  if (toast) {
+    var icon = type === 'ok' ? '✓ ' : type === 'err' ? '✕ ' : '⚠ ';
+    toast.textContent = icon + txt;
+    toast.className = 'show ' + type;
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function() { toast.className = ''; }, 3500);
+  }
 }
 
 function clearTimer() { clearInterval(tInt); }
@@ -1571,11 +1671,11 @@ async function endAuction() {
   document.getElementById('bidBtn').disabled = true;
   document.querySelectorAll('.qb').forEach(function(b) { b.disabled = true; });
   document.getElementById('soldOv').style.display = 'flex';
-  document.getElementById('soldWin').textContent = 'Zuschlag: ' + fmtEur(aData ? aData.current_bid || 0 : 0);
+  document.getElementById('soldWin').textContent = 'für ' + fmtEur(aData ? aData.current_bid || 0 : 0);
   var myName = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
   if (aData && aData.top_bidder === myName) {
     document.getElementById('wonBadge').style.display = 'block';
-    await addNotification(cUser.id, 'GEWONNEN', 'Glueckwunsch! Sie haben die Auktion gewonnen: ' + (aData.vehicle_name || '') + ' - ' + fmtEur(aData.current_bid || 0), aData.id);
+    await addNotification(cUser.id, 'ERSTEIGERT', 'Sie haben unverbindlich ersteigert: ' + (aData.vehicle_name || '') + ' - ' + fmtEur(aData.current_bid || 0) + '. Wir melden uns zur Abwicklung.', aData.id);
   }
 }
 
@@ -1740,6 +1840,19 @@ async function deleteAuction(id, name) {
   } catch(e) { alert('Verbindungsfehler.'); }
 }
 
+async function deleteBid(bidId, amount) {
+  if (!confirm('Gebot über ' + fmtEur(amount) + ' wirklich löschen?\n\nDas Höchstgebot wird automatisch neu berechnet.')) return;
+  try {
+    var res = await fetch(BACKEND_URL + '/api/admin/bids/' + bidId, {
+      method: 'DELETE',
+      headers: {'x-admin-token': adminToken}
+    });
+    if (!res.ok) { var d = await res.json(); alert('Fehler: ' + (d.error || 'Löschen fehlgeschlagen')); return; }
+    loadAuctionBids(aData);
+    loadAdminStats();
+  } catch(e) { alert('Verbindungsfehler.'); }
+}
+
 function prefillForm() {
   if (!aData) return;
   document.getElementById('aCode').value = aData.auction_code || '';
@@ -1751,6 +1864,9 @@ function prefillForm() {
   document.getElementById('aSnipe').value = aData.snipe_extension || 120;
   uploadedPhotos = (aData.photos && aData.photos.length) ? aData.photos.slice() : (aData.photo_url ? [aData.photo_url] : []);
   renderPhotoGrid();
+  uploadedPdfUrl = aData.checklist_pdf_url || null;
+  var ps = document.getElementById('pdfUploadStatus');
+  if (ps) ps.textContent = uploadedPdfUrl ? '✓ PDF vorhanden: ' + (aData.checklist_pdf_url.split('/').pop().slice(0,40)) : '';
   document.getElementById('aSpecs').value = (aData.specs || []).map(function(s) { return s.label + '|' + s.value; }).join('\n');
   document.getElementById('aDesc').value = aData.description || '';
   document.getElementById('admFormTitle').textContent = 'AUKTION BEARBEITEN';
@@ -1760,7 +1876,9 @@ function newAuction() {
   aData = null;
   ['aCode','aName','aSub','aLot','aStart','aSpecs','aDesc'].forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ''; });
   uploadedPhotos = []; renderPhotoGrid();
+  uploadedPdfUrl = null;
   var us = document.getElementById('uploadStatus'); if (us) us.textContent = '';
+  var ps = document.getElementById('pdfUploadStatus'); if (ps) ps.textContent = '';
   document.getElementById('aInc').value = 500;
   document.getElementById('aSnipe').value = 120;
 
@@ -1786,7 +1904,7 @@ async function refreshAdminBids() {
   tbody.innerHTML = '';
   for (var j = 0; j < all.length; j++) {
     var tr = document.createElement('tr'); if (j === 0) tr.className = 'tbest';
-    tr.innerHTML = '<td><span class="brank' + (j === 0 ? ' first' : '') + '">' + (j+1) + '</span></td><td>' + esc(all[j].bidder) + '</td><td style="font-size:10px;color:var(--t3)">' + esc(all[j].bidder_email || '---') + '</td><td class="tamt">' + fmtEur(all[j].amount) + '</td><td style="font-size:10px;color:var(--t3)">' + (all[j].auction_code || '---') + '</td><td style="font-size:10px">' + fmtTime(all[j].created_at) + '</td>';
+    tr.innerHTML = '<td><span class="brank' + (j === 0 ? ' first' : '') + '">' + (j+1) + '</span></td><td>' + esc(all[j].bidder) + '</td><td style="font-size:10px;color:var(--t3)">' + esc(all[j].bidder_email || '---') + '</td><td class="tamt">' + fmtEur(all[j].amount) + '</td><td style="font-size:10px;color:var(--t3)">' + (all[j].auction_code || '---') + '</td><td style="font-size:10px">' + fmtTime(all[j].created_at) + '</td><td><button onclick="deleteBid(\'' + all[j].id + '\',' + all[j].amount + ')" style="background:none;border:0.5px solid #e53e3e;border-radius:6px;padding:3px 8px;font-size:11px;color:#e53e3e;cursor:pointer;font-family:inherit">Löschen</button></td>';
     tbody.appendChild(tr);
   }
 }
@@ -1810,10 +1928,13 @@ async function loadAdminUsers() {
       var actionBtn = u.approved
         ? '<button onclick="revokeUser(\'' + u.id + '\')" style="background:none;border:0.5px solid var(--border2);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--text2);cursor:pointer;font-family:inherit;margin-top:8px">Freigabe widerrufen</button>'
         : '<button onclick="approveUser(\'' + u.id + '\')" style="background:#3B7A1A;border:none;border-radius:8px;padding:6px 12px;font-size:12px;color:#fff;cursor:pointer;font-family:inherit;margin-top:8px;font-weight:600">✓ Freigeben</button>';
+      var deleteBtn = '<button onclick="deleteUser(\'' + u.id + '\',\'' + esc(u.display_name || u.email || 'diesen Händler') + '\')" style="background:none;border:0.5px solid #e53e3e;border-radius:8px;padding:6px 12px;font-size:12px;color:#e53e3e;cursor:pointer;font-family:inherit;margin-top:8px;margin-left:6px">Löschen</button>';
       card.innerHTML = '<div class="user-card-name">' + esc(u.display_name || '---') + '</div>' +
+        (u.contact_name ? '<div style="font-size:12px;color:var(--text3);margin-bottom:2px">👤 ' + esc(u.contact_name) + '</div>' : '') +
+        (u.phone ? '<div style="font-size:12px;color:var(--text3);margin-bottom:6px">📞 ' + esc(u.phone) + '</div>' : '') +
         '<div style="margin:6px 0">' + statusBadge + '</div>' +
         '<div class="user-card-stats"><div class="user-stat">Gebote: <span>' + (u.bid_count || 0) + '</span></div></div>' +
-        actionBtn;
+        '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">' + actionBtn + deleteBtn + '</div>';
       container.appendChild(card);
     }
   } catch(e) {
@@ -1846,6 +1967,18 @@ async function revokeUser(userId) {
   } catch(e) { alert('Verbindungsfehler.'); }
 }
 
+async function deleteUser(userId, name) {
+  if (!confirm('Händler "' + name + '" wirklich dauerhaft löschen?\n\nDiese Aktion kann nicht rückgängig gemacht werden.')) return;
+  try {
+    var res = await fetch(BACKEND_URL + '/api/admin/delete-user/' + userId, {
+      method: 'DELETE',
+      headers: {'x-admin-token': adminToken}
+    });
+    if (!res.ok) { var d = await res.json(); alert('Fehler: ' + (d.error || 'Löschen fehlgeschlagen')); return; }
+    loadAdminUsers();
+  } catch(e) { alert('Verbindungsfehler.'); }
+}
+
 async function loadAdminStats() {
   var res = await sb.from('auction').select('*, bids(count)').order('created_at', {ascending: false});
   var auctions = res.data || [];
@@ -1855,11 +1988,12 @@ async function loadAdminStats() {
   var row = document.getElementById('admStatsRow');
   row.innerHTML = '<div class="statcard"><div class="statlbl">Auktionen gesamt</div><div class="statval">' + auctions.length + '</div></div><div class="statcard"><div class="statlbl">Aktive Auktionen</div><div class="statval">' + active.length + '</div></div><div class="statcard"><div class="statlbl">Gebote gesamt</div><div class="statval">' + totalBids + '</div></div><div class="statcard"><div class="statlbl">Abgeschlossen</div><div class="statval">' + (auctions.length - active.length) + '</div></div>';
   var detail = document.getElementById('admStatsDetail');
-  detail.innerHTML = '<div style="overflow-x:auto"><table class="btbl"><thead><tr><th>Fahrzeug</th><th>Code</th><th>Gebote</th><th>Hoechstgebot</th><th>Gewinner</th><th>Status</th></tr></thead><tbody>' + auctions.map(function(a) { var ended = now >= new Date(a.ends_at); return '<tr><td>' + (a.vehicle_name || '---') + '</td><td style="font-family:\'DM Mono\',monospace">' + esc(a.auction_code || '---') + '</td><td>' + (a.bids ? a.bids[0].count : 0) + '</td><td class="tamt">' + fmtEur(a.current_bid || 0) + '</td><td>' + (a.top_bidder || '---') + '</td><td>' + (ended ? '<span style="color:var(--greenl)">BEENDET</span>' : '<span style="color:var(--red)">AKTIV</span>') + '</td></tr>'; }).join('') + '</tbody></table></div>';
+  detail.innerHTML = '<div style="overflow-x:auto"><table class="btbl"><thead><tr><th>Fahrzeug</th><th>Code</th><th>Gebote</th><th>Höchstgebot</th><th>Gewinner</th><th>Status</th><th></th></tr></thead><tbody>' + auctions.map(function(a) { var ended = now >= new Date(a.ends_at); return '<tr><td>' + (a.vehicle_name || '---') + '</td><td style="font-family:\'DM Mono\',monospace">' + esc(a.auction_code || '---') + '</td><td>' + (a.bids ? a.bids[0].count : 0) + '</td><td class="tamt">' + fmtEur(a.current_bid || 0) + '</td><td>' + (a.top_bidder || '---') + '</td><td>' + (ended ? '<span style="color:var(--greenl)">BEENDET</span>' : '<span style="color:var(--red)">AKTIV</span>') + '</td><td><button onclick="deleteAuction(\'' + a.id + '\',\'' + esc(a.vehicle_name || '') + '\')" style="background:none;border:0.5px solid #e53e3e;border-radius:6px;padding:3px 8px;font-size:11px;color:#e53e3e;cursor:pointer;font-family:inherit">Löschen</button></td></tr>'; }).join('') + '</tbody></table></div>';
 }
 
 // === FOTO-UPLOAD (Supabase Storage via Backend) ===
 var uploadedPhotos = [];
+var uploadedPdfUrl = null;
 
 function renderPhotoGrid() {
   var grid = document.getElementById('aPhotoGrid');
@@ -1922,6 +2056,39 @@ async function handlePhotoUpload(files) {
   document.getElementById('aPhotoFile').value = '';
 }
 
+async function handlePdfUpload(files) {
+  if (!files || !files.length) return;
+  var file = files[0];
+  var statusEl = document.getElementById('pdfUploadStatus');
+  statusEl.style.color = 'var(--text3)';
+  if (file.type !== 'application/pdf') { statusEl.style.color = '#C0392B'; statusEl.textContent = 'Nur PDF-Dateien erlaubt.'; return; }
+  if (file.size > 50 * 1024 * 1024) { statusEl.style.color = '#C0392B'; statusEl.textContent = 'PDF zu groß (max. 50 MB).'; return; }
+  statusEl.textContent = 'Lade PDF hoch...';
+  try {
+    var base64 = await fileToBase64(file);
+    var res = await fetch(BACKEND_URL + '/api/admin/upload-pdf', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'x-admin-token': adminToken},
+      body: JSON.stringify({pdf: base64, filename: file.name})
+    });
+    var data = await res.json();
+    if (!res.ok) {
+      statusEl.style.color = '#C0392B';
+      statusEl.textContent = 'Fehler: ' + (data.error || 'Upload fehlgeschlagen');
+      return;
+    }
+    uploadedPdfUrl = data.url;
+    statusEl.style.color = 'var(--success)';
+    statusEl.textContent = '✓ PDF hochgeladen: ' + file.name;
+    var btn = document.getElementById('pdfUploadBtn');
+    if (btn) btn.textContent = '✓ ' + file.name.slice(0, 40) + ' – ersetzen';
+  } catch(e) {
+    statusEl.style.color = '#C0392B';
+    statusEl.textContent = 'Upload-Fehler: ' + e.message;
+  }
+  document.getElementById('aPdfFile').value = '';
+}
+
 function fileToBase64(file) {
   return new Promise(function(resolve, reject) {
     var reader = new FileReader();
@@ -1959,19 +2126,22 @@ async function saveAuction(status) {
         current_bid: start, min_increment: inc, snipe_extension: snipe,
         photos: uploadedPhotos, specs: specs, duration_seconds: dur,
         description: document.getElementById('aDesc').value.trim(),
+        checklist_pdf_url: uploadedPdfUrl || null,
         status: status
       })
     });
     var saveData = await saveRes.json();
-    if (!saveRes.ok) { msgEl.textContent = 'Fehler: ' + (saveData.error || 'Speichern fehlgeschlagen'); msgEl.className = 'save-msg err'; return; }
+    if (!saveRes.ok) { msgEl.textContent = 'Fehler: ' + (saveData.error || 'Speichern fehlgeschlagen'); msgEl.className = 'save-msg err'; showAdminToast('✕ ' + (saveData.error || 'Speichern fehlgeschlagen'), 'err'); return; }
     if (saveData.auction) aData = saveData.auction;
-    msgEl.textContent = 'Gespeichert! Code: ' + code; msgEl.className = 'save-msg ok';
+    var successMsg = status === 'published' ? '✓ Auktion veröffentlicht! Code: ' + code : '✓ Entwurf gespeichert! Code: ' + code;
+    msgEl.textContent = successMsg; msgEl.className = 'save-msg ok';
+    showAdminToast(successMsg, 'ok');
     loadAdminAuctionList(); loadAdminStats();
-  } catch(e) { msgEl.textContent = 'Verbindungsfehler.'; msgEl.className = 'save-msg err'; }
+  } catch(e) { msgEl.textContent = 'Verbindungsfehler.'; msgEl.className = 'save-msg err'; showAdminToast('✕ Verbindungsfehler.', 'err'); }
 }
 
 async function confirmReset() {
-  if (!confirm('Wirklich alle Gebote dieser Auktion loeschen?')) return;
+  if (!confirm('Wirklich alle Gebote dieser Auktion löschen?')) return;
   if (!aData) return;
   // FIX 1b: Reset via BACKEND (admin JWT required)
   try {
@@ -2078,8 +2248,7 @@ startTimer = function() {
 var _origLoadUI = loadUI;
 loadUI = function() {
   _origLoadUI();
-  var ct2 = document.getElementById('auctionCodeTag2');
-  if (ct2 && aData) ct2.textContent = 'Code: ' + (aData.auction_code || '');
+  
 };
 // Update dashboard user avatar initials
 var _origLoadProfile = loadProfile;
@@ -2099,9 +2268,110 @@ renderDashboard = function() {
   var sbBids = document.getElementById('sb-bids');
   var sbWatch = document.getElementById('sb-watch');
   if (sbCount) sbCount.textContent = allAuctions.length;
-  if (sbBids) sbBids.textContent = myBidsAll.length;
+  if (sbBids) var _activeIds = allAuctions.filter(function(a){ return a.status === "published" && new Date(a.ends_at) > new Date(); }).map(function(a){ return a.id; }); sbBids.textContent = [...new Set(myBidsAll.map(function(b){return b.auction_id;}).filter(function(id){ return _activeIds.indexOf(id) > -1; }))].length;
   if (sbWatch) sbWatch.textContent = watchlistIds.length;
 };
+
+function showAdminToast(txt, type) {
+  var toast = document.getElementById('bidToast');
+  if (!toast) return;
+  toast.textContent = txt;
+  toast.className = 'show ' + (type || 'ok');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function() { toast.className = ''; }, 4000);
+}
+
+// Mobile Nav Scroll-Indikator
+(function() {
+  var nav = document.querySelector('.topbar-nav');
+  var fade = document.querySelector('.topbar-nav-fade');
+  if (!nav || !fade) return;
+  nav.addEventListener('scroll', function() {
+    var atEnd = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 4;
+    fade.style.display = atEnd ? 'none' : 'flex';
+  });
+})();
+
+// Auto-Refresh alle 15 Sekunden
+setInterval(async function() {
+  try {
+    if (typeof loadAllAuctions === 'function') await loadAllAuctions();
+    if (typeof loadAuctionList === 'function') loadAuctionList();
+    if (typeof loadNotifications === 'function') loadNotifications();
+    if (typeof aData !== 'undefined' && aData && typeof loadFullHistory === 'function') loadFullHistory();
+    if (typeof renderDashboard === 'function' && document.getElementById('dashboardScreen') && document.getElementById('dashboardScreen').style.display !== 'none') renderDashboard();
+  } catch(e) {}
+}, 8000);
+
+// Karten-Timer: sekündlich aktualisieren
+setInterval(function() {
+  document.querySelectorAll('.ac-timer-overlay[data-ends-at]').forEach(function(el) {
+    var endsAt = el.getAttribute('data-ends-at');
+    if (!endsAt) return;
+    var diff = Math.max(0, Math.floor((new Date(endsAt) - new Date()) / 1000));
+    if (diff === 0) { el.textContent = 'Beendet'; return; }
+    var h = Math.floor(diff/3600), m = Math.floor((diff%3600)/60), s = diff%60;
+    el.textContent = (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  });
+}, 1000);
 </script>
+<div id="bidToast"></div>
+<!-- GLOBAL OVERLAYS – außerhalb aller Screen-Divs damit position:fixed funktioniert -->
+<div id="bidConfirmOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:700;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--white);border-radius:var(--radius-2xl);width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden">
+    <div style="background:var(--dark);color:#fff;padding:18px 24px;font-size:16px;font-weight:600">Gebot bestätigen</div>
+    <div style="padding:24px">
+      <div style="font-size:13px;color:var(--text3);margin-bottom:4px" id="bidConfirmVehicle"></div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:18px">Sie geben ein <strong>verbindliches Gebot</strong> ab in Höhe von:</div>
+      <div style="font-size:32px;font-weight:700;color:var(--red);text-align:center;margin-bottom:8px" id="bidConfirmAmount">EUR 0</div>
+      <div style="font-size:12px;color:var(--text3);text-align:center;margin-bottom:24px;line-height:1.5">Mit der Bestätigung geben Sie ein rechtlich verbindliches Gebot ab. Ein abgegebenes Gebot kann nicht zurückgenommen werden.</div>
+      <div style="display:flex;gap:10px">
+        <button onclick="cancelBidConfirm()" style="flex:1;background:var(--white);border:1.5px solid var(--border2);color:var(--text2);padding:13px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Abbrechen</button>
+        <button onclick="confirmBidSubmit()" style="flex:1.4;background:var(--red);border:none;color:#fff;padding:13px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Verbindlich bieten</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">×</button>
+  <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
+  <img id="lbImg" src="" alt="Fahrzeugbild">
+  <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<div id="profileOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;overflow-y:auto;padding:20px">
+  <div style="background:var(--white);border-radius:var(--radius-2xl);width:100%;max-width:460px;margin:40px auto;box-shadow:0 20px 60px rgba(0,0,0,.2)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:0.5px solid var(--border)">
+      <strong style="font-size:16px">Profil-Einstellungen</strong>
+      <button onclick="closeProfileSettings()" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text3);line-height:1">×</button>
+    </div>
+    <div style="padding:24px">
+      <div style="margin-bottom:24px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px">Angemeldet als</div>
+        <div id="profileEmail" style="font-size:13px;color:var(--text2)">---</div>
+        <div id="profileName" style="font-size:12px;color:var(--text3);margin-top:2px"></div>
+      </div>
+      <div style="border-top:0.5px solid var(--border);padding-top:20px;margin-bottom:24px">
+        <div style="font-size:14px;font-weight:600;margin-bottom:12px">E-Mail-Adresse ändern</div>
+        <div class="pw-wrap" style="margin-bottom:10px"><input type="email" id="newEmail" placeholder="Neue E-Mail-Adresse" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"></div>
+        <button onclick="changeEmail()" style="background:var(--red);border:none;border-radius:var(--radius);padding:10px 18px;color:#fff;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500">E-Mail-Adresse ändern</button>
+        <div id="emailMsg" style="font-size:12px;margin-top:8px;min-height:14px"></div>
+      </div>
+      <div style="border-top:0.5px solid var(--border);padding-top:20px">
+        <div style="font-size:14px;font-weight:600;margin-bottom:12px">Passwort ändern</div>
+        <div class="pw-wrap" style="margin-bottom:10px"><input type="password" id="newPassword" placeholder="Neues Passwort (min. 8 Zeichen)" style="width:100%;padding:11px 42px 11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"><button type="button" class="pw-toggle" onclick="togglePw('newPassword',this)"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+        <button onclick="changePassword()" style="background:var(--red);border:none;border-radius:var(--radius);padding:10px 18px;color:#fff;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500">Passwort ändern</button>
+        <div id="passwordMsg" style="font-size:12px;margin-top:8px;min-height:14px"></div>
+      </div>
+      <div class="profile-logout-mobile" style="border-top:0.5px solid var(--border);padding-top:20px;margin-top:4px;display:none">
+        <button onclick="closeProfileSettings();doLogout()" style="width:100%;background:none;border:0.5px solid var(--border2);border-radius:var(--radius);padding:11px;color:var(--text2);font-size:14px;cursor:pointer;font-family:inherit;font-weight:500">Ausloggen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer style="background:#0A0A0A;border-top:1px solid #222;padding:14px 5%;text-align:center;"><div style="display:flex;gap:18px;justify-content:center;margin-bottom:6px;flex-wrap:wrap;"><a href="impressum.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none;">Impressum</a><a href="datenschutz.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none;">Datenschutzerklärung</a><a href="agb.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none;">AGB</a></div><p style="color:rgba(255,255,255,.25);font-size:.72rem;">&copy; 2026 Safety Car &middot; Jenne, Zehner Safety Car GbR</p></footer>
 </body>
 </html>
