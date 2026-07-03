@@ -293,7 +293,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .vstage-ph svg{width:320px}
 .vsov{display:none;position:absolute;inset:0;background:rgba(0,0,0,.85);flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:10}
 .vsov-title{font-size:48px;font-weight:600;letter-spacing:4px;color:white}
-.vsov-title span{color:var(--red)}
+.vsov-title span{color:white}
 .vsov-sub{font-size:14px;color:rgba(255,255,255,.7);font-family:"DM Mono",monospace}
 .sc{position:absolute;width:18px;height:18px;border-color:var(--red);border-style:solid}
 .sc.tl{top:10px;left:10px;border-width:2px 0 0 2px;border-radius:2px 0 0 0}
@@ -1459,6 +1459,11 @@ async function doLogout() {
   if (notifSub) sb.removeChannel(notifSub);
   await sb.auth.signOut();
   cUser = null; cProfile = null; aData = null;
+  // Sicherheit: eingegebene Zugangsdaten aus den Formularen entfernen
+  ['li_email','li_pw','su_name','su_contact','su_email','su_phone','su_pw','su_pw2','fg_email'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+  var liErr = document.getElementById('liErr'); if (liErr) liErr.textContent = '';
   showScreen('loginScreen');
 }
 
@@ -2297,8 +2302,10 @@ renderDashboard = function() {
   var sbCount = document.getElementById('sb-count');
   var sbBids = document.getElementById('sb-bids');
   var sbWatch = document.getElementById('sb-watch');
-  if (sbCount) sbCount.textContent = allAuctions.length;
-  if (sbBids) var _activeIds = allAuctions.filter(function(a){ return a.status === "published" && new Date(a.ends_at) > new Date(); }).map(function(a){ return a.id; }); sbBids.textContent = [...new Set(myBidsAll.map(function(b){return b.auction_id;}).filter(function(id){ return _activeIds.indexOf(id) > -1; }))].length;
+  var _activeAuctions = allAuctions.filter(function(a){ return a.status === "published" && new Date(a.ends_at) > new Date(); });
+  if (sbCount) sbCount.textContent = _activeAuctions.length;
+  var _activeIds = _activeAuctions.map(function(a){ return a.id; });
+  if (sbBids) sbBids.textContent = [...new Set(myBidsAll.map(function(b){return b.auction_id;}).filter(function(id){ return _activeIds.indexOf(id) > -1; }))].length;
   if (sbWatch) sbWatch.textContent = watchlistIds.length;
 };
 
