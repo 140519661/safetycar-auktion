@@ -1170,19 +1170,22 @@ function renderAuctionsGrid(containerId, auctions, activeOnly) {
   }
 }
 
+var currentAuctionFilter = 'all';
+
 function renderAllAuctions() {
-  renderAuctionsGrid('allAuctionsGrid', allAuctions, false);
+  var now = new Date();
+  var search = (document.getElementById('searchInput').value || '').toLowerCase();
+  var filtered = allAuctions;
+  if (currentAuctionFilter === 'active') filtered = filtered.filter(function(a) { return now < new Date(a.ends_at); });
+  else if (currentAuctionFilter === 'ended') filtered = filtered.filter(function(a) { return now >= new Date(a.ends_at); });
+  if (search) filtered = filtered.filter(function(a) { return (a.vehicle_name || '').toLowerCase().indexOf(search) >= 0 || (a.auction_code || '').toLowerCase().indexOf(search) >= 0; });
+  renderAuctionsGrid('allAuctionsGrid', filtered, false);
 }
 
 function filterAuctions(type, btn) {
-  var now = new Date();
-  var search = document.getElementById('searchInput').value.toLowerCase();
-  var filtered = allAuctions;
-  if (type === 'active') filtered = allAuctions.filter(function(a) { return now < new Date(a.ends_at); });
-  else if (type === 'ended') filtered = allAuctions.filter(function(a) { return now >= new Date(a.ends_at); });
-  else if (type === 'search') { filtered = allAuctions.filter(function(a) { return (a.vehicle_name || '').toLowerCase().indexOf(search) >= 0 || (a.auction_code || '').toLowerCase().indexOf(search) >= 0; }); }
+  if (type === 'all' || type === 'active' || type === 'ended') currentAuctionFilter = type;
   if (btn) { document.querySelectorAll('.filter-pill').forEach(function(b) { b.classList.remove('active'); }); btn.classList.add('active'); }
-  renderAuctionsGrid('allAuctionsGrid', filtered, false);
+  renderAllAuctions();
 }
 
 function renderMyBidsTable() {
