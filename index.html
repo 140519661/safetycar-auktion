@@ -865,10 +865,16 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
   <div class="adm-pill-row" id="admBidAuctionSel" style="margin-bottom:0"></div>
+  <div style="display:flex;gap:8px;align-items:center">
+  <button onclick="clearBidHistory()" style="background:none;border:0.5px solid var(--border2);border-radius:var(--radius);padding:6px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
+    Historie löschen
+  </button>
   <button onclick="exportCSV()" style="background:none;border:0.5px solid var(--border2);border-radius:var(--radius);padding:6px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
     CSV Export
   </button>
+  </div>
 </div>
       <div style="overflow-x:auto"><table class="btbl"><thead><tr><th>#</th><th>Bieter</th><th>E-Mail</th><th>Betrag</th><th>Auktion</th><th>Zeit</th><th></th></tr></thead><tbody id="admBody"><tr><td colspan="7" class="hemp">Keine Gebote</td></tr></tbody></table></div>
     </div>
@@ -1845,6 +1851,22 @@ async function deleteAuction(id, name) {
     if (aData && aData.id === id) { aData = null; newAuction(); }
     await loadAdminAuctionList();
     loadAdminStats();
+  } catch(e) { alert('Verbindungsfehler.'); }
+}
+
+async function clearBidHistory() {
+  if (!aData) { alert('Bitte zuerst eine Auktion auswählen.'); return; }
+  var name = aData.vehicle_name || aData.auction_code || 'diese Auktion';
+  if (!confirm('Gesamte Gebotshistorie von "' + name + '" wirklich löschen?\n\nAlle einzelnen Gebote werden entfernt. Die Auktion und der angezeigte Preis bleiben erhalten. Dieser Schritt kann NICHT rückgängig gemacht werden.')) return;
+  try {
+    var res = await fetch(BACKEND_URL + '/api/admin/auctions/' + aData.id + '/history', {
+      method: 'DELETE',
+      headers: {'x-admin-token': adminToken}
+    });
+    if (!res.ok) { var d = await res.json(); alert('Fehler: ' + (d.error || 'Löschen fehlgeschlagen')); return; }
+    refreshAdminBids();
+    loadAdminStats();
+    alert('Gebotshistorie wurde gelöscht.');
   } catch(e) { alert('Verbindungsfehler.'); }
 }
 
