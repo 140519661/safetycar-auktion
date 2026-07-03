@@ -257,7 +257,12 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .notif-content{flex:1;min-width:0}
 .notif-title{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px}
 .notif-sub{font-size:11px;color:var(--text3)}
-.notif-time{font-size:10px;color:var(--text4);margin-top:2px}
+.notif-time{font-size:10px;color:var(--text4);margin-top:6px}
+.notif-type{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.5px;padding:2px 9px;border-radius:20px;margin-bottom:6px}
+.notif-type.red{background:var(--red-pale);color:var(--red)}
+.notif-type.green{background:var(--success-bg);color:var(--success)}
+.notif-type.amber{background:var(--warning-bg);color:var(--warning)}
+.notif-msg{font-size:13px;color:var(--text);line-height:1.45}
 .notif-unread-dot{width:7px;height:7px;background:var(--red);border-radius:50%;margin-top:4px;flex-shrink:0}
 .notif-empty{padding:24px;text-align:center;font-size:13px;color:var(--text3)}
 
@@ -1275,7 +1280,11 @@ async function loadNotifications() {
     var n = notifs[i];
     var item = document.createElement('div');
     item.className = 'notif-item' + (n.read ? '' : ' unread');
-    item.innerHTML = '<div class="notif-type">' + (n.type || 'INFO') + '</div><div class="notif-msg">' + (n.message || '') + '</div><div class="notif-time">' + fmtTime(n.created_at) + '</div>';
+    var t = (n.type || 'INFO').toUpperCase();
+    var typeColor = (t.indexOf('ÜBERBOTEN') >= 0 || t.indexOf('UEBERBOTEN') >= 0) ? 'red'
+      : (t.indexOf('ERSTEIGERT') >= 0 || t.indexOf('GEWONNEN') >= 0 || t.indexOf('HÖCHST') >= 0) ? 'green'
+      : 'amber';
+    item.innerHTML = '<div class="notif-content"><div class="notif-type ' + typeColor + '">' + t + '</div><div class="notif-msg">' + (n.message || '') + '</div><div class="notif-time">' + fmtTime(n.created_at) + '</div></div>';
     list.appendChild(item);
   }
 }
