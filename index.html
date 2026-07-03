@@ -572,8 +572,8 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
   <div class="auth-card">
     <div class="auth-title">Konto erstellen</div>
     <div class="auth-desc">Einmalig registrieren – dauerhafter Zugang zu allen Auktionen.</div>
-    <div class="fi"><label>Name Ihres Unternehmens</label><input type="text" id="su_name" placeholder="Name Ihres Unternehmens" autocomplete="organization"></div>
     <div class="fi"><label>Ansprechpartner (Vor- &amp; Zuname)</label><input type="text" id="su_contact" placeholder="Ansprechpartner (Vor- &amp; Zuname)" autocomplete="name"></div>
+    <div class="fi"><label>Name Ihres Unternehmens</label><input type="text" id="su_name" placeholder="Name Ihres Unternehmens" autocomplete="organization"></div>
     <div class="fi"><label>E-Mail-Adresse</label><input type="email" id="su_email" placeholder="E-Mail-Adresse" autocomplete="email"></div>
     <div class="fi"><label>Telefonnummer</label><input type="tel" id="su_phone" placeholder="Telefonnummer" autocomplete="tel"></div>
     <div class="fi"><label>Passwort</label><div class="pw-wrap"><input type="password" id="su_pw" placeholder="Passwort" autocomplete="new-password"><button type="button" class="pw-toggle" onclick="togglePw('su_pw',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="pwhint">Min. 8 Zeichen empfohlen</div></div>
@@ -646,11 +646,11 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 <!-- DASHBOARD -->
 <div id="dashboardScreen">
   <div class="topbar">
-    <div class="topbar-logo"><div class="topbar-name"><span>Safety</span> Car</div></div>
+    <div class="topbar-logo" style="cursor:pointer" onclick="showDashTab('overview',null)"><div class="topbar-name"><span>Safety</span> Car</div></div>
     <div class="topbar-nav-wrap">
       <div class="topbar-nav">
         <button class="topbar-nav-btn active" onclick="showDashTab('overview',this)">Übersicht</button>
-        <button class="topbar-nav-btn" onclick="showDashTab('auctions',this)">Alle Auktionen</button>
+        <button class="topbar-nav-btn" onclick="showDashTab('auctions',this)">Auktionen</button>
         <button class="topbar-nav-btn" onclick="showDashTab('watchlist',this)">Watchlist</button>
         <button class="topbar-nav-btn" onclick="showDashTab('mybids',this)">Meine Gebote</button>
       </div>
@@ -670,7 +670,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
       <div class="sidebar-section">
         <div class="sidebar-lbl">Navigation</div>
         <div class="sidebar-item active" onclick="showDashTab('overview',null)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Übersicht</div>
-        <div class="sidebar-item" onclick="showDashTab('auctions',null)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>Alle Auktionen<span class="sidebar-badge gray" id="sb-count">0</span></div>
+        <div class="sidebar-item" onclick="showDashTab('auctions',null)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>Auktionen<span class="sidebar-badge gray" id="sb-count">0</span></div>
         <div class="sidebar-item" onclick="showDashTab('mybids',null)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Meine Gebote<span class="sidebar-badge gray" id="sb-bids">0</span></div>
         <div class="sidebar-item" onclick="showDashTab('watchlist',null)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Watchlist<span class="sidebar-badge gray" id="sb-watch">0</span></div>
       </div>
@@ -701,7 +701,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
       </div>
       <div id="tab-auctions" style="display:none">
         <div class="section-hdr">
-          <div class="section-title">Alle Auktionen</div>
+          <div class="section-title">Auktionen</div>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
             <div class="filter-bar">
               <div class="filter-pill active" onclick="filterAuctions('all',this)">Alle</div>
@@ -1100,7 +1100,7 @@ function renderDashboard() {
   if (!cProfile || cProfile.approved !== true) {
     var waitMsg = (cProfile && cProfile.approved === false)
       ? '<div style="font-size:20px;font-weight:600;margin-bottom:12px">Zugang deaktiviert</div><div style="font-size:14px;color:var(--text3);max-width:340px;margin:0 auto;line-height:1.6">Ihr Zugang wurde deaktiviert. Bitte wenden Sie sich an SafetyCar falls Sie Fragen haben.</div>'
-      : '<div style="font-size:20px;font-weight:600;margin-bottom:12px">Zugang wird geprüft</div><div style="font-size:14px;color:var(--text3);max-width:340px;margin:0 auto;line-height:1.6">Ihre Registrierung wurde erhalten. Unser Team prüft Ihren Händlerstatus und schaltet Sie in Kürze frei.<br><br>Sie erhalten eine E-Mail sobald Ihr Zugang aktiviert wurde.</div>';
+      : '<div style="font-size:20px;font-weight:600;margin-bottom:12px">Registrierung wird geprüft</div><div style="font-size:14px;color:var(--text3);max-width:340px;margin:0 auto;line-height:1.6">Unser Team prüft Ihre Registrierung und schaltet den Zugang in Kürze frei.<br><br>Sie erhalten eine E-Mail, sobald Ihr Zugang aktiviert wurde.</div>';
     if (dashContent) dashContent.innerHTML = '<div style="text-align:center;padding:60px 20px"><div style="font-size:48px;margin-bottom:20px">⏳</div>' + waitMsg + '<div style="margin-top:28px"><button onclick="doLogout()" style="background:none;border:0.5px solid var(--border2);border-radius:8px;padding:10px 20px;font-size:13px;color:var(--text2);cursor:pointer;font-family:inherit">Ausloggen</button></div></div>';
     document.getElementById('ds-active').textContent = '–';
     document.getElementById('ds-leading').textContent = '–';
@@ -1193,7 +1193,10 @@ function renderMyBidsTable() {
     if (seen[aKey]) continue;
     seen[aKey] = true;
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td>' + esc(b.auction.vehicle_name || '---') + '</td><td class="amt">' + fmtEur(b.amount) + '</td><td class="amt">' + fmtEur(b.auction.current_bid || 0) + '</td><td class="' + statusClass + '">' + statusText + '</td><td style="font-size:10px">' + (ended ? 'Beendet' : fmtCountdown(b.auction.ends_at)) + '</td><td>' + (!ended ? '<button style="background:var(--red);border:none;padding:6px 14px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;border-radius:8px;font-family:inherit;white-space:nowrap" onclick="joinAuctionById(\'' + b.auction_id + '\')">Jetzt bieten</button>' : '') + '</td>';
+    var codeStr = b.auction.auction_code || '';
+    var nameCell = '<td>' + esc(b.auction.vehicle_name || '---') + (codeStr ? '<div style="font-size:11px;color:var(--text3);font-family:\'DM Mono\',monospace;margin-top:2px">' + esc(codeStr) + '</div>' : '') + '</td>';
+    var timerCell = '<td>' + (ended ? 'Beendet' : '<span class="bid-timer" data-ends-at="' + b.auction.ends_at + '">' + fmtCountdown(b.auction.ends_at) + '</span>') + '</td>';
+    tr.innerHTML = nameCell + '<td class="amt">' + fmtEur(b.amount) + '</td><td class="amt">' + fmtEur(b.auction.current_bid || 0) + '</td><td class="' + statusClass + '">' + statusText + '</td>' + timerCell + '<td>' + (!ended ? '<button style="background:var(--red);border:none;padding:6px 14px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;border-radius:8px;font-family:inherit;white-space:nowrap" onclick="joinAuctionById(\'' + b.auction_id + '\')">Jetzt bieten</button>' : '') + '</td>';
     tbody.appendChild(tr);
   }
 }
@@ -1544,7 +1547,7 @@ function updateMyStatus(currentBid) {
   box.className = 'my-status-card ' + (leading ? 'leading' : 'outbid');
   document.getElementById('myStatusLbl').textContent = leading ? 'Sie sind der Höchstbietende' : 'Sie wurden überboten';
   document.getElementById('myStatusVal').textContent = fmtEur(myBest);
-  document.getElementById('myStatusInfo').textContent = leading ? 'Ihr Gebot ist aktuell das höchste' : 'Höchstgebot ist jetzt' + fmtEur(currentBid);
+  document.getElementById('myStatusInfo').textContent = leading ? 'Ihr Gebot ist aktuell das höchste' : 'Höchstgebot ist jetzt ' + fmtEur(currentBid);
 }
 
 async function loadFullHistory() {
@@ -1622,6 +1625,9 @@ async function confirmBidSubmit() {
     aData.current_bid = amount; aData.top_bidder = cProfile ? cProfile.display_name : cUser.email;
     if (data.sniped && data.newEndsAt) { aData.ends_at = data.newEndsAt; document.getElementById('snipeNotice').style.display = 'flex'; }
     updateBid(); loadFullHistory(); loadMyBids();
+    // Dashboard-Daten (Meine Gebote / Übersicht) sofort aktualisieren
+    await loadMyBidsAll();
+    if (typeof renderDashboard === 'function') renderDashboard();
     showMsg(data.message || 'Gebot erfasst!', data.sniped ? 'warn' : 'ok');
     document.getElementById('bidInput').value = '';
   } catch(e) { showMsg('Verbindungsfehler. Bitte erneut versuchen.', 'err'); }
@@ -2313,6 +2319,15 @@ setInterval(function() {
     var h = Math.floor(diff/3600), m = Math.floor((diff%3600)/60), s = diff%60;
     el.textContent = (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
   });
+  // Meine-Gebote-Tabelle: Timer sekündlich aktualisieren
+  document.querySelectorAll('.bid-timer[data-ends-at]').forEach(function(el) {
+    var endsAt = el.getAttribute('data-ends-at');
+    if (!endsAt) return;
+    var diff = Math.max(0, Math.floor((new Date(endsAt) - new Date()) / 1000));
+    if (diff === 0) { el.textContent = 'Beendet'; return; }
+    var h = Math.floor(diff/3600), m = Math.floor((diff%3600)/60), s = diff%60;
+    el.textContent = (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  });
 }, 1000);
 </script>
 <div id="bidToast"></div>
@@ -2322,7 +2337,7 @@ setInterval(function() {
     <div style="background:var(--dark);color:#fff;padding:18px 24px;font-size:16px;font-weight:600">Gebot bestätigen</div>
     <div style="padding:24px">
       <div style="font-size:13px;color:var(--text3);margin-bottom:4px" id="bidConfirmVehicle"></div>
-      <div style="font-size:13px;color:var(--text2);margin-bottom:18px">Sie geben ein <strong>verbindliches Gebot</strong> ab in Höhe von:</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:18px">Sie geben ein <strong>verbindliches Angebot</strong> in Höhe von:</div>
       <div style="font-size:32px;font-weight:700;color:var(--red);text-align:center;margin-bottom:8px" id="bidConfirmAmount">EUR 0</div>
       <div style="font-size:12px;color:var(--text3);text-align:center;margin-bottom:24px;line-height:1.5">Mit der Bestätigung geben Sie ein rechtlich verbindliches Gebot ab. Ein abgegebenes Gebot kann nicht zurückgenommen werden.</div>
       <div style="display:flex;gap:10px">
