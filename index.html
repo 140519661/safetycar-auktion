@@ -304,8 +304,8 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .v-lot-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
 .v-lot{font-size:11px;color:var(--text4);font-family:"DM Mono",monospace;text-transform:uppercase;letter-spacing:1px}
 .v-status{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
-.v-status.active{background:var(--red-pale);color:var(--red);border:0.5px solid var(--red-border)}
-.v-status.ended{background:var(--success-bg);color:var(--success);border:0.5px solid var(--success-border)}
+.v-status.active{background:var(--success-bg);color:var(--success);border:0.5px solid var(--success-border)}
+.v-status.ended{background:var(--red-pale);color:var(--red);border:0.5px solid var(--red-border)}
 .v-code{font-size:11px;background:var(--light);border-radius:4px;padding:2px 8px;color:var(--text3);font-family:"DM Mono",monospace}
 .v-name{font-size:24px;font-weight:600;color:var(--text);letter-spacing:-0.5px;margin-bottom:3px}
 .v-sub{font-size:14px;color:var(--text3);margin-bottom:14px}
@@ -723,8 +723,8 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 
 <!-- AUCTION SCREEN -->
 <div id="auctionScreen">
-  <div style="display:none;padding:12px 24px 0;" id="auctionBackBar">
-    <button onclick="showDashboard()" style="background:none;border:none;cursor:pointer;color:var(--text2);font-size:14px;display:flex;align-items:center;gap:6px;padding:0;">
+  <div style="display:none;padding:6px 24px 12px;" id="auctionBackBar">
+    <button onclick="showDashboard()" style="background:none;border:none;cursor:pointer;color:var(--text2);font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;padding:0;">
       ← Zurück zur Übersicht
     </button>
   </div>
@@ -827,7 +827,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
           <div class="aff"><label>Fahrzeugbeschreibung</label><textarea id="aDesc" placeholder="Ausführliche Beschreibung des Fahrzeugs, Zustand, Besonderheiten, Historie..." style="min-height:90px"></textarea></div>
           <div class="aff"><label>Auktionscode (intern)</label><input type="text" id="aLot" placeholder="z.B. 2024-047"></div>
           <div class="aff-row"><div class="aff"><label>Startgebot (EUR)</label><input type="number" id="aStart" placeholder="100000"></div><div class="aff"><label>Min. Erhöhung (EUR)</label><input type="number" id="aInc" placeholder="500"></div></div>
-          <div class="aff"><label>Anti-Sniping (Sekunden)</label><input type="number" id="aSnipe" placeholder="120" value="120"></div>
+          <div class="aff"><label>Anti-Sniping (Sekunden)</label><input type="number" id="aSnipe" placeholder="15" value="15"></div>
           <div class="aff"><label>Fahrzeugfotos (mehrere möglich, erstes = Hauptbild)</label>
             <input type="file" id="aPhotoFile" accept="image/jpeg,image/png,image/webp" multiple style="display:none" onchange="handlePhotoUpload(this.files)">
             <button type="button" onclick="document.getElementById('aPhotoFile').click()" style="width:100%;padding:14px;border:1.5px dashed var(--border2);border-radius:var(--radius);background:var(--off-white);cursor:pointer;font-family:inherit;font-size:13px;color:var(--text2);display:flex;align-items:center;justify-content:center;gap:8px" onmouseover="this.style.borderColor='var(--red)'" onmouseout="this.style.borderColor='var(--border2)'">
@@ -1541,13 +1541,15 @@ function updateMyStatus(currentBid) {
   if (!myBidsAll || !aData) { box.style.display = 'none'; return; }
   var myBidsForThis = myBidsAll.filter(function(b) { return b.auction_id === aData.id; });
   if (!myBidsForThis.length) { box.style.display = 'none'; return; }
-  var myBest = myBidsForThis[0].amount;
   var leading = aData.top_bidder === myName;
+  // Wenn führend, entspricht das eigene Gebot immer dem aktuellen Höchstgebot (stets aktuell)
+  var myBest = leading ? currentBid : myBidsForThis[0].amount;
   box.style.display = 'block';
   box.className = 'my-status-card ' + (leading ? 'leading' : 'outbid');
   document.getElementById('myStatusLbl').textContent = leading ? 'Sie sind der Höchstbietende' : 'Sie wurden überboten';
   document.getElementById('myStatusVal').textContent = fmtEur(myBest);
-  document.getElementById('myStatusInfo').textContent = leading ? 'Ihr Gebot ist aktuell das höchste' : 'Höchstgebot ist jetzt ' + fmtEur(currentBid);
+  // Führend: keine Zusatzzeile (wäre doppelt zur Überschrift). Überboten: aktuelles Höchstgebot zeigen.
+  document.getElementById('myStatusInfo').textContent = leading ? '' : 'Höchstgebot ist jetzt ' + fmtEur(currentBid);
 }
 
 async function loadFullHistory() {
@@ -1867,7 +1869,7 @@ function prefillForm() {
   document.getElementById('aLot').value = aData.lot_number || '';
   document.getElementById('aStart').value = aData.current_bid || '';
   document.getElementById('aInc').value = aData.min_increment || 500;
-  document.getElementById('aSnipe').value = aData.snipe_extension || 120;
+  document.getElementById('aSnipe').value = aData.snipe_extension || 15;
   uploadedPhotos = (aData.photos && aData.photos.length) ? aData.photos.slice() : (aData.photo_url ? [aData.photo_url] : []);
   renderPhotoGrid();
   uploadedPdfUrl = aData.checklist_pdf_url || null;
@@ -1886,7 +1888,7 @@ function newAuction() {
   var us = document.getElementById('uploadStatus'); if (us) us.textContent = '';
   var ps = document.getElementById('pdfUploadStatus'); if (ps) ps.textContent = '';
   document.getElementById('aInc').value = 500;
-  document.getElementById('aSnipe').value = 120;
+  document.getElementById('aSnipe').value = 15;
 
   document.getElementById('admFormTitle').textContent = 'NEUE AUKTION';
   document.getElementById('saveMsg').textContent = '';
@@ -2116,7 +2118,7 @@ async function saveAuction(status) {
   var lot = document.getElementById('aLot').value.trim();
   var start = parseFloat(document.getElementById('aStart').value) || 0;
   var inc = parseFloat(document.getElementById('aInc').value) || 500;
-  var snipe = parseInt(document.getElementById('aSnipe').value) || 120;
+  var snipe = parseInt(document.getElementById('aSnipe').value) || 15;
   var dur = parseInt(document.getElementById('aDur').value);
   var sr = document.getElementById('aSpecs').value.trim();
   var specs = [];
