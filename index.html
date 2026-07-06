@@ -45,7 +45,9 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .auth-logo-icon svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:1.8}
 .auth-logo-name{font-size:20px;font-weight:600;color:var(--text);letter-spacing:-0.3px}
 .auth-logo-name span{color:var(--red)}
-.auth-card{background:var(--white);border-radius:var(--radius-xl);border:0.5px solid var(--border);padding:36px;width:100%;max-width:420px;box-shadow:var(--shadow-md)}
+.auth-card{background:var(--white);border-radius:var(--radius-xl);border:0.5px solid var(--border);padding:40px 36px 36px;width:100%;max-width:420px;box-shadow:var(--shadow-md)}
+.auth-card-logo{display:flex;justify-content:center;margin-bottom:30px}
+.auth-card-logo img{height:34px;width:auto;display:block}
 .auth-title{font-size:20px;font-weight:600;color:var(--text);margin-bottom:4px}
 .auth-desc{font-size:13px;color:var(--text3);margin-bottom:24px;padding-bottom:20px;border-bottom:0.5px solid var(--border)}
 .fi{margin-bottom:14px}
@@ -84,7 +86,9 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 
 /* ── SELECTOR ── */
 #selectorScreen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#F8F7F5 0%,#FFF0F0 50%,#F8F7F5 100%);padding:20px}
-.sel-card{background:var(--white);border-radius:var(--radius-xl);border:0.5px solid var(--border);padding:32px;width:100%;max-width:520px;box-shadow:var(--shadow-md)}
+.sel-card{background:var(--white);border-radius:var(--radius-xl);border:0.5px solid var(--border);padding:36px 32px 32px;width:100%;max-width:520px;box-shadow:var(--shadow-md)}
+.sel-card-logo{display:flex;justify-content:center;margin-bottom:28px}
+.sel-card-logo img{height:34px;width:auto;display:block}
 .sel-title{font-size:18px;font-weight:600;margin-bottom:4px}
 .sel-desc{font-size:13px;color:var(--text3);margin-bottom:20px;padding-bottom:16px;border-bottom:0.5px solid var(--border)}
 .auction-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;max-height:300px;overflow-y:auto}
@@ -580,8 +584,8 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 
 <!-- SIGNUP -->
 <div class="auth-screen" id="signupScreen">
-  <div class="auth-logo"><img src="logo.png" alt="Safety Car" style="height:34px;width:auto;display:inline-block"></div>
   <div class="auth-card">
+    <div class="auth-card-logo"><img src="logo.png" alt="Safety Car"></div>
     <div class="auth-title">Konto erstellen</div>
     <div class="auth-desc">Einmalig registrieren – dauerhafter Zugang zu allen Auktionen.</div>
     <div class="fi"><label>Ansprechpartner (Vor- &amp; Zuname)</label><input type="text" id="su_contact" placeholder="Ansprechpartner (Vor- &amp; Zuname)" autocomplete="name"></div>
@@ -599,8 +603,8 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 
 <!-- LOGIN -->
 <div class="auth-screen" id="loginScreen">
-  <div class="auth-logo"><img src="logo.png" alt="Safety Car" style="height:34px;width:auto;display:inline-block"></div>
   <div class="auth-card">
+    <div class="auth-card-logo"><img src="logo.png" alt="Safety Car"></div>
     <div class="auth-title">Willkommen zurück!</div>
     <div class="auth-desc">Melden Sie sich an, um an unseren Auktionen teilzunehmen.</div>
     <div class="fi"><label>E-Mail-Adresse</label><input type="email" id="li_email" placeholder="E-Mail-Adresse" autocomplete="email"></div>
@@ -613,8 +617,8 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 
 <!-- FORGOT -->
 <div class="auth-screen" id="forgotScreen">
-  <div class="auth-logo"><img src="logo.png" alt="Safety Car" style="height:34px;width:auto;display:inline-block"></div>
   <div class="auth-card">
+    <div class="auth-card-logo"><img src="logo.png" alt="Safety Car"></div>
     <div class="auth-title">Passwort zurücksetzen</div>
     <div class="auth-desc">Wir senden Ihnen einen Reset-Link per E-Mail zu.</div>
     <div class="fi"><label>Ihre E-Mail-Adresse</label><input type="email" id="fg_email" placeholder="E-Mail-Adresse"></div>
@@ -627,8 +631,8 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 
 <!-- RESET -->
 <div class="auth-screen" id="resetScreen">
-  <div class="auth-logo"><img src="logo.png" alt="Safety Car" style="height:34px;width:auto;display:inline-block"></div>
   <div class="auth-card">
+    <div class="auth-card-logo"><img src="logo.png" alt="Safety Car"></div>
     <div class="auth-title">Neues Passwort</div>
     <div class="auth-desc">Bitte neues Passwort eingeben</div>
     <div class="fi"><label>Neues Passwort</label><div class="pw-wrap"><input type="password" id="rs_pw" placeholder="Mindestens 8 Zeichen"><button type="button" class="pw-toggle" onclick="togglePw('rs_pw',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
@@ -640,8 +644,8 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 
 <!-- SELECTOR -->
 <div id="selectorScreen">
-  <div class="auth-logo" style="margin-bottom:28px"><img src="logo.png" alt="Safety Car" style="height:34px;width:auto;display:inline-block"></div>
   <div class="sel-card">
+    <div class="sel-card-logo"><img src="logo.png" alt="Safety Car"></div>
     <div class="sel-title">Auktion auswählen</div>
     <div class="sel-desc">Aktive Auktion wählen oder Auktionscode eingeben</div>
     <div class="auction-list" id="auctionList"><div class="hemp">Lade Auktionen...</div></div>
@@ -2397,7 +2401,7 @@ setInterval(function() {
     <div style="background:var(--dark);color:#fff;padding:18px 24px;font-size:16px;font-weight:600">Gebot bestätigen</div>
     <div style="padding:24px">
       <div style="font-size:13px;color:var(--text3);margin-bottom:4px" id="bidConfirmVehicle"></div>
-      <div style="font-size:13px;color:var(--text2);margin-bottom:18px">Sie geben ein <strong>verbindliches Angebot</strong> in Höhe von:</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:18px"><strong>Verbindliches Angebot</strong> in Höhe von:</div>
       <div style="font-size:32px;font-weight:700;color:var(--red);text-align:center;margin-bottom:8px" id="bidConfirmAmount">EUR 0</div>
       <div style="font-size:12px;color:var(--text3);text-align:center;margin-bottom:24px;line-height:1.5">Mit der Bestätigung geben Sie ein rechtlich verbindliches Gebot ab. Ein abgegebenes Gebot kann nicht zurückgenommen werden.</div>
       <div style="display:flex;gap:10px">
@@ -2448,15 +2452,33 @@ setInterval(function() {
 </div>
 
 <footer style="background:#0A0A0A;border-top:1px solid #222;padding:14px 5%;text-align:center;"><div style="display:flex;gap:18px;justify-content:center;margin-bottom:6px;flex-wrap:wrap;"><a href="impressum.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none;">Impressum</a><a href="datenschutz.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none;">Datenschutzerklärung</a><a href="agb.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none;">AGB</a></div><p style="color:rgba(255,255,255,.25);font-size:.72rem;">&copy; 2026 Safety Car &middot; Jenne, Zehner Safety Car GbR</p></footer>
-<div id="cookieBanner" style="display:none;position:fixed;left:16px;right:16px;bottom:16px;max-width:540px;margin:0 auto;background:#fff;border:0.5px solid var(--border2);border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.18);padding:16px 18px;z-index:900;font-size:13px;color:var(--text2);line-height:1.55">
-  Diese Seite verwendet ausschließlich technisch notwendige Cookies bzw. lokalen Speicher, um Ihren Login und die Auktionsfunktionen bereitzustellen. Es findet kein Tracking und keine Weitergabe zu Werbezwecken statt. Details in der <a href="datenschutz.html" style="color:var(--red);text-decoration:underline">Datenschutzerklärung</a>.
-  <div style="display:flex;justify-content:flex-end;margin-top:12px">
-    <button onclick="acceptCookies()" style="background:var(--red);border:none;color:#fff;padding:9px 22px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Verstanden</button>
+<style>
+#cookieBanner{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(20,20,20,.55);backdrop-filter:saturate(120%) blur(5px);-webkit-backdrop-filter:saturate(120%) blur(5px)}
+#cookieBanner.show{display:flex}
+.cookie-inner{width:100%;max-width:520px;background:#fff;border-radius:16px;padding:30px 30px 26px;box-shadow:0 24px 70px rgba(0,0,0,.30);display:flex;flex-direction:column;gap:15px;animation:cookiePop .26s ease}
+@keyframes cookiePop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+.cookie-title{font-weight:700;font-size:1.18rem;color:#111;margin:0}
+.cookie-text{font-size:.85rem;color:#555;line-height:1.6;margin:0}
+.cookie-text a{color:var(--red);font-weight:600;text-decoration:underline}
+.cookie-actions{display:flex;gap:12px;margin-top:6px}
+.cookie-actions button{flex:1;justify-content:center;padding:13px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;border:none}
+.cookie-accept{background:var(--red);color:#fff}
+.cookie-decline{background:#fff;color:var(--text2);border:1px solid var(--border2)}
+@media (max-width:480px){.cookie-inner{padding:24px 20px 20px;border-radius:14px}.cookie-actions{flex-direction:column}}
+</style>
+<div id="cookieBanner" role="dialog" aria-modal="true" aria-labelledby="cookieTitle">
+  <div class="cookie-inner">
+    <p class="cookie-title" id="cookieTitle">Datenschutz &amp; Cookies</p>
+    <p class="cookie-text">Diese Anwendung verwendet ausschließlich technisch notwendige Cookies bzw. lokalen Speicher, um Ihren Login und die Auktionsfunktionen bereitzustellen. Es findet kein Tracking und keine Weitergabe zu Werbezwecken statt. Weitere Informationen finden Sie in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+    <div class="cookie-actions">
+      <button type="button" class="cookie-decline" onclick="setCookieConsent('declined')">Ablehnen</button>
+      <button type="button" class="cookie-accept" onclick="setCookieConsent('accepted')">Akzeptieren</button>
+    </div>
   </div>
 </div>
 <script>
-function acceptCookies(){ try{ localStorage.setItem('sc_cookie_ok','1'); }catch(e){} var b=document.getElementById('cookieBanner'); if(b) b.style.display='none'; }
-(function(){ try{ if(!localStorage.getItem('sc_cookie_ok')){ var b=document.getElementById('cookieBanner'); if(b) b.style.display='block'; } }catch(e){} })();
+function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); }catch(e){} var b=document.getElementById('cookieBanner'); if(b) b.classList.remove('show'); document.body.style.overflow=''; }
+(function(){ var v=null; try{ v=localStorage.getItem('sc_cookie_consent'); }catch(e){} if(!v){ var b=document.getElementById('cookieBanner'); if(b){ b.classList.add('show'); document.body.style.overflow='hidden'; } } })();
 </script>
 </body>
 </html>
