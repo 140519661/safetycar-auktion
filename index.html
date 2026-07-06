@@ -1215,7 +1215,7 @@ function renderMyBidsTable() {
     seen[aKey] = true;
     var tr = document.createElement('tr');
     var codeStr = b.auction.auction_code || '';
-    var nameCell = '<td>' + esc(b.auction.vehicle_name || '---') + (codeStr ? '<div style="font-size:11px;color:var(--text3);font-family:\'DM Mono\',monospace;margin-top:2px">' + esc(codeStr) + '</div>' : '') + '</td>';
+    var nameCell = '<td>' + esc(b.auction.vehicle_name || '---') + (codeStr ? '<div style="font-size:11px;color:var(--text2);font-family:\'DM Mono\',monospace;margin-top:2px">' + esc(codeStr) + '</div>' : '') + '</td>';
     var timerCell = '<td>' + (ended ? 'Beendet' : '<span class="bid-timer" data-ends-at="' + b.auction.ends_at + '">' + fmtCountdown(b.auction.ends_at) + '</span>') + '</td>';
     tr.innerHTML = nameCell + '<td class="amt">' + fmtEur(b.amount) + '</td><td class="amt">' + fmtEur(b.auction.current_bid || 0) + '</td><td class="' + statusClass + '">' + statusText + '</td>' + timerCell + '<td>' + (!ended ? '<button style="background:var(--red);border:none;padding:6px 14px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;border-radius:8px;font-family:inherit;white-space:nowrap" onclick="joinAuctionById(\'' + b.auction_id + '\')">Jetzt bieten</button>' : '') + '</td>';
     tbody.appendChild(tr);
