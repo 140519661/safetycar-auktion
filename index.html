@@ -2431,5 +2431,15 @@ setInterval(function() {
 </div>
 
 <footer style="background:#0A0A0A;border-top:1px solid #222;padding:14px 5%;text-align:center;"><div style="display:flex;gap:18px;justify-content:center;margin-bottom:6px;flex-wrap:wrap;"><a href="impressum.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none;">Impressum</a><a href="datenschutz.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none;">Datenschutzerklärung</a><a href="agb.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none;">AGB</a></div><p style="color:rgba(255,255,255,.25);font-size:.72rem;">&copy; 2026 Safety Car &middot; Jenne, Zehner Safety Car GbR</p></footer>
+<div id="cookieBanner" style="display:none;position:fixed;left:16px;right:16px;bottom:16px;max-width:540px;margin:0 auto;background:#fff;border:0.5px solid var(--border2);border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.18);padding:16px 18px;z-index:900;font-size:13px;color:var(--text2);line-height:1.55">
+  Diese Seite verwendet ausschließlich technisch notwendige Cookies bzw. lokalen Speicher, um Ihren Login und die Auktionsfunktionen bereitzustellen. Es findet kein Tracking und keine Weitergabe zu Werbezwecken statt. Details in der <a href="datenschutz.html" style="color:var(--red);text-decoration:underline">Datenschutzerklärung</a>.
+  <div style="display:flex;justify-content:flex-end;margin-top:12px">
+    <button onclick="acceptCookies()" style="background:var(--red);border:none;color:#fff;padding:9px 22px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Verstanden</button>
+  </div>
+</div>
+<script>
+function acceptCookies(){ try{ localStorage.setItem('sc_cookie_ok','1'); }catch(e){} var b=document.getElementById('cookieBanner'); if(b) b.style.display='none'; }
+(function(){ try{ if(!localStorage.getItem('sc_cookie_ok')){ var b=document.getElementById('cookieBanner'); if(b) b.style.display='block'; } }catch(e){} })();
+</script>
 </body>
 </html>
