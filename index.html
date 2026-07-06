@@ -833,11 +833,9 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
         </div>
         <div class="admin-form-card">
           <div class="admin-form-title" id="admFormTitle">Neue Auktion</div>
-          <div class="aff"><label>Auktionscode</label><input type="text" id="aCode" placeholder="z.B. PORSCHE911" style="text-transform:uppercase"></div>
-          <div class="aff"><label>Fahrzeugname</label><input type="text" id="aName" placeholder="z.B. Porsche 911 Carrera S"></div>
-          <div class="aff"><label>Untertitel</label><input type="text" id="aSub" placeholder="z.B. 992.2 · 2024 · 3.000 km"></div>
-          <div class="aff"><label>Fahrzeugbeschreibung</label><textarea id="aDesc" placeholder="Ausführliche Beschreibung des Fahrzeugs, Zustand, Besonderheiten, Historie..." style="min-height:90px"></textarea></div>
-          <div class="aff"><label>Auktionscode (intern)</label><input type="text" id="aLot" placeholder="z.B. 2024-047"></div>
+          <div class="aff"><label>Auktionscode</label><input type="text" id="aCode" placeholder="Auktionscode" style="text-transform:uppercase"></div>
+          <div class="aff"><label>Marke</label><input type="text" id="aName" placeholder="Marke / Modell"></div>
+          <div class="aff"><label>Untertitel</label><input type="text" id="aSub" placeholder="Baujahr / Laufleistung"></div>
           <div class="aff-row"><div class="aff"><label>Startgebot (EUR)</label><input type="number" id="aStart" placeholder="100000"></div><div class="aff"><label>Min. Erhöhung (EUR)</label><input type="number" id="aInc" placeholder="500"></div></div>
           <div class="aff"><label>Anti-Sniping (Sekunden)</label><input type="number" id="aSnipe" placeholder="15" value="15"></div>
           <div class="aff"><label>Fahrzeugfotos (mehrere möglich, erstes = Hauptbild)</label>
@@ -858,7 +856,6 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
             </button>
             <div id="pdfUploadStatus" style="font-size:12px;color:var(--text3);margin-top:6px"></div>
           </div>
-          <div class="aff"><label>Technische Daten (Label|Wert pro Zeile)</label><textarea id="aSpecs" placeholder="Laufleistung|45.000 km&#10;Erstzulassung|03/2021&#10;Kraftstoff|Benzin&#10;Getriebe|Automatik (PDK)&#10;Leistung|450 PS&#10;Zustand|Sehr gut" style="min-height:120px"></textarea></div>
           <div class="aff"><label>Auktionsdauer</label><select id="aDur"><option value="172800">48 Stunden</option><option value="86400">24 Stunden</option><option value="3600">1 Stunde (Test)</option><option value="600">10 Minuten (Test)</option></select></div>
           <button class="btn-save" onclick="saveAuction('draft')">Als Entwurf speichern</button>
           <button class="btn-publish" onclick="saveAuction('published')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Auktion veröffentlichen</button>
@@ -1912,7 +1909,6 @@ function prefillForm() {
   document.getElementById('aCode').value = aData.auction_code || '';
   document.getElementById('aName').value = aData.vehicle_name || '';
   document.getElementById('aSub').value = aData.vehicle_sub || '';
-  document.getElementById('aLot').value = aData.lot_number || '';
   document.getElementById('aStart').value = aData.current_bid || '';
   document.getElementById('aInc').value = aData.min_increment || 500;
   document.getElementById('aSnipe').value = aData.snipe_extension || 15;
@@ -1921,8 +1917,6 @@ function prefillForm() {
   uploadedPdfUrl = aData.checklist_pdf_url || null;
   var ps = document.getElementById('pdfUploadStatus');
   if (ps) ps.textContent = uploadedPdfUrl ? '✓ PDF vorhanden: ' + (aData.checklist_pdf_url.split('/').pop().slice(0,40)) : '';
-  document.getElementById('aSpecs').value = (aData.specs || []).map(function(s) { return s.label + '|' + s.value; }).join('\n');
-  document.getElementById('aDesc').value = aData.description || '';
   document.getElementById('admFormTitle').textContent = 'AUKTION BEARBEITEN';
 }
 
@@ -2159,16 +2153,14 @@ async function saveAuction(status) {
   var name = document.getElementById('aName').value.trim();
   var msgEl = document.getElementById('saveMsg');
   if (!code) { msgEl.textContent = 'Auktionscode ist Pflicht.'; msgEl.className = 'save-msg err'; return; }
-  if (!name) { msgEl.textContent = 'Fahrzeugname ist Pflicht.'; msgEl.className = 'save-msg err'; return; }
+  if (!name) { msgEl.textContent = 'Marke ist Pflicht.'; msgEl.className = 'save-msg err'; return; }
   var sub = document.getElementById('aSub').value.trim();
-  var lot = document.getElementById('aLot').value.trim();
+  var lot = (aData && aData.lot_number) ? aData.lot_number : '';
   var start = parseFloat(document.getElementById('aStart').value) || 0;
   var inc = parseFloat(document.getElementById('aInc').value) || 500;
   var snipe = parseInt(document.getElementById('aSnipe').value) || 15;
   var dur = parseInt(document.getElementById('aDur').value);
-  var sr = document.getElementById('aSpecs').value.trim();
-  var specs = [];
-  if (sr) { var lines = sr.split('\n'); for (var i = 0; i < lines.length; i++) { if (lines[i].indexOf('|') >= 0) { var parts = lines[i].split('|'); specs.push({label: parts[0].trim(), value: parts[1].trim()}); } } }
+  var specs = (aData && aData.specs) ? aData.specs : [];
   // FIX 1: Admin auction save via BACKEND (admin JWT required, server validation)
   try {
     var saveRes = await fetch(BACKEND_URL + '/api/admin/auctions', {
@@ -2179,7 +2171,7 @@ async function saveAuction(status) {
         auction_code: code, vehicle_name: name, vehicle_sub: sub, lot_number: lot,
         current_bid: start, min_increment: inc, snipe_extension: snipe,
         photos: uploadedPhotos, specs: specs, duration_seconds: dur,
-        description: document.getElementById('aDesc').value.trim(),
+        description: (aData && aData.description) ? aData.description : '',
         checklist_pdf_url: uploadedPdfUrl || null,
         status: status
       })
