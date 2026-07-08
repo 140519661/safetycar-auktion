@@ -240,6 +240,10 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 
 /* ── MY BIDS TABLE ── */
 .bids-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius-xl);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+#tab-mybids table th:not(:first-child), #tab-mybids table td:not(:first-child){text-align:center !important}
+#tab-mybids table th:last-child, #tab-mybids table td:last-child{text-align:right !important}
+#tab-mybids table td:nth-child(4), #tab-mybids table td:nth-child(5){text-transform:uppercase}
+#aCode::placeholder{text-transform:none}
 .bid-row-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:0.5px solid var(--border)}
 .bid-row-item:last-child{border-bottom:none;padding-bottom:0}
 .bid-row-img{width:60px;height:42px;background:var(--dark2);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -876,8 +880,16 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
         <div class="adm-stat"><div class="adm-stat-lbl">Verbleibend</div><div class="adm-stat-val" id="admTimer">---</div><div class="adm-stat-sub" id="admEnds">---</div></div>
         <div class="adm-stat"><div class="adm-stat-lbl">Auktionscode</div><div class="adm-stat-val" id="admCode" style="font-size:14px;margin-top:4px">---</div></div>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-  <div class="adm-pill-row" id="admBidAuctionSel" style="margin-bottom:0"></div>
+      <div style="margin-bottom:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex:1;min-width:220px">
+    <div class="search-wrap" style="flex:1;min-width:180px"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="search-input" id="admBidSearch" placeholder="Auktion suchen (Code oder Fahrzeug)…" oninput="renderBidAuctionSelector()"></div>
+    <div class="filter-bar">
+      <div class="filter-pill active" onclick="setBidFilter('all',this)">Alle</div>
+      <div class="filter-pill" onclick="setBidFilter('active',this)">Aktiv</div>
+      <div class="filter-pill" onclick="setBidFilter('ended',this)">Beendet</div>
+    </div>
+  </div>
   <div style="display:flex;gap:8px;align-items:center">
   <button onclick="clearBidHistory()" style="background:none;border:0.5px solid var(--border2);border-radius:var(--radius);padding:6px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
@@ -888,6 +900,8 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     CSV Export
   </button>
   </div>
+</div>
+  <div class="adm-pill-row" id="admBidAuctionSel" style="margin-bottom:0"></div>
 </div>
       <div style="overflow-x:auto"><table class="btbl"><thead><tr><th>#</th><th>Bieter</th><th>E-Mail</th><th>Betrag</th><th>Auktion</th><th>Zeit</th><th></th></tr></thead><tbody id="admBody"><tr><td colspan="7" class="hemp">Keine Gebote</td></tr></tbody></table></div>
     </div>
@@ -1855,14 +1869,43 @@ function renderAdminAuctionList() {
       '</div>';
     container.appendChild(item);
 
-    if (selContainer) {
-      var pill = document.createElement('button');
-      pill.className = 'adm-auction-pill' + (aData && aData.id === a.id ? ' active' : '');
-      pill.textContent = (a.auction_code || a.vehicle_name || 'Auktion');
-      (function(auction) { pill.onclick = function() { aData = auction; refreshAdminBids(); }; })(a);
-      selContainer.appendChild(pill);
-    }
   }
+  renderBidAuctionSelector();
+}
+
+var bidSelFilter = 'all';
+function setBidFilter(f, btn) {
+  bidSelFilter = f;
+  if (btn && btn.parentElement) btn.parentElement.querySelectorAll('.filter-pill').forEach(function(p){ p.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  renderBidAuctionSelector();
+}
+function renderBidAuctionSelector() {
+  var sel = document.getElementById('admBidAuctionSel');
+  if (!sel) return;
+  var all = window._allAdminAuctions || [];
+  var search = (document.getElementById('admBidSearch') ? document.getElementById('admBidSearch').value : '').toLowerCase();
+  var now = new Date();
+  var list = all.filter(function(a) {
+    var ended = now >= new Date(a.ends_at);
+    if (bidSelFilter === 'active' && ended) return false;
+    if (bidSelFilter === 'ended' && !ended) return false;
+    if (!search) return true;
+    return (a.vehicle_name || '').toLowerCase().indexOf(search) >= 0 ||
+           (a.auction_code || '').toLowerCase().indexOf(search) >= 0;
+  });
+  sel.innerHTML = '';
+  if (!list.length) {
+    sel.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:6px 2px">Keine passende Auktion gefunden.</div>';
+    return;
+  }
+  list.forEach(function(a) {
+    var pill = document.createElement('button');
+    pill.className = 'adm-auction-pill' + (aData && aData.id === a.id ? ' active' : '');
+    pill.textContent = (a.auction_code || a.vehicle_name || 'Auktion');
+    pill.onclick = function() { aData = a; refreshAdminBids(); renderBidAuctionSelector(); };
+    sel.appendChild(pill);
+  });
 }
 
 function selectAuctionForEdit(id) {
@@ -1962,8 +2005,23 @@ function newAuction() {
   document.getElementById('aInc').value = 500;
   document.getElementById('aSnipe').value = 15;
 
+  // Fortlaufenden SC-Code automatisch vorgeben (nächste freie Nummer)
+  var codeEl = document.getElementById('aCode');
+  if (codeEl) codeEl.value = nextScCode();
+
   document.getElementById('admFormTitle').textContent = 'NEUE AUKTION';
   document.getElementById('saveMsg').textContent = '';
+}
+
+function nextScCode() {
+  var all = window._allAdminAuctions || [];
+  var max = 0;
+  all.forEach(function(a) {
+    var m = (a.auction_code || '').match(/SC0*(\d+)/i);
+    if (m) { var n = parseInt(m[1], 10); if (n > max) max = n; }
+  });
+  var next = max + 1;
+  return 'SC' + (next < 10 ? '0' + next : next) + '-';
 }
 
 async function refreshAdminBids() {
