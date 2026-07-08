@@ -47,7 +47,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .auth-logo-name span{color:var(--red)}
 .auth-card{background:var(--white);border-radius:var(--radius-xl);border:0.5px solid var(--border);padding:40px 36px 36px;width:100%;max-width:420px;box-shadow:var(--shadow-md)}
 .auth-card-logo{display:flex;justify-content:center;margin-bottom:30px}
-.auth-card-logo img{height:34px;width:auto;display:block}
+.auth-card-logo img{height:48px;width:auto;display:block}
 .auth-title{font-size:20px;font-weight:600;color:var(--text);margin-bottom:4px}
 .auth-desc{font-size:13px;color:var(--text3);margin-bottom:24px;padding-bottom:20px;border-bottom:0.5px solid var(--border)}
 .fi{margin-bottom:14px}
@@ -88,7 +88,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 #selectorScreen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#F8F7F5 0%,#FFF0F0 50%,#F8F7F5 100%);padding:20px}
 .sel-card{background:var(--white);border-radius:var(--radius-xl);border:0.5px solid var(--border);padding:36px 32px 32px;width:100%;max-width:520px;box-shadow:var(--shadow-md)}
 .sel-card-logo{display:flex;justify-content:center;margin-bottom:28px}
-.sel-card-logo img{height:34px;width:auto;display:block}
+.sel-card-logo img{height:48px;width:auto;display:block}
 .sel-title{font-size:18px;font-weight:600;margin-bottom:4px}
 .sel-desc{font-size:13px;color:var(--text3);margin-bottom:20px;padding-bottom:16px;border-bottom:0.5px solid var(--border)}
 .auction-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;max-height:300px;overflow-y:auto}
@@ -1791,8 +1791,18 @@ function showAdmTab(tabId, btn) {
 }
 
 async function loadAdminAuctionList() {
-  var res = await sb.from('auction').select('*').order('created_at', {ascending: false});
-  window._allAdminAuctions = res.data || [];
+  try {
+    if (!adminToken) { window._allAdminAuctions = []; renderAdminAuctionList(); return; }
+    var res = await fetch(BACKEND_URL + '/api/admin/auctions', { headers: {'x-admin-token': adminToken} });
+    if (res.ok) {
+      var j = await res.json();
+      window._allAdminAuctions = j.auctions || [];
+    } else {
+      window._allAdminAuctions = [];
+    }
+  } catch(e) {
+    window._allAdminAuctions = [];
+  }
   renderAdminAuctionList();
 }
 
@@ -1958,8 +1968,13 @@ function newAuction() {
 
 async function refreshAdminBids() {
   if (!aData) return;
-  var res = await sb.from('bids').select('*').eq('auction_id', aData.id).order('created_at', {ascending: false});
-  var all = res.data || [];
+  var all = [];
+  try {
+    if (adminToken) {
+      var res = await fetch(BACKEND_URL + '/api/admin/bids/' + aData.id, { headers: {'x-admin-token': adminToken} });
+      if (res.ok) { var j = await res.json(); all = j.bids || []; }
+    }
+  } catch(e) { all = []; }
   document.getElementById('admCount').textContent = all.length;
   var unique = [];
   for (var i = 0; i < all.length; i++) { if (unique.indexOf(all[i].bidder) < 0) unique.push(all[i].bidder); }
@@ -2050,15 +2065,20 @@ async function deleteUser(userId, name) {
 }
 
 async function loadAdminStats() {
-  var res = await sb.from('auction').select('*, bids(count)').order('created_at', {ascending: false});
-  var auctions = res.data || [];
+  var auctions = [];
+  try {
+    if (adminToken) {
+      var res = await fetch(BACKEND_URL + '/api/admin/auctions', { headers: {'x-admin-token': adminToken} });
+      if (res.ok) { var j = await res.json(); auctions = j.auctions || []; }
+    }
+  } catch(e) { auctions = []; }
   var now = new Date();
   var active = auctions.filter(function(a) { return now < new Date(a.ends_at); });
-  var totalBids = auctions.reduce(function(s, a) { return s + (a.bids ? parseInt(a.bids[0].count) : 0); }, 0);
+  var totalBids = auctions.reduce(function(s, a) { return s + (a.bid_count || 0); }, 0);
   var row = document.getElementById('admStatsRow');
   row.innerHTML = '<div class="statcard"><div class="statlbl">Auktionen gesamt</div><div class="statval">' + auctions.length + '</div></div><div class="statcard"><div class="statlbl">Aktive Auktionen</div><div class="statval">' + active.length + '</div></div><div class="statcard"><div class="statlbl">Gebote gesamt</div><div class="statval">' + totalBids + '</div></div><div class="statcard"><div class="statlbl">Abgeschlossen</div><div class="statval">' + (auctions.length - active.length) + '</div></div>';
   var detail = document.getElementById('admStatsDetail');
-  detail.innerHTML = '<div style="overflow-x:auto"><table class="btbl"><thead><tr><th>Fahrzeug</th><th>Code</th><th>Gebote</th><th>Höchstgebot</th><th>Gewinner</th><th>Status</th><th></th></tr></thead><tbody>' + auctions.map(function(a) { var ended = now >= new Date(a.ends_at); return '<tr><td>' + (a.vehicle_name || '---') + '</td><td style="font-family:\'DM Mono\',monospace">' + esc(a.auction_code || '---') + '</td><td>' + (a.bids ? a.bids[0].count : 0) + '</td><td class="tamt">' + fmtEur(a.current_bid || 0) + '</td><td>' + (a.top_bidder || '---') + '</td><td>' + (ended ? '<span style="color:var(--greenl)">BEENDET</span>' : '<span style="color:var(--red)">AKTIV</span>') + '</td><td><button onclick="deleteAuction(\'' + a.id + '\',\'' + esc(a.vehicle_name || '') + '\')" style="background:none;border:0.5px solid #e53e3e;border-radius:6px;padding:3px 8px;font-size:11px;color:#e53e3e;cursor:pointer;font-family:inherit">Löschen</button></td></tr>'; }).join('') + '</tbody></table></div>';
+  detail.innerHTML = '<div style="overflow-x:auto"><table class="btbl"><thead><tr><th>Fahrzeug</th><th>Code</th><th>Gebote</th><th>Höchstgebot</th><th>Gewinner</th><th>Status</th><th></th></tr></thead><tbody>' + auctions.map(function(a) { var ended = now >= new Date(a.ends_at); return '<tr><td>' + (a.vehicle_name || '---') + '</td><td style="font-family:\'DM Mono\',monospace">' + esc(a.auction_code || '---') + '</td><td>' + (a.bid_count || 0) + '</td><td class="tamt">' + fmtEur(a.current_bid || 0) + '</td><td>' + (a.top_bidder || '---') + '</td><td>' + (ended ? '<span style="color:var(--greenl)">BEENDET</span>' : '<span style="color:var(--red)">AKTIV</span>') + '</td><td><button onclick="deleteAuction(\'' + a.id + '\',\'' + esc(a.vehicle_name || '') + '\')" style="background:none;border:0.5px solid #e53e3e;border-radius:6px;padding:3px 8px;font-size:11px;color:#e53e3e;cursor:pointer;font-family:inherit">Löschen</button></td></tr>'; }).join('') + '</tbody></table></div>';
 }
 
 // === FOTO-UPLOAD (Supabase Storage via Backend) ===
