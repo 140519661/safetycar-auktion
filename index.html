@@ -778,8 +778,9 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
         <div class="v-sub" id="vSub"></div>
         <a id="checklistPdfBtn" href="#" onclick="downloadCheck(event)" rel="noopener" style="display:none;margin-top:10px;display:inline-flex;align-items:center;gap:7px;background:var(--dark);color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;width:fit-content;cursor:pointer">
           <svg fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
-          Safety Car-Check herunterladen
+          <span id="checklistPdfLabel">Safety Car-Check herunterladen</span>
         </a>
+        <div id="checkDlStatus" style="display:none;margin-top:8px;font-size:12px;color:#2E7D32;line-height:1.5"></div>
       </div>
       <div id="vDescBox" style="display:none;margin-bottom:20px"><div style="font-size:11px;color:var(--text4);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Fahrzeugbeschreibung</div><div id="vDesc" style="font-size:14px;line-height:1.6;color:var(--text2);white-space:pre-wrap"></div></div>
       <div class="specs-grid" id="spGrid"></div>
@@ -1502,11 +1503,23 @@ async function doLogout() {
 }
 
 // AUCTION UI
+var _checkDownloading = false;
 async function downloadCheck(e) {
   if (e) e.preventDefault();
   if (!aData || !aData.checklist_pdf_url) return;
+  if (_checkDownloading) return; // Mehrfachklicks verhindern
+  _checkDownloading = true;
+
   var url = aData.checklist_pdf_url;
   var fname = 'SafetyCar-Check-' + (aData.auction_code || 'Fahrzeug') + '.pdf';
+  var btn = document.getElementById('checklistPdfBtn');
+  var label = document.getElementById('checklistPdfLabel');
+  var status = document.getElementById('checkDlStatus');
+
+  if (label) label.textContent = 'Wird geladen…';
+  if (btn) { btn.style.opacity = '0.6'; btn.style.pointerEvents = 'none'; }
+  if (status) { status.style.display = 'none'; }
+
   try {
     var res = await fetch(url);
     var blob = await res.blob();
@@ -1515,8 +1528,22 @@ async function downloadCheck(e) {
     a.href = objUrl; a.download = fname;
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     setTimeout(function() { URL.revokeObjectURL(objUrl); }, 2000);
+    if (status) {
+      status.style.color = '#2E7D32';
+      status.textContent = '✓ Safety Car-Check heruntergeladen – bitte prüfen Sie Ihren Download-Ordner.';
+      status.style.display = 'block';
+    }
   } catch (err) {
     window.open(url, '_blank', 'noopener');
+    if (status) {
+      status.style.color = '#2E7D32';
+      status.textContent = 'Der Safety Car-Check wurde in einem neuen Tab geöffnet.';
+      status.style.display = 'block';
+    }
+  } finally {
+    if (label) label.textContent = 'Safety Car-Check herunterladen';
+    if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
+    _checkDownloading = false;
   }
 }
 
