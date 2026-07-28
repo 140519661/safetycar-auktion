@@ -592,6 +592,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     <div class="auth-card-logo"><img src="logo.png" alt="Safety Car"></div>
     <div class="auth-title">Konto erstellen</div>
     <div class="auth-desc">Einmalig registrieren – dauerhafter Zugang zu allen Auktionen.</div>
+    <div class="fi"><label>Sprache / Language</label><select id="su_lang" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px;background:var(--white);color:var(--text)"><option value="de">Deutsch</option><option value="en">English</option></select><div class="pwhint">Bestimmt die Sprache Ihrer E-Mails / Sets the language of your emails</div></div>
     <div class="fi"><label>Ansprechpartner (Vor- &amp; Zuname)</label><input type="text" id="su_contact" placeholder="Ansprechpartner (Vor- &amp; Zuname)" autocomplete="name"></div>
     <div class="fi"><label>Name Ihres Unternehmens</label><input type="text" id="su_name" placeholder="Name Ihres Unternehmens" autocomplete="organization"></div>
     <div class="fi"><label>E-Mail-Adresse</label><input type="email" id="su_email" placeholder="E-Mail-Adresse" autocomplete="email"></div>
@@ -767,7 +768,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     <div class="auction-left">
       <div class="vstage">
         <div class="sc tl"></div><div class="sc tr"></div><div class="sc bl"></div><div class="sc br"></div>
-        <div class="vsov" id="soldOv"><div class="vsov-title">VER<span>KAUFT</span></div><div class="vsov-sub" id="soldWin"></div></div>
+        <div class="vsov" id="soldOv"><div class="vsov-title">VERKAUFT</div><div class="vsov-sub" id="soldWin"></div></div>
         <img id="vPhoto" alt="Fahrzeug">
         <div class="vstage-ph" id="vPh"><svg viewBox="0 0 520 200" style="width:340px"><rect x="70" y="90" width="380" height="70" rx="8" fill="#fff" stroke="#fff" stroke-width="1"/><rect x="140" y="55" width="220" height="70" rx="12" fill="#ddd" stroke="#fff" stroke-width="1"/><rect x="155" y="60" width="88" height="52" rx="6" fill="#bbb" stroke="#fff" stroke-width="0.5"/><rect x="257" y="60" width="88" height="52" rx="6" fill="#bbb" stroke="#fff" stroke-width="0.5"/><circle cx="140" cy="162" r="26" fill="#ccc" stroke="#fff" stroke-width="2"/><circle cx="140" cy="162" r="16" fill="#aaa" stroke="#fff" stroke-width="1"/><circle cx="140" cy="162" r="6" fill="#888"/><circle cx="380" cy="162" r="26" fill="#ccc" stroke="#fff" stroke-width="2"/><circle cx="380" cy="162" r="16" fill="#aaa" stroke="#fff" stroke-width="1"/><circle cx="380" cy="162" r="6" fill="#888"/><rect x="72" y="108" width="30" height="16" rx="4" fill="#B00000" opacity="0.9"/><rect x="418" y="108" width="30" height="16" rx="4" fill="#B00000" opacity="0.9"/></svg></div>
       </div>
@@ -944,6 +945,8 @@ var SITE = 'https://safetycar-auktion.netlify.app';
 var sb = supabase.createClient(SBURL, SBKEY);
 
 var cUser = null, cProfile = null, adminToken = null, aData = null, allAuctions = [], myBidsAll = [], watchlistIds = [], tInt = null, rtSub = null, notifSub = null;
+// Sprach-Helfer (Deutsch = Standard). Wird vom DE|EN-Umschalter gesetzt.
+function L(de, en){ return (window.SC_LANG === 'en') ? en : de; }
 
 var lbPhotos = [];
 var lbIndex = 0;
@@ -1034,10 +1037,10 @@ function pad2(n) { return n < 10 ? '0' + n : '' + n; }
 function fmtTime(ts) { return new Date(ts).toLocaleString('de-DE'); }
 function fmtCountdown(endsAt) {
   var diff = Math.max(0, Math.floor((new Date(endsAt) - new Date()) / 1000));
-  if (diff === 0) return 'Beendet';
+  if (diff === 0) return L('Beendet','Ended');
   var d = Math.floor(diff / 86400);
   var h = Math.floor((diff % 86400) / 3600), m = Math.floor((diff % 3600) / 60), s = diff % 60;
-  if (d > 0) return d + ' T ' + pad2(h) + ' h ' + pad2(m) + ' m';
+  if (d > 0) return d + L(' T ',' d ') + pad2(h) + ' h ' + pad2(m) + ' m';
   return pad2(h) + ':' + pad2(m) + ':' + pad2(s);
 }
 
@@ -1104,7 +1107,14 @@ async function loadProfile() {
     var name = (res.data && res.data.display_name) ? res.data.display_name : cUser.email;
     var el1 = document.getElementById('topUser'); if (el1) el1.textContent = name;
     var el2 = document.getElementById('dashUser'); if (el2) el2.textContent = name;
-    var el3 = document.getElementById('selUser'); if (el3) el3.textContent = 'Eingeloggt als: ' + name;
+    var el3 = document.getElementById('selUser'); if (el3) el3.textContent = L('Eingeloggt als: ','Signed in as: ') + name;
+    // Plattform-Sprache beim ersten Login aus dem Profil vorbelegen (danach entscheidet der Umschalter)
+    try {
+      var _manualLang = null; try { _manualLang = localStorage.getItem('sc_lang_tool'); } catch(e) {}
+      if (!_manualLang && cProfile && cProfile.language && window.scSetLang) {
+        window.scSetLang(cProfile.language === 'en' ? 'en' : 'de');
+      }
+    } catch(e) {}
   } catch(e) { console.error('Profile error:', e); }
 }
 
@@ -1255,8 +1265,8 @@ async function toggleWatch(auctionId, btn) {
     } else {
       await sb.from('watchlist').insert({user_id: cUser.id, auction_id: auctionId});
       watchlistIds.push(auctionId);
-      if (btn) { btn.textContent = 'Gespeichert ✓'; btn.classList.add('watched-btn'); }
-      showToast('Gespeichert ✓', 'ok');
+      if (btn) { btn.textContent = L('Gespeichert ✓','Saved ✓'); btn.classList.add('watched-btn'); }
+      showToast(L('Gespeichert ✓','Saved ✓'), 'ok');
     }
   } catch(e) { console.error('Watchlist error:', e); }
   if (btn) { btn.disabled = false; btn.style.opacity = ''; }
@@ -1368,7 +1378,7 @@ async function loadAuctionList() {
     (function(auction) { item.onclick = function() { joinAuction(auction); }; })(a);
     container.appendChild(item);
   }
-  if (document.getElementById('selUser')) document.getElementById('selUser').textContent = 'Eingeloggt als: ' + (cProfile ? cProfile.display_name : (cUser ? cUser.email : ''));
+  if (document.getElementById('selUser')) document.getElementById('selUser').textContent = L('Eingeloggt als: ','Signed in as: ') + (cProfile ? cProfile.display_name : (cUser ? cUser.email : ''));
 }
 
 async function joinByCode() {
@@ -1418,7 +1428,7 @@ async function doSignup() {
     var regRes = await fetch(BACKEND_URL + '/api/auth/register', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({email: email, password: pw, name: name, contact_name: contact, phone: phone, dsgvo: 'true'})
+      body: JSON.stringify({email: email, password: pw, name: name, contact_name: contact, phone: phone, dsgvo: 'true', language: (document.getElementById('su_lang') ? document.getElementById('su_lang').value : 'de')})
     });
     var regData = await regRes.json();
     if (!regRes.ok) { errEl.textContent = regData.error || 'Registrierung fehlgeschlagen.'; btn.disabled = false; btn.textContent = 'Jetzt registrieren'; return; }
@@ -1516,7 +1526,7 @@ async function downloadCheck(e) {
   var label = document.getElementById('checklistPdfLabel');
   var status = document.getElementById('checkDlStatus');
 
-  if (label) label.textContent = 'Wird geladen…';
+  if (label) label.textContent = L('Wird geladen…','Loading…');
   if (btn) { btn.style.opacity = '0.6'; btn.style.pointerEvents = 'none'; }
   if (status) { status.style.display = 'none'; }
 
@@ -1530,18 +1540,18 @@ async function downloadCheck(e) {
     setTimeout(function() { URL.revokeObjectURL(objUrl); }, 2000);
     if (status) {
       status.style.color = '#2E7D32';
-      status.textContent = '✓ Safety Car-Check heruntergeladen – bitte prüfen Sie Ihren Download-Ordner.';
+      status.textContent = L('✓ Safety Car-Check heruntergeladen – bitte prüfen Sie Ihren Download-Ordner.','✓ Safety Car check downloaded – please check your Downloads folder.');
       status.style.display = 'block';
     }
   } catch (err) {
     window.open(url, '_blank', 'noopener');
     if (status) {
       status.style.color = '#2E7D32';
-      status.textContent = 'Der Safety Car-Check wurde in einem neuen Tab geöffnet.';
+      status.textContent = L('Der Safety Car-Check wurde in einem neuen Tab geöffnet.','The Safety Car check has opened in a new tab.');
       status.style.display = 'block';
     }
   } finally {
-    if (label) label.textContent = 'Safety Car-Check herunterladen';
+    if (label) label.textContent = L('Safety Car-Check herunterladen','Download Safety Car check');
     if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
     _checkDownloading = false;
   }
@@ -1549,7 +1559,7 @@ async function downloadCheck(e) {
 
 function loadUI() {
   if (!aData) return;
-  document.getElementById('lotNum').textContent = 'Auktionscode: ' + (aData.auction_code || '---');
+  document.getElementById('lotNum').textContent = L('Auktionscode: ','Auction code: ') + (aData.auction_code || '---');
   document.getElementById('vName').textContent = aData.vehicle_name || '---';
   document.getElementById('vSub').textContent = aData.vehicle_sub || '';
   document.getElementById('auctionCodeTag').textContent = 'CODE: ' + (aData.auction_code || '---');
@@ -1618,7 +1628,7 @@ function updateBid() {
   var cb = aData.current_bid || 0, inc = aData.min_increment || 500, mn = cb + inc;
   document.getElementById('curBid').textContent = fmtEur(cb);
   document.getElementById('curBy').textContent = cb > 0 ? 'Anonymes Gebot' : 'Noch kein Gebot';
-  document.getElementById('bidHint').textContent = 'Mindestgebot: ' + fmtEur(mn) + ' (+ ' + fmtEur(inc) + ')';
+  document.getElementById('bidHint').textContent = L('Mindestgebot: ','Minimum bid: ') + fmtEur(mn) + ' (+ ' + fmtEur(inc) + ')';
   document.getElementById('bidInput').min = mn;
   document.getElementById('bidInput').placeholder = fmtEur(mn);
   updateMyStatus(cb);
@@ -1639,7 +1649,7 @@ function updateMyStatus(currentBid) {
   document.getElementById('myStatusLbl').textContent = leading ? 'Sie sind der Höchstbietende' : 'Sie wurden überboten';
   document.getElementById('myStatusVal').textContent = fmtEur(myBest);
   // Führend: keine Zusatzzeile (wäre doppelt zur Überschrift). Überboten: aktuelles Höchstgebot zeigen.
-  document.getElementById('myStatusInfo').textContent = leading ? '' : 'Höchstgebot ist jetzt ' + fmtEur(currentBid);
+  document.getElementById('myStatusInfo').textContent = leading ? '' : L('Höchstgebot ist jetzt ','Highest bid is now ') + fmtEur(currentBid);
 }
 
 async function loadFullHistory() {
@@ -1655,7 +1665,7 @@ async function loadFullHistory() {
     var r = document.createElement('div');
     r.className = 'hf-row' + (i === 0 ? ' top' : '') + (isMe ? ' mine' : '');
     var t = new Date(b.created_at).toTimeString().slice(0, 8);
-    var displayName = isMe ? b.bidder + ' (Sie)' : 'Bieter ' + (i + 1);
+    var displayName = isMe ? b.bidder + L(' (Sie)',' (You)') : L('Bieter ','Bidder ') + (i + 1);
     r.innerHTML = '<span class="hf-bidder">' + esc(displayName) + '</span><span class="hf-amt' + (i === 0 ? ' top' : '') + '">' + fmtEur(b.amount) + '</span><span class="hf-time">' + t + '</span>';
     el.appendChild(r);
   }
@@ -1685,7 +1695,7 @@ async function placeBid() {
   var val = parseFloat(rawInput);
   var mn = (aData.current_bid || 0) + (aData.min_increment || 500);
   if (!val || isNaN(val)) { showMsg('Bitte gueltigen Betrag eingeben.', 'err'); return; }
-  if (val < mn) { showMsg('Gebot zu niedrig - Mindestgebot: ' + fmtEur(mn), 'err'); return; }
+  if (val < mn) { showMsg(L('Gebot zu niedrig – Mindestgebot: ','Bid too low – minimum bid: ') + fmtEur(mn), 'err'); return; }
   pendingBidAmount = Math.round(val);
   document.getElementById('bidConfirmAmount').textContent = fmtEur(pendingBidAmount);
   document.getElementById('bidConfirmVehicle').textContent = aData.vehicle_name || '';
@@ -1769,7 +1779,7 @@ async function endAuction() {
   document.getElementById('bidBtn').disabled = true;
   document.querySelectorAll('.qb').forEach(function(b) { b.disabled = true; });
   document.getElementById('soldOv').style.display = 'flex';
-  document.getElementById('soldWin').textContent = 'für ' + fmtEur(aData ? aData.current_bid || 0 : 0);
+  document.getElementById('soldWin').textContent = L('für ','for ') + fmtEur(aData ? aData.current_bid || 0 : 0);
   var myName = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
   if (aData && aData.top_bidder === myName) {
     document.getElementById('wonBadge').style.display = 'block';
@@ -2127,12 +2137,25 @@ async function loadAdminUsers() {
         (u.phone ? '<div style="font-size:12px;color:var(--text3);margin-bottom:6px">📞 ' + esc(u.phone) + '</div>' : '') +
         '<div style="margin:6px 0">' + statusBadge + '</div>' +
         '<div class="user-card-stats"><div class="user-stat">Gebote: <span>' + (u.bid_count || 0) + '</span></div></div>' +
+        '<div style="margin-top:8px;font-size:12px;color:var(--text3);display:flex;align-items:center;gap:6px">E-Mail-Sprache: <select onchange="setUserLanguage(\'' + u.id + '\',this.value)" style="font-family:inherit;font-size:12px;padding:3px 6px;border:0.5px solid var(--border2);border-radius:6px;background:var(--white);color:var(--text)"><option value="de"' + (u.language !== 'en' ? ' selected' : '') + '>Deutsch</option><option value="en"' + (u.language === 'en' ? ' selected' : '') + '>English</option></select></div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">' + actionBtn + deleteBtn + '</div>';
       container.appendChild(card);
     }
   } catch(e) {
     container.innerHTML = '<div class="empty-state">Fehler beim Laden der Bieter.</div>';
   }
+}
+
+async function setUserLanguage(userId, lang) {
+  try {
+    var res = await fetch(BACKEND_URL + '/api/admin/set-language', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'x-admin-token': adminToken},
+      body: JSON.stringify({userId: userId, language: lang})
+    });
+    if (!res.ok) { var d = await res.json(); alert('Fehler: ' + (d.error || 'Sprache konnte nicht geändert werden')); return; }
+    showAdminToast('✓ E-Mail-Sprache: ' + (lang === 'en' ? 'English' : 'Deutsch'), 'ok');
+  } catch(e) { alert('Verbindungsfehler.'); }
 }
 
 async function approveUser(userId) {
@@ -2674,6 +2697,12 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
     ["Aktiv","Active"],
     ["Beendet","Ended"],
     ["BEENDET","ENDED"],
+    ["VERKAUFT","SOLD"],
+    ["AKTIV","ACTIVE"],
+    ["Anonymes Gebot","Anonymous bid"],
+    ["Mein Gebot","My bid"],
+    ["Sie sind der Höchstbietende","You are the highest bidder"],
+    ["Sie wurden überboten","You have been outbid"],
     ["Jetzt bieten","Bid now"],
     ["Alle","All"],
     ["Neu","New"],
@@ -2702,7 +2731,64 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
     ["in Höhe von:","in the amount of:"],
     ["Mit der Bestätigung geben Sie ein rechtlich verbindliches Gebot ab. Ein abgegebenes Gebot kann nicht zurückgenommen werden.","By confirming, you place a legally binding bid. A submitted bid cannot be withdrawn."],
     ["Abbrechen","Cancel"],
-    ["Verbindlich bieten","Place binding bid"]
+    ["Verbindlich bieten","Place binding bid"],
+    ["Profil-Einstellungen","Profile settings"],
+    ["Angemeldet als","Signed in as"],
+    ["E-Mail-Adresse ändern","Change email address"],
+    ["Neue E-Mail-Adresse","New email address"],
+    ["Passwort ändern","Change password"],
+    ["Neues Passwort (min. 8 Zeichen)","New password (min. 8 characters)"],
+    ["Safety Car-Check herunterladen","Download Safety Car check"],
+    ["Bitte gültige E-Mail eingeben.","Please enter a valid email."],
+    ["Bestätigungs-Mail an die neue Adresse gesendet. Bitte bestätigen.","Confirmation email sent to the new address. Please confirm."],
+    ["Passwort erfolgreich geändert.","Password changed successfully."],
+    ["Bitte Auktionscode eingeben.","Please enter an auction code."],
+    ["Bitte Unternehmensname eingeben.","Please enter a company name."],
+    ["Bitte Ansprechpartner eingeben.","Please enter a contact person."],
+    ["Bitte Telefonnummer eingeben.","Please enter a phone number."],
+    ["Passwörter stimmen nicht überein.","Passwords do not match."],
+    ["Bitte Datenschutzerklärung akzeptieren.","Please accept the privacy policy."],
+    ["Registrierung erhalten! Ihr Zugang wird geprüft. Bitte loggen Sie sich nach der Freigabe ein.","Registration received! Your access is being reviewed. Please log in after approval."],
+    ["Registrierung erhalten! Ihr Zugang wird geprüft.","Registration received! Your access is being reviewed."],
+    ["Registrierung fehlgeschlagen.","Registration failed."],
+    ["Verbindungsfehler. Bitte erneut versuchen.","Connection error. Please try again."],
+    ["Bitte alle Felder ausfuellen.","Please fill in all fields."],
+    ["Bitte warten...","Please wait..."],
+    ["BITTE WARTEN...","PLEASE WAIT..."],
+    ["Gültige E-Mail-Adresse eingeben.","Enter a valid email address."],
+    ["Passwort mindestens 8 Zeichen.","Password must be at least 8 characters."],
+    ["Sprache / Language","Language"],
+    ["Bestimmt die Sprache Ihrer E-Mails / Sets the language of your emails","Sets the language of your emails"],
+    ["Bitte gueltige E-Mail eingeben.","Please enter a valid email address."],
+    ["Reset-Link gesendet! Bitte E-Mail (auch Spam-Ordner) pruefen.","Reset link sent! Please check your email (including spam folder)."],
+    ["Passwort erfolgreich geaendert!","Password changed successfully!"],
+    ["Bitte gueltigen Betrag eingeben.","Please enter a valid amount."],
+    ["Session abgelaufen. Bitte neu einloggen.","Session expired. Please log in again."],
+    ["Fehler bei Gebotsabgabe.","Error placing bid."],
+    ["Gebot erfasst!","Bid placed!"],
+    ["Bitte PIN eingeben.","Please enter PIN."],
+    ["Zugang deaktiviert","Access deactivated"],
+    ["Ihr Zugang wurde deaktiviert. Bitte wenden Sie sich an SafetyCar falls Sie Fragen haben.","Your access has been deactivated. Please contact SafetyCar if you have any questions."],
+    ["Registrierung wird geprüft","Registration under review"],
+    ["Unser Team prüft Ihre Registrierung und schaltet den Zugang in Kürze frei.","Our team is reviewing your registration and will activate access shortly."],
+    ["Sie erhalten eine E-Mail, sobald Ihr Zugang aktiviert wurde.","You'll receive an email as soon as your access is activated."],
+    ["Aktive Auktionen","Active auctions"],
+    ["Keine aktiven Auktionen","No active auctions"],
+    ["Keine Fahrzeuge auf der Watchlist","No vehicles on your watchlist"],
+    ["Keine Auktionen","No auctions"],
+    ["Keine Auktionen vorhanden","No auctions available"],
+    ["Noch keine Gebote abgegeben","No bids placed yet"],
+    ["Führend","Leading"],
+    ["Verkauft für","Sold for"],
+    ["Gespeichert ✓","Saved ✓"],
+    ["Fahrzeug","Vehicle"],
+    ["Auktion endet","Auction ends"],
+    ["Alle gelesen","Mark all read"],
+    ["Keine Benachrichtigungen","No notifications"],
+    ["← Zurück zur Übersicht","← Back to overview"],
+    ["ÜBERBOTEN","OUTBID"],
+    ["ERSTEIGERT","WON"],
+    ["Anti-Sniping aktiv","Anti-sniping active"]
   ];
   var DE2EN={}, EN2DE={};
   DICT.forEach(function(p){ DE2EN[p[0]]=p[1]; if(EN2DE[p[1]]===undefined) EN2DE[p[1]]=p[0]; });
@@ -2737,15 +2823,39 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
         var key=(el.getAttribute('placeholder')||'').trim();
         if(phMap[key]!==undefined) el.setAttribute('placeholder', phMap[key]);
       });
+      document.querySelectorAll('[title]').forEach(function(el){
+        var key=(el.getAttribute('title')||'').trim();
+        if(phMap[key]!==undefined) el.setAttribute('title', phMap[key]);
+      });
       document.documentElement.lang=lang;
     } finally { _scApplying=false; }
   }
+
+  window.L=function(de,en){ return window.SC_LANG==='en'?en:de; };
+
+  window.SC_refreshDynamic=function(){
+    try{
+      if(typeof aData!=='undefined' && aData){
+        var ln=document.getElementById('lotNum');
+        if(ln) ln.textContent = window.L('Auktionscode: ','Auction code: ') + (aData.auction_code||'---');
+      }
+      if(typeof updateBid==='function') updateBid();
+      if(typeof loadFullHistory==='function') loadFullHistory();
+      if(typeof loadMyBids==='function') loadMyBids();
+      var so=document.getElementById('soldOv');
+      if(so && so.style.display!=='none' && typeof aData!=='undefined' && aData){
+        var sw=document.getElementById('soldWin');
+        if(sw) sw.textContent = window.L('für ','for ') + fmtEur(aData.current_bid||0);
+      }
+    }catch(e){}
+  };
 
   window.scSetLang=function(lang){
     SC_LANG=lang; window.SC_LANG=lang;
     try{ localStorage.setItem('sc_lang_tool',lang); }catch(e){}
     document.querySelectorAll('.sc-lang button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-l')===lang); });
     scApplyLang(lang);
+    if(window.SC_refreshDynamic) window.SC_refreshDynamic();
   };
 
   function scMakeSwitch(){
