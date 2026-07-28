@@ -2608,5 +2608,172 @@ setInterval(function() {
 function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); }catch(e){} var b=document.getElementById('cookieBanner'); if(b) b.classList.remove('show'); document.body.style.overflow=''; }
 (function(){ var v=null; try{ v=localStorage.getItem('sc_cookie_consent'); }catch(e){} if(!v){ var b=document.getElementById('cookieBanner'); if(b){ b.classList.add('show'); document.body.style.overflow='hidden'; } } })();
 </script>
+
+<style>
+.sc-lang{display:inline-flex;align-items:center;gap:1px;border:1px solid var(--border2,#E4E4E4);border-radius:8px;padding:2px 4px;background:#fff;z-index:5}
+.sc-lang button{font-family:inherit;font-weight:600;font-size:11px;letter-spacing:.03em;color:#9a9a9a;background:none;border:none;cursor:pointer;padding:3px 6px;border-radius:5px;line-height:1}
+.sc-lang button.active{color:var(--red,#B00000);background:rgba(176,0,0,.08)}
+.sc-lang .sep{color:#d5d5d5;font-size:11px}
+.auth-screen,#selectorScreen{position:relative}
+.auth-screen .sc-lang,#selectorScreen .sc-lang{position:absolute;top:16px;right:16px}
+</style>
+<script>
+(function(){
+  var DICT = [
+    ["Willkommen zurück!","Welcome back!"],
+    ["Melden Sie sich an, um an unseren Auktionen teilzunehmen.","Sign in to take part in our auctions."],
+    ["E-Mail-Adresse","Email address"],
+    ["Passwort","Password"],
+    ["Jetzt einloggen","Log in now"],
+    ["Noch kein Konto?","No account yet?"],
+    ["Registrieren","Register"],
+    ["Passwort zurücksetzen","Reset password"],
+    ["Konto erstellen","Create account"],
+    ["Einmalig registrieren – dauerhafter Zugang zu allen Auktionen.","Register once – permanent access to all auctions."],
+    ["Ansprechpartner (Vor- & Zuname)","Contact person (first & last name)"],
+    ["Name Ihres Unternehmens","Company name"],
+    ["Telefonnummer","Phone number"],
+    ["Passwort bestätigen","Confirm password"],
+    ["Min. 8 Zeichen empfohlen","Min. 8 characters recommended"],
+    ["Hiermit stimme ich der Verarbeitung meiner Daten gemäß der Datenschutzerklärung zu. Die Datenschutzerklärung lässt sich aus dem Footer der Webseite entnehmen.","I hereby consent to the processing of my data in accordance with the privacy policy. The privacy policy can be found in the website footer."],
+    ["Jetzt registrieren","Register now"],
+    ["Bereits registriert?","Already registered?"],
+    ["Einloggen","Log in"],
+    ["Wir senden Ihnen einen Reset-Link per E-Mail zu.","We'll send you a reset link by email."],
+    ["Ihre E-Mail-Adresse","Your email address"],
+    ["Reset-Link senden","Send reset link"],
+    ["Bitte prüfen Sie auch Ihren Spam-Ordner, falls die E-Mail nicht ankommen sollte.","Please also check your spam folder if the email doesn't arrive."],
+    ["Zurück zum Login","Back to login"],
+    ["Neues Passwort","New password"],
+    ["Bitte neues Passwort eingeben","Please enter a new password"],
+    ["Mindestens 8 Zeichen","At least 8 characters"],
+    ["Wiederholen","Repeat"],
+    ["Passwort speichern","Save password"],
+    ["Auktion auswählen","Select auction"],
+    ["Aktive Auktion wählen oder Auktionscode eingeben","Choose an active auction or enter an auction code"],
+    ["oder Code eingeben","or enter code"],
+    ["AUKTIONSCODE","AUCTION CODE"],
+    ["Beitreten","Join"],
+    ["Lade Auktionen...","Loading auctions..."],
+    ["Dashboard","Dashboard"],
+    ["Ausloggen","Log out"],
+    ["Wechseln","Switch"],
+    ["Übersicht","Overview"],
+    ["Auktionen","Auctions"],
+    ["Watchlist","Watchlist"],
+    ["Meine Gebote","My bids"],
+    ["Navigation","Navigation"],
+    ["Konto","Account"],
+    ["Benachrichtigungen","Notifications"],
+    ["Konto wird geprüft.","Account under review."],
+    ["Sie können Auktionen ansehen, aber erst nach Freigabe durch unser Team mitbieten.","You can view auctions, but can only bid after approval by our team."],
+    ["Ich biete mit","I'm bidding"],
+    ["Aktuell führend","Currently leading"],
+    ["Ersteigert","Won"],
+    ["Anti-Sniping aktiv","Anti-sniping active"],
+    ["Aktiv","Active"],
+    ["Beendet","Ended"],
+    ["BEENDET","ENDED"],
+    ["Jetzt bieten","Bid now"],
+    ["Alle","All"],
+    ["Neu","New"],
+    ["Höchstbietend","Highest bidder"],
+    ["Überboten","Outbid"],
+    ["Nicht ersteigert","Not won"],
+    ["Wird geladen...","Loading..."],
+    ["Fahrzeugbeschreibung","Vehicle description"],
+    ["Vollständige Gebotshistorie","Full bid history"],
+    ["Noch keine Gebote","No bids yet"],
+    ["Verbleibende Zeit","Time remaining"],
+    ["Std","Hrs"],
+    ["Sek","Sec"],
+    ["Aktuelles Höchstgebot","Current highest bid"],
+    ["Noch kein Gebot","No bid yet"],
+    ["Mein letztes Gebot","My last bid"],
+    ["Unverbindlich ersteigert – wir melden uns zur Abwicklung","Won (non-binding) – we'll contact you to complete"],
+    ["Gebot abgeben","Place bid"],
+    ["Betrag in EUR","Amount in EUR"],
+    ["Bieten","Bid"],
+    ["Mindestgebot wird geladen...","Minimum bid loading..."],
+    ["Noch keine eigenen Gebote","No bids of your own yet"],
+    ["Suchen...","Search..."],
+    ["Gebot bestätigen","Confirm bid"],
+    ["Verbindliches Angebot","Binding offer"],
+    ["in Höhe von:","in the amount of:"],
+    ["Mit der Bestätigung geben Sie ein rechtlich verbindliches Gebot ab. Ein abgegebenes Gebot kann nicht zurückgenommen werden.","By confirming, you place a legally binding bid. A submitted bid cannot be withdrawn."],
+    ["Abbrechen","Cancel"],
+    ["Verbindlich bieten","Place binding bid"]
+  ];
+  var DE2EN={}, EN2DE={};
+  DICT.forEach(function(p){ DE2EN[p[0]]=p[1]; if(EN2DE[p[1]]===undefined) EN2DE[p[1]]=p[0]; });
+
+  var SC_LANG='de', _scApplying=false, _scT=null;
+  window.SC_LANG=SC_LANG;
+
+  function scApplyLang(lang){
+    _scApplying=true;
+    try{
+      var walker=document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+        acceptNode:function(n){
+          var p=n.parentNode; if(!p) return NodeFilter.FILTER_REJECT;
+          var tag=p.nodeName;
+          if(tag==='SCRIPT'||tag==='STYLE'||tag==='TEXTAREA') return NodeFilter.FILTER_REJECT;
+          if(p.closest && p.closest('.sc-lang')) return NodeFilter.FILTER_REJECT;
+          if(!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      var nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+      var map = lang==='en'?DE2EN:EN2DE;
+      nodes.forEach(function(n){
+        var raw=n.nodeValue, key=raw.trim();
+        if(map[key]!==undefined){
+          var i=raw.indexOf(key);
+          n.nodeValue = raw.slice(0,i) + map[key] + raw.slice(i+key.length);
+        }
+      });
+      var phMap = lang==='en'?DE2EN:EN2DE;
+      document.querySelectorAll('[placeholder]').forEach(function(el){
+        var key=(el.getAttribute('placeholder')||'').trim();
+        if(phMap[key]!==undefined) el.setAttribute('placeholder', phMap[key]);
+      });
+      document.documentElement.lang=lang;
+    } finally { _scApplying=false; }
+  }
+
+  window.scSetLang=function(lang){
+    SC_LANG=lang; window.SC_LANG=lang;
+    try{ localStorage.setItem('sc_lang_tool',lang); }catch(e){}
+    document.querySelectorAll('.sc-lang button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-l')===lang); });
+    scApplyLang(lang);
+  };
+
+  function scMakeSwitch(){
+    var w=document.createElement('div'); w.className='sc-lang';
+    var de=document.createElement('button'); de.textContent='DE'; de.setAttribute('data-l','de'); de.onclick=function(){ window.scSetLang('de'); };
+    var sep=document.createElement('span'); sep.className='sep'; sep.textContent='/';
+    var en=document.createElement('button'); en.textContent='EN'; en.setAttribute('data-l','en'); en.onclick=function(){ window.scSetLang('en'); };
+    w.appendChild(de); w.appendChild(sep); w.appendChild(en);
+    return w;
+  }
+
+  function scInit(){
+    var tr=document.querySelector('.topbar-right'); if(tr) tr.insertBefore(scMakeSwitch(), tr.firstChild);
+    var atbr=document.querySelector('.atb-right'); if(atbr) atbr.insertBefore(scMakeSwitch(), atbr.firstChild);
+    document.querySelectorAll('.auth-screen, #selectorScreen').forEach(function(s){ s.appendChild(scMakeSwitch()); });
+    var saved='de'; try{ saved=localStorage.getItem('sc_lang_tool')||'de'; }catch(e){}
+    window.scSetLang(saved);
+    var obs=new MutationObserver(function(){
+      if(_scApplying || SC_LANG==='de') return;
+      if(_scT) cancelAnimationFrame(_scT);
+      _scT=requestAnimationFrame(function(){ scApplyLang(SC_LANG); });
+    });
+    obs.observe(document.body, {childList:true, subtree:true, characterData:true});
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', scInit);
+  else scInit();
+})();
+</script>
 </body>
 </html>
