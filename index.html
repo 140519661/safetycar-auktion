@@ -592,7 +592,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     <div class="auth-card-logo"><img src="logo.png" alt="Safety Car"></div>
     <div class="auth-title">Konto erstellen</div>
     <div class="auth-desc">Einmalig registrieren – dauerhafter Zugang zu allen Auktionen.</div>
-    <div class="fi"><label>Sprache / Language</label><select id="su_lang" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px;background:var(--white);color:var(--text)"><option value="de">Deutsch</option><option value="en">English</option></select><div class="pwhint">Bestimmt die Sprache Ihrer E-Mails / Sets the language of your emails</div></div>
+    <div class="fi"><label>Sprache / Language</label><select id="su_lang" onchange="if(window.scSetLang) window.scSetLang(this.value)" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px;background:var(--white);color:var(--text)"><option value="de">Deutsch</option><option value="en">English</option></select><div class="pwhint">Bestimmt die Sprache Ihrer E-Mails / Sets the language of your emails</div></div>
     <div class="fi"><label>Ansprechpartner (Vor- &amp; Zuname)</label><input type="text" id="su_contact" placeholder="Ansprechpartner (Vor- &amp; Zuname)" autocomplete="name"></div>
     <div class="fi"><label>Name Ihres Unternehmens</label><input type="text" id="su_name" placeholder="Name Ihres Unternehmens" autocomplete="organization"></div>
     <div class="fi"><label>E-Mail-Adresse</label><input type="email" id="su_email" placeholder="E-Mail-Adresse" autocomplete="email"></div>
@@ -2854,6 +2854,7 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
     SC_LANG=lang; window.SC_LANG=lang;
     try{ localStorage.setItem('sc_lang_tool',lang); }catch(e){}
     document.querySelectorAll('.sc-lang button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-l')===lang); });
+    var _sl=document.getElementById('su_lang'); if(_sl) _sl.value=lang;
     scApplyLang(lang);
     if(window.SC_refreshDynamic) window.SC_refreshDynamic();
   };
