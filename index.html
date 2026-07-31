@@ -1320,7 +1320,7 @@ async function loadNotifications() {
     var typeColor = (t.indexOf('ÜBERBOTEN') >= 0 || t.indexOf('UEBERBOTEN') >= 0) ? 'red'
       : (t.indexOf('ERSTEIGERT') >= 0 || t.indexOf('GEWONNEN') >= 0 || t.indexOf('HÖCHST') >= 0) ? 'green'
       : 'amber';
-    item.innerHTML = '<div class="notif-content"><div class="notif-type ' + typeColor + '">' + t + '</div><div class="notif-msg">' + (n.message || '') + '</div><div class="notif-time">' + fmtTime(n.created_at) + '</div></div>';
+    item.innerHTML = '<div class="notif-content"><div class="notif-type ' + typeColor + '">' + esc(t) + '</div><div class="notif-msg">' + esc(n.message || '') + '</div><div class="notif-time">' + fmtTime(n.created_at) + '</div></div>';
     list.appendChild(item);
   }
 }
@@ -1783,7 +1783,7 @@ async function endAuction() {
   var myName = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
   if (aData && aData.top_bidder === myName) {
     document.getElementById('wonBadge').style.display = 'block';
-    await addNotification(cUser.id, 'ERSTEIGERT', 'Sie haben unverbindlich ersteigert: ' + (aData.vehicle_name || '') + ' - ' + fmtEur(aData.current_bid || 0) + '. Wir melden uns zur Abwicklung.', aData.id);
+    await addNotification(cUser.id, 'ERSTEIGERT', L('Sie haben unverbindlich ersteigert: ','You have won (non-binding): ') + (aData.vehicle_name || '') + ' - ' + fmtEur(aData.current_bid || 0) + L('. Wir melden uns zur Abwicklung.','. We will contact you to complete the transaction.'), aData.id);
   }
 }
 
