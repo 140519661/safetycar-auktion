@@ -42,24 +42,25 @@
 
     /* ── Header ── */
     .ds-header {
-      background: var(--ink);
+      background: #ffffff;
       padding: 0 5%;
-      height: 64px;
+      height: 104px;
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 50;
-      border-bottom: 1px solid var(--ink-b);
+      border-bottom: 1px solid #ECECEC;
     }
+    .ds-header .logo-img { height: 46px; width: auto; display: block; }
     .logo-mark { display:flex; flex-direction:column; line-height:1; gap:1px; text-decoration:none; }
     .logo-mark .lw1 { font-family:'Montserrat',sans-serif; font-weight:600; font-size:.9rem; letter-spacing:.2em; text-transform:uppercase; color:var(--red); }
     .logo-mark .lw2 { font-family:'Montserrat',sans-serif; font-weight:600; font-size:.9rem; letter-spacing:.2em; text-transform:uppercase; color:#fff; }
     .back-link {
       font-family:'Montserrat',sans-serif; font-weight:500;
       font-size:.75rem; letter-spacing:.06em; text-transform:uppercase;
-      color:#A0A0A0; text-decoration:none;
+      color:#666; text-decoration:none;
       display:inline-flex; align-items:center; gap:7px;
       transition:color .2s;
     }
-    .back-link:hover { color:#fff; }
+    .back-link:hover { color:#111; }
     .back-link svg { stroke:currentColor; fill:none; stroke-width:2; }
 
     /* ── Hero ── */
@@ -169,10 +170,7 @@
 
 <!-- ── Header ── -->
 <header class="ds-header">
-  <a href="index.html" class="logo-mark" aria-label="Safety Car – Zur Startseite">
-    <span class="lw1">Safety</span>
-    <span class="lw2">Car</span>
-  </a>
+  <a href="index.html" aria-label="Safety Car – Zur Startseite"><img src="logo.png" alt="Safety Car" class="logo-img"></a>
   <a href="index.html" class="back-link">
     <svg width="14" height="14" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     Zurück zur Website
