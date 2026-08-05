@@ -592,7 +592,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     <div class="auth-card-logo"><img src="logo.png" alt="Safety Car"></div>
     <div class="auth-title">Konto erstellen</div>
     <div class="auth-desc">Einmalig registrieren – dauerhafter Zugang zu allen Auktionen.</div>
-    <div class="fi"><label>Sprache / Language</label><select id="su_lang" onchange="if(window.scSetLang) window.scSetLang(this.value)" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px;background:var(--white);color:var(--text)"><option value="de">Deutsch</option><option value="en">English</option></select><div class="pwhint">Bestimmt die Sprache Ihrer E-Mails / Sets the language of your emails</div></div>
+    <div class="fi"><label>Sprache</label><select id="su_lang" onchange="if(window.scSetLang) window.scSetLang(this.value)" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px;background:var(--white);color:var(--text)"><option value="de">Deutsch</option><option value="en">Englisch</option></select></div>
     <div class="fi"><label>Ansprechpartner (Vor- &amp; Zuname)</label><input type="text" id="su_contact" placeholder="Ansprechpartner (Vor- &amp; Zuname)" autocomplete="name"></div>
     <div class="fi"><label>Name Ihres Unternehmens</label><input type="text" id="su_name" placeholder="Name Ihres Unternehmens" autocomplete="organization"></div>
     <div class="fi"><label>E-Mail-Adresse</label><input type="email" id="su_email" placeholder="E-Mail-Adresse" autocomplete="email"></div>
@@ -1540,18 +1540,18 @@ async function downloadCheck(e) {
     setTimeout(function() { URL.revokeObjectURL(objUrl); }, 2000);
     if (status) {
       status.style.color = '#2E7D32';
-      status.textContent = L('✓ Safety Car-Check heruntergeladen – bitte prüfen Sie Ihren Download-Ordner.','✓ Safety Car check downloaded – please check your Downloads folder.');
+      status.textContent = L('✓ Safety Car-Check heruntergeladen – bitte prüfen Sie Ihren Download-Ordner.','✓ Safety Car-Check downloaded – please check your Downloads folder.');
       status.style.display = 'block';
     }
   } catch (err) {
     window.open(url, '_blank', 'noopener');
     if (status) {
       status.style.color = '#2E7D32';
-      status.textContent = L('Der Safety Car-Check wurde in einem neuen Tab geöffnet.','The Safety Car check has opened in a new tab.');
+      status.textContent = L('Der Safety Car-Check wurde in einem neuen Tab geöffnet.','The Safety Car-Check has opened in a new tab.');
       status.style.display = 'block';
     }
   } finally {
-    if (label) label.textContent = L('Safety Car-Check herunterladen','Download Safety Car check');
+    if (label) label.textContent = L('Safety Car-Check herunterladen','Download Safety Car-Check');
     if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
     _checkDownloading = false;
   }
@@ -2645,7 +2645,7 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
   var DICT = [
     ["Willkommen zurück!","Welcome back!"],
     ["Melden Sie sich an, um an unseren Auktionen teilzunehmen.","Sign in to take part in our auctions."],
-    ["E-Mail-Adresse","Email address"],
+    ["E-Mail-Adresse","E-Mail-Address"],
     ["Passwort","Password"],
     ["Jetzt einloggen","Log in now"],
     ["Noch kein Konto?","No account yet?"],
@@ -2662,10 +2662,10 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
     ["Jetzt registrieren","Register now"],
     ["Bereits registriert?","Already registered?"],
     ["Einloggen","Log in"],
-    ["Wir senden Ihnen einen Reset-Link per E-Mail zu.","We'll send you a reset link by email."],
-    ["Ihre E-Mail-Adresse","Your email address"],
+    ["Wir senden Ihnen einen Reset-Link per E-Mail zu.","We'll send you a reset link by E-Mail."],
+    ["Ihre E-Mail-Adresse","Your E-Mail-Address"],
     ["Reset-Link senden","Send reset link"],
-    ["Bitte prüfen Sie auch Ihren Spam-Ordner, falls die E-Mail nicht ankommen sollte.","Please also check your spam folder if the email doesn't arrive."],
+    ["Bitte prüfen Sie auch Ihren Spam-Ordner, falls die E-Mail nicht ankommen sollte.","Please also check your spam folder if the E-Mail doesn't arrive."],
     ["Zurück zum Login","Back to login"],
     ["Neues Passwort","New password"],
     ["Bitte neues Passwort eingeben","Please enter a new password"],
@@ -2734,13 +2734,13 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
     ["Verbindlich bieten","Place binding bid"],
     ["Profil-Einstellungen","Profile settings"],
     ["Angemeldet als","Signed in as"],
-    ["E-Mail-Adresse ändern","Change email address"],
-    ["Neue E-Mail-Adresse","New email address"],
+    ["E-Mail-Adresse ändern","Change E-Mail-Address"],
+    ["Neue E-Mail-Adresse","New E-Mail-Address"],
     ["Passwort ändern","Change password"],
     ["Neues Passwort (min. 8 Zeichen)","New password (min. 8 characters)"],
-    ["Safety Car-Check herunterladen","Download Safety Car check"],
-    ["Bitte gültige E-Mail eingeben.","Please enter a valid email."],
-    ["Bestätigungs-Mail an die neue Adresse gesendet. Bitte bestätigen.","Confirmation email sent to the new address. Please confirm."],
+    ["Safety Car-Check herunterladen","Download Safety Car-Check"],
+    ["Bitte gültige E-Mail eingeben.","Please enter a valid E-Mail."],
+    ["Bestätigungs-Mail an die neue Adresse gesendet. Bitte bestätigen.","Confirmation E-Mail sent to the new address. Please confirm."],
     ["Passwort erfolgreich geändert.","Password changed successfully."],
     ["Bitte Auktionscode eingeben.","Please enter an auction code."],
     ["Bitte Unternehmensname eingeben.","Please enter a company name."],
@@ -2755,12 +2755,13 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
     ["Bitte alle Felder ausfuellen.","Please fill in all fields."],
     ["Bitte warten...","Please wait..."],
     ["BITTE WARTEN...","PLEASE WAIT..."],
-    ["Gültige E-Mail-Adresse eingeben.","Enter a valid email address."],
+    ["Gültige E-Mail-Adresse eingeben.","Enter a valid E-Mail-Address."],
     ["Passwort mindestens 8 Zeichen.","Password must be at least 8 characters."],
-    ["Sprache / Language","Language"],
-    ["Bestimmt die Sprache Ihrer E-Mails / Sets the language of your emails","Sets the language of your emails"],
-    ["Bitte gueltige E-Mail eingeben.","Please enter a valid email address."],
-    ["Reset-Link gesendet! Bitte E-Mail (auch Spam-Ordner) pruefen.","Reset link sent! Please check your email (including spam folder)."],
+    ["Sprache","Language"],
+    ["Deutsch","German"],
+    ["Englisch","English"],
+    ["Bitte gueltige E-Mail eingeben.","Please enter a valid E-Mail-Address."],
+    ["Reset-Link gesendet! Bitte E-Mail (auch Spam-Ordner) pruefen.","Reset link sent! Please check your E-Mail (including spam folder)."],
     ["Passwort erfolgreich geaendert!","Password changed successfully!"],
     ["Bitte gueltigen Betrag eingeben.","Please enter a valid amount."],
     ["Session abgelaufen. Bitte neu einloggen.","Session expired. Please log in again."],
@@ -2771,7 +2772,7 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
     ["Ihr Zugang wurde deaktiviert. Bitte wenden Sie sich an SafetyCar falls Sie Fragen haben.","Your access has been deactivated. Please contact SafetyCar if you have any questions."],
     ["Registrierung wird geprüft","Registration under review"],
     ["Unser Team prüft Ihre Registrierung und schaltet den Zugang in Kürze frei.","Our team is reviewing your registration and will activate access shortly."],
-    ["Sie erhalten eine E-Mail, sobald Ihr Zugang aktiviert wurde.","You'll receive an email as soon as your access is activated."],
+    ["Sie erhalten eine E-Mail, sobald Ihr Zugang aktiviert wurde.","You'll receive an E-Mail as soon as your access is activated."],
     ["Aktive Auktionen","Active auctions"],
     ["Keine aktiven Auktionen","No active auctions"],
     ["Keine Fahrzeuge auf der Watchlist","No vehicles on your watchlist"],
