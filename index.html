@@ -36,8 +36,8 @@ a{text-decoration:none;color:inherit}
 .top{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
 .top-in{display:flex;align-items:center;justify-content:space-between;height:62px}
 .logo{display:flex;align-items:center;line-height:1}
-.logo img{height:52px;width:auto;display:block}
-@media(max-width:600px){.logo img{height:42px}}
+.logo img{height:42px;width:auto;display:block}
+@media(max-width:600px){.logo img{height:34px}}
 .logo .l1{font-family:'Montserrat';font-weight:800;font-size:.95rem;letter-spacing:.22em;color:var(--red)}
 .logo .l2{font-family:'Montserrat';font-weight:800;font-size:.95rem;letter-spacing:.22em;color:var(--ink)}
 .top-right{display:flex;align-items:center;gap:14px}
@@ -132,6 +132,21 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:30px 0;border-to
 .reg .rn{flex:none;width:28px;height:28px;border-radius:8px;background:var(--red);color:#fff;font-family:'Montserrat';font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center}
 .reg .rt{font-size:.9rem;font-weight:500}
 .reg-note{margin-top:16px;font-size:.85rem;color:var(--muted)}
+
+.pruef{background:var(--off)}
+.pf-lead{max-width:640px;color:var(--mid);margin:-6px 0 26px}
+.pf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.pf-item{margin:0}
+.pf-item img{width:100%;height:230px;object-fit:cover;border-radius:12px;display:block;background:#eee}
+.pf-item:first-child{grid-column:span 2}
+.pf-item:first-child img{height:230px}
+.pf-item figcaption{font-size:.78rem;color:var(--mid);margin-top:8px;line-height:1.35}
+@media(max-width:900px){.pf-grid{grid-template-columns:repeat(2,1fr);gap:12px}.pf-item img{height:200px}.pf-item:first-child img{height:230px}}
+@media(max-width:560px){.pf-grid{grid-template-columns:repeat(2,1fr);gap:10px}.pf-item img{height:140px;border-radius:10px}.pf-item:first-child img{height:190px}}
+.foot-contact{font-size:.85rem;margin:2px 0 10px}
+.foot-contact a{color:var(--ink);text-decoration:none;font-weight:600}
+.foot-contact a:hover{color:var(--red)}
+.foot-sep{color:var(--line,#ddd);margin:0 8px}
 </style>
 </head>
 <body>
@@ -176,6 +191,23 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:30px 0;border-to
     <div class="step"><div class="n">4</div><h3 data-i18n="s4t">Abholung</h3><p data-i18n="s4d">Ab Sammelplatz Raum Stuttgart oder frei Hof per Lieferung.</p></div>
   </div>
 </div></section>
+
+<!-- PRUEFUNG IN BILDERN -->
+<section class="sec pruef"><div class="wrap">
+  <span class="eyebrow" data-i18n="pf_eyebrow">Der Safety Car-Check</span>
+  <h2 data-i18n="pf_title">Gemessen, nicht geschätzt.</h2>
+  <p class="pf-lead" data-i18n="pf_lead">Jedes Fahrzeug wird vor Ort geprüft – mit mobiler Hebebühne, Diagnosegerät und dokumentierten Messwerten.</p>
+  <div class="pf-grid">
+    <figure class="pf-item"><img src="fotos/hebebuehne-vor-ort.webp" alt="Fahrzeug auf mobiler Hebebühne" loading="lazy"></figure>
+    <figure class="pf-item"><img src="fotos/lackpruefung.webp" alt="Lackprüfung" loading="lazy"></figure>
+    <figure class="pf-item"><img src="fotos/batterietest-ausdruck.webp" alt="Batterietest mit Ausdruck" loading="lazy"></figure>
+    <figure class="pf-item"><img src="fotos/pruefprotokoll-mappe.webp" alt="Prüfprotokoll" loading="lazy"></figure>
+    <figure class="pf-item"><img src="fotos/transporter-team.webp" alt="Safety Car Team vor Ort" loading="lazy"></figure>
+    <figure class="pf-item"><img src="fotos/pruefung-obd-diagnose.webp" alt="Diagnosegerät" loading="lazy"></figure>
+    <figure class="pf-item"><img src="fotos/fluessigkeit-test.webp" alt="Prüfung der Betriebsflüssigkeiten" loading="lazy"></figure>
+  </div>
+</div></section>
+
 
 <!-- VEHICLES -->
 <section class="sec"><div class="wrap">
@@ -237,14 +269,19 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:30px 0;border-to
     <a href="datenschutz.html" data-i18n="f_ds">Datenschutz</a>
     <a href="agb.html" data-i18n="f_agb">AGB</a>
   </div>
-  <div class="foot-copy">© 2026 Safety Car · Jenne, Zehner Safety Car GbR</div>
+  <div class="foot-contact">
+    <a href="tel:+4915757076079">+49 157 570 760 79</a>
+    <span class="foot-sep">·</span>
+    <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a>
+  </div>
+  <div class="foot-copy">© 2026 Safety Car · Jenne, Zehner Safety Car GbR · Korntal-Münchingen</div>
 </div></footer>
 
 <script>
 var I18N={
  de:{},
- en:{nav_login:"Log in",hero_eyebrow:"For vetted car dealers",hero_h1a:"Vetted vehicles.",hero_h1b:"Straight to your business.",hero_sub:"We source and inspect private vehicles in Germany –<br/>you buy them in short auctions and pay securely via escrow.",cta_register:"Register as a dealer",cta_login:"Log in & bid",tl1:"Inspected, with report",tl2:"Secure escrow payment",tl3:"Collection near Stuttgart",steps_eyebrow:"Process",steps_title:"Buying is this simple.",s1t:"Inspected on site",s1d:"Safety Car Check with report – measured, not estimated.",s2t:"3-hour auction",s2d:"Fixed evening window 5–8 pm, highest bid binding.",s3t:"Secure payment",s3d:"Handled via escrow – documents only after payment.",s4t:"Collection",s4d:"From the Stuttgart-area hub or delivered to your yard.",trust_eyebrow:"Why Safety Car",trust_title:"You buy calculation certainty.",t1t:"Calculation certainty",t1d:"Calculate from our report – no travel, no safety discount.",t2t:"A commitment, not a disclaimer",t2d:"We stand behind the measured values – a commitment, not a blanket disclaimer.",t3t:"Verified mileage",t3d:"Multi-stage cross-check via control units, history, papers and wear.",band_title:"Register and start bidding.",band_sub:"Access to vetted used cars from Germany – no fixed costs.",band_cta:"Register as a dealer",f_imp:"Legal notice",f_ds:"Privacy",f_agb:"Terms",veh_eyebrow:"Vehicles",veh_title:"The vehicles we auction.",veh1v:"Private sellers",veh1l:"Source",veh2v:"German brands",veh2l:"Focus",veh3v:"up to \u20ac25,000",veh3l:"Vehicle value",veh4l:"Engine size",ma_live:"Live auction",ma_tag:"Example auction",st_live:"Live",st_sold:"Sold",ma_curr:"Current highest bid",ma_sub:"13 bids \u00b7 14 h left",reg_eyebrow:"Registration",reg_title:"Access in three steps.",reg1:"Register on the platform",reg2:"Review by Safety Car",reg3:"Get access & bid",reg_note:"New dealers start with a bid limit that rises after the first completed deals."},
- pl:{nav_login:"Zaloguj się",hero_eyebrow:"Dla zweryfikowanych dealerów",hero_h1a:"Sprawdzone pojazdy.",hero_h1b:"Prosto do Twojego biznesu.",hero_sub:"Pozyskujemy i sprawdzamy prywatne pojazdy w Niemczech –<br/>licytujesz je w krótkich aukcjach i kupujesz bezpiecznie przez rachunek powierniczy.",cta_register:"Zarejestruj się jako dealer",cta_login:"Zaloguj i licytuj",tl1:"Sprawdzone, z protokołem",tl2:"Bezpieczna płatność powiernicza",tl3:"Punkt zbiorczy k. Stuttgartu",steps_eyebrow:"Przebieg",steps_title:"Zakup jest tak prosty.",s1t:"Sprawdzone na miejscu",s1d:"Kontrola Safety Car z protokołem – zmierzone, nie szacowane.",s2t:"Aukcja 3-godzinna",s2d:"Stałe okno wieczorne 17–20, najwyższa oferta wiążąca.",s3t:"Bezpieczna płatność",s3d:"Rozliczenie przez rachunek powierniczy – dokumenty po wpłacie.",s4t:"Odbiór",s4d:"Z punktu zbiorczego k. Stuttgartu lub z dostawą.",trust_eyebrow:"Dlaczego Safety Car",trust_title:"Kupujesz pewność kalkulacji.",t1t:"Pewność kalkulacji",t1d:"Kalkulujesz na podstawie protokołu – bez dojazdu i bez marginesu bezpieczeństwa.",t2t:"Gwarancja zamiast wyłączenia odpowiedzialności",t2d:"Odpowiadamy za zmierzone wartości – gwarancja zamiast ogólnego wyłączenia.",t3t:"Sprawdzony przebieg",t3d:"Wieloetapowa weryfikacja: sterowniki, historia, dokumenty i stan zużycia.",band_title:"Zarejestruj się i licytuj.",band_sub:"Dostęp do sprawdzonych aut używanych z Niemiec – bez kosztów stałych.",band_cta:"Zarejestruj się jako dealer",f_imp:"Nota prawna",f_ds:"Prywatność",f_agb:"Regulamin",veh_eyebrow:"Pojazdy",veh_title:"Pojazdy, które licytujemy.",veh1v:"Sprzedawcy prywatni",veh1l:"Pochodzenie",veh2v:"Marki niemieckie",veh2l:"Fokus",veh3v:"do 25\u00a0000 \u20ac",veh3l:"Wartość pojazdu",veh4l:"Pojemność",ma_live:"Aukcja na żywo",ma_tag:"Przykładowa aukcja",st_live:"Na żywo",st_sold:"Sprzedane",ma_curr:"Aktualna najwyższa oferta",ma_sub:"13 ofert \u00b7 pozostało 14 godz.",reg_eyebrow:"Rejestracja",reg_title:"Dostęp w trzech krokach.",reg1:"Rejestracja na platformie",reg2:"Weryfikacja przez Safety Car",reg3:"Uzyskaj dostęp i licytuj",reg_note:"Nowi dealerzy zaczynają z limitem licytacji, który rośnie po pierwszych transakcjach."}
+ en:{pf_eyebrow:"The Safety Car Check",pf_title:"Measured, not estimated.",pf_lead:"Every vehicle is inspected on site – with a mobile lift, diagnostic equipment and documented readings.",pf_c1:"Reading the fault memory",pf_c2:"Underbody on a mobile lift",pf_c3:"Checking paint for respray",pf_c4:"Battery test with printout",pf_c5:"Checking operating fluids",pf_c6:"A report for every vehicle",nav_login:"Log in",hero_eyebrow:"For vetted car dealers",hero_h1a:"Vetted vehicles.",hero_h1b:"Straight to your business.",hero_sub:"We source and inspect private vehicles in Germany –<br/>you buy them in short auctions and pay securely via escrow.",cta_register:"Register as a dealer",cta_login:"Log in & bid",tl1:"Inspected, with report",tl2:"Secure escrow payment",tl3:"Collection near Stuttgart",steps_eyebrow:"Process",steps_title:"Buying is this simple.",s1t:"Inspected on site",s1d:"Safety Car Check with report – measured, not estimated.",s2t:"3-hour auction",s2d:"Fixed evening window 5–8 pm, highest bid binding.",s3t:"Secure payment",s3d:"Handled via escrow – documents only after payment.",s4t:"Collection",s4d:"From the Stuttgart-area hub or delivered to your yard.",trust_eyebrow:"Why Safety Car",trust_title:"You buy calculation certainty.",t1t:"Calculation certainty",t1d:"Calculate from our report – no travel, no safety discount.",t2t:"A commitment, not a disclaimer",t2d:"We stand behind the measured values – a commitment, not a blanket disclaimer.",t3t:"Verified mileage",t3d:"Multi-stage cross-check via control units, history, papers and wear.",band_title:"Register and start bidding.",band_sub:"Access to vetted used cars from Germany – no fixed costs.",band_cta:"Register as a dealer",f_imp:"Legal notice",f_ds:"Privacy",f_agb:"Terms",veh_eyebrow:"Vehicles",veh_title:"The vehicles we auction.",veh1v:"Private sellers",veh1l:"Source",veh2v:"German brands",veh2l:"Focus",veh3v:"up to \u20ac25,000",veh3l:"Vehicle value",veh4l:"Engine size",ma_live:"Live auction",ma_tag:"Example auction",st_live:"Live",st_sold:"Sold",ma_curr:"Current highest bid",ma_sub:"13 bids \u00b7 14 h left",reg_eyebrow:"Registration",reg_title:"Access in three steps.",reg1:"Register on the platform",reg2:"Review by Safety Car",reg3:"Get access & bid",reg_note:"New dealers start with a bid limit that rises after the first completed deals."},
+ pl:{pf_eyebrow:"Safety Car-Check",pf_title:"Zmierzone, nie oszacowane.",pf_lead:"Każdy pojazd jest sprawdzany na miejscu – z mobilnym podnośnikiem, sprzętem diagnostycznym i udokumentowanymi pomiarami.",pf_c1:"Odczyt pamięci usterek",pf_c2:"Podwozie na mobilnym podnośniku",pf_c3:"Kontrola lakieru pod kątem przemalowań",pf_c4:"Test akumulatora z wydrukiem",pf_c5:"Kontrola płynów eksploatacyjnych",pf_c6:"Protokół do każdego pojazdu",nav_login:"Zaloguj się",hero_eyebrow:"Dla zweryfikowanych dealerów",hero_h1a:"Sprawdzone pojazdy.",hero_h1b:"Prosto do Twojego biznesu.",hero_sub:"Pozyskujemy i sprawdzamy prywatne pojazdy w Niemczech –<br/>licytujesz je w krótkich aukcjach i kupujesz bezpiecznie przez rachunek powierniczy.",cta_register:"Zarejestruj się jako dealer",cta_login:"Zaloguj i licytuj",tl1:"Sprawdzone, z protokołem",tl2:"Bezpieczna płatność powiernicza",tl3:"Punkt zbiorczy k. Stuttgartu",steps_eyebrow:"Przebieg",steps_title:"Zakup jest tak prosty.",s1t:"Sprawdzone na miejscu",s1d:"Kontrola Safety Car z protokołem – zmierzone, nie szacowane.",s2t:"Aukcja 3-godzinna",s2d:"Stałe okno wieczorne 17–20, najwyższa oferta wiążąca.",s3t:"Bezpieczna płatność",s3d:"Rozliczenie przez rachunek powierniczy – dokumenty po wpłacie.",s4t:"Odbiór",s4d:"Z punktu zbiorczego k. Stuttgartu lub z dostawą.",trust_eyebrow:"Dlaczego Safety Car",trust_title:"Kupujesz pewność kalkulacji.",t1t:"Pewność kalkulacji",t1d:"Kalkulujesz na podstawie protokołu – bez dojazdu i bez marginesu bezpieczeństwa.",t2t:"Gwarancja zamiast wyłączenia odpowiedzialności",t2d:"Odpowiadamy za zmierzone wartości – gwarancja zamiast ogólnego wyłączenia.",t3t:"Sprawdzony przebieg",t3d:"Wieloetapowa weryfikacja: sterowniki, historia, dokumenty i stan zużycia.",band_title:"Zarejestruj się i licytuj.",band_sub:"Dostęp do sprawdzonych aut używanych z Niemiec – bez kosztów stałych.",band_cta:"Zarejestruj się jako dealer",f_imp:"Nota prawna",f_ds:"Prywatność",f_agb:"Regulamin",veh_eyebrow:"Pojazdy",veh_title:"Pojazdy, które licytujemy.",veh1v:"Sprzedawcy prywatni",veh1l:"Pochodzenie",veh2v:"Marki niemieckie",veh2l:"Fokus",veh3v:"do 25\u00a0000 \u20ac",veh3l:"Wartość pojazdu",veh4l:"Pojemność",ma_live:"Aukcja na żywo",ma_tag:"Przykładowa aukcja",st_live:"Na żywo",st_sold:"Sprzedane",ma_curr:"Aktualna najwyższa oferta",ma_sub:"13 ofert \u00b7 pozostało 14 godz.",reg_eyebrow:"Rejestracja",reg_title:"Dostęp w trzech krokach.",reg1:"Rejestracja na platformie",reg2:"Weryfikacja przez Safety Car",reg3:"Uzyskaj dostęp i licytuj",reg_note:"Nowi dealerzy zaczynają z limitem licytacji, który rośnie po pierwszych transakcjach."}
 };
 // deutsche Originaltexte als de-Fallback aus dem DOM aufnehmen
 document.querySelectorAll('[data-i18n]').forEach(function(el){I18N.de[el.getAttribute('data-i18n')]=el.innerHTML;});
