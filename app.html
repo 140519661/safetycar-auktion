@@ -592,7 +592,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     <div class="auth-card-logo"><img src="logo.png" alt="Safety Car"></div>
     <div class="auth-title">Konto erstellen</div>
     <div class="auth-desc">Einmalig registrieren – dauerhafter Zugang zu allen Auktionen.</div>
-    <div class="fi"><label>Sprache</label><select id="su_lang" onchange="if(window.scSetLang) window.scSetLang(this.value)" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px;background:var(--white);color:var(--text)"><option value="de">Deutsch</option><option value="en">Englisch</option></select></div>
+    <div class="fi"><label>Sprache</label><select id="su_lang" onchange="if(window.scSetLang) window.scSetLang(this.value)" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px;background:var(--white);color:var(--text)"><option value="de">Deutsch</option><option value="en">Englisch</option><option value="pl">Polnisch</option></select></div>
     <div class="fi"><label>Ansprechpartner (Vor- &amp; Zuname)</label><input type="text" id="su_contact" placeholder="Ansprechpartner (Vor- &amp; Zuname)" autocomplete="name"></div>
     <div class="fi"><label>Name Ihres Unternehmens</label><input type="text" id="su_name" placeholder="Name Ihres Unternehmens" autocomplete="organization"></div>
     <div class="fi"><label>E-Mail-Adresse</label><input type="email" id="su_email" placeholder="E-Mail-Adresse" autocomplete="email"></div>
@@ -942,11 +942,46 @@ var SBURL = 'https://cdlashucfivjihehwlis.supabase.co';
 var SBKEY = 'sb_publishable_QhSJ5XSC3xLWNXXWjFZEqQ_r08Hwy69';
 // Admin PIN is verified server-side only - never in frontend code
 var SITE = 'https://auktion.safetycar.net';
-var sb = supabase.createClient(SBURL, SBKEY);
+var sb = supabase.createClient(SBURL, SBKEY, {
+  auth: {
+    // 'implicit': Der Reset-Link traegt die Sitzung direkt mit sich.
+    // Damit funktioniert er auch, wenn die Mail auf einem anderen Geraet
+    // oder in einem anderen Browser geoeffnet wird.
+    flowType: 'implicit',
+    detectSessionInUrl: true,
+    persistSession: true,
+    autoRefreshToken: true
+  }
+});
+
+// Stellt die Sitzung aus einem Passwort-Reset-Link her (beide Verfahren).
+async function scEnsureRecoverySession() {
+  try {
+    var s1 = await sb.auth.getSession();
+    if (s1 && s1.data && s1.data.session) return true;
+
+    var m = window.location.search.match(/[?&]code=([^&]+)/);
+    if (m && typeof sb.auth.exchangeCodeForSession === 'function') {
+      var r1 = await sb.auth.exchangeCodeForSession(decodeURIComponent(m[1]));
+      if (r1 && !r1.error) return true;
+    }
+
+    var params = new URLSearchParams(String(window.location.hash || '').replace(/^#/, ''));
+    var at = params.get('access_token'), rt = params.get('refresh_token');
+    if (at && rt) {
+      var r2 = await sb.auth.setSession({ access_token: at, refresh_token: rt });
+      if (r2 && !r2.error) return true;
+    }
+
+    await new Promise(function(r){ setTimeout(r, 700); });
+    var s2 = await sb.auth.getSession();
+    return !!(s2 && s2.data && s2.data.session);
+  } catch (e) { return false; }
+}
 
 var cUser = null, cProfile = null, adminToken = null, aData = null, allAuctions = [], myBidsAll = [], watchlistIds = [], tInt = null, rtSub = null, notifSub = null;
 // Sprach-Helfer (Deutsch = Standard). Wird vom DE|EN-Umschalter gesetzt.
-function L(de, en){ return (window.SC_LANG === 'en') ? en : de; }
+function L(de, en, pl){ var l = window.SC_LANG; if (l === 'en') return en; if (l === 'pl') return (pl !== undefined && pl !== '') ? pl : en; return de; }
 
 var lbPhotos = [];
 var lbIndex = 0;
@@ -1037,10 +1072,10 @@ function pad2(n) { return n < 10 ? '0' + n : '' + n; }
 function fmtTime(ts) { return new Date(ts).toLocaleString('de-DE'); }
 function fmtCountdown(endsAt) {
   var diff = Math.max(0, Math.floor((new Date(endsAt) - new Date()) / 1000));
-  if (diff === 0) return L('Beendet','Ended');
+  if (diff === 0) return L('Beendet','Ended','Zakończona');
   var d = Math.floor(diff / 86400);
   var h = Math.floor((diff % 86400) / 3600), m = Math.floor((diff % 3600) / 60), s = diff % 60;
-  if (d > 0) return d + L(' T ',' d ') + pad2(h) + ' h ' + pad2(m) + ' m';
+  if (d > 0) return d + L(' T ',' d ',' dni ') + pad2(h) + ' h ' + pad2(m) + ' m';
   return pad2(h) + ':' + pad2(m) + ':' + pad2(s);
 }
 
@@ -1087,7 +1122,9 @@ async function showDashboard() {
 async function init() {
   showScreen('loadingScreen');
   var hash = window.location.hash;
-  if (hash && hash.indexOf('type=recovery') >= 0) { showScreen('resetScreen'); return; }
+  var isRecovery = (hash && (hash.indexOf('type=recovery') >= 0 || hash.indexOf('access_token') >= 0))
+                   || /[?&]code=/.test(window.location.search);
+  if (isRecovery) { showScreen('resetScreen'); await scEnsureRecoverySession(); return; }
   var sessionRes = await sb.auth.getSession();
   var session = sessionRes.data.session;
   if (session) {
@@ -1108,12 +1145,12 @@ async function loadProfile() {
     var name = (res.data && res.data.display_name) ? res.data.display_name : cUser.email;
     var el1 = document.getElementById('topUser'); if (el1) el1.textContent = name;
     var el2 = document.getElementById('dashUser'); if (el2) el2.textContent = name;
-    var el3 = document.getElementById('selUser'); if (el3) el3.textContent = L('Eingeloggt als: ','Signed in as: ') + name;
+    var el3 = document.getElementById('selUser'); if (el3) el3.textContent = L('Eingeloggt als: ','Signed in as: ','Zalogowano jako: ') + name;
     // Plattform-Sprache beim ersten Login aus dem Profil vorbelegen (danach entscheidet der Umschalter)
     try {
       var _manualLang = null; try { _manualLang = localStorage.getItem('sc_lang_tool'); } catch(e) {}
       if (!_manualLang && cProfile && cProfile.language && window.scSetLang) {
-        window.scSetLang(cProfile.language === 'en' ? 'en' : 'de');
+        window.scSetLang(['de','en','pl'].indexOf(cProfile.language) >= 0 ? cProfile.language : 'de');
       }
     } catch(e) {}
   } catch(e) { console.error('Profile error:', e); }
@@ -1266,8 +1303,8 @@ async function toggleWatch(auctionId, btn) {
     } else {
       await sb.from('watchlist').insert({user_id: cUser.id, auction_id: auctionId});
       watchlistIds.push(auctionId);
-      if (btn) { btn.textContent = L('Gespeichert ✓','Saved ✓'); btn.classList.add('watched-btn'); }
-      showToast(L('Gespeichert ✓','Saved ✓'), 'ok');
+      if (btn) { btn.textContent = L('Gespeichert ✓','Saved ✓','Zapisano ✓'); btn.classList.add('watched-btn'); }
+      showToast(L('Gespeichert ✓','Saved ✓','Zapisano ✓'), 'ok');
     }
   } catch(e) { console.error('Watchlist error:', e); }
   if (btn) { btn.disabled = false; btn.style.opacity = ''; }
@@ -1379,7 +1416,7 @@ async function loadAuctionList() {
     (function(auction) { item.onclick = function() { joinAuction(auction); }; })(a);
     container.appendChild(item);
   }
-  if (document.getElementById('selUser')) document.getElementById('selUser').textContent = L('Eingeloggt als: ','Signed in as: ') + (cProfile ? cProfile.display_name : (cUser ? cUser.email : ''));
+  if (document.getElementById('selUser')) document.getElementById('selUser').textContent = L('Eingeloggt als: ','Signed in as: ','Zalogowano jako: ') + (cProfile ? cProfile.display_name : (cUser ? cUser.email : ''));
 }
 
 async function joinByCode() {
@@ -1484,9 +1521,17 @@ async function doReset() {
   var pw2 = document.getElementById('rs_pw2').value;
   var errEl = document.getElementById('rsErr'), okEl = document.getElementById('rsOk');
   errEl.textContent = ''; okEl.textContent = '';
-  if (pw.length < 8) { errEl.textContent = 'Passwort mindestens 6 Zeichen.'; return; }
-  if (pw !== pw2) { errEl.textContent = 'Passwörter stimmen nicht überein.'; return; }
+  if (pw.length < 8) { errEl.textContent = L('Passwort mindestens 8 Zeichen.','Password must be at least 8 characters.','Hasło musi mieć co najmniej 8 znaków.'); return; }
+  if (pw !== pw2) { errEl.textContent = L('Passwörter stimmen nicht überein.','Passwords do not match.','Hasła nie są zgodne.'); return; }
   var btn = document.getElementById('rsBtn'); btn.disabled = true; btn.textContent = 'WIRD GESPEICHERT...';
+  var hasSession = await scEnsureRecoverySession();
+  if (!hasSession) {
+    btn.disabled = false; btn.textContent = 'PASSWORT SPEICHERN';
+    errEl.textContent = L('Der Link ist abgelaufen oder wurde bereits verwendet. Bitte fordern Sie einen neuen Reset-Link an.',
+                          'This link has expired or has already been used. Please request a new reset link.',
+                          'Link wygasł lub został już użyty. Prosimy o ponowne wysłanie linku resetującego.');
+    return;
+  }
   var res = await sb.auth.updateUser({password: pw});
   btn.disabled = false; btn.textContent = 'PASSWORT SPEICHERN';
   if (res.error) { errEl.textContent = res.error.message; return; }
@@ -1527,7 +1572,7 @@ async function downloadCheck(e) {
   var label = document.getElementById('checklistPdfLabel');
   var status = document.getElementById('checkDlStatus');
 
-  if (label) label.textContent = L('Wird geladen…','Loading…');
+  if (label) label.textContent = L('Wird geladen…','Loading…','Ładowanie…');
   if (btn) { btn.style.opacity = '0.6'; btn.style.pointerEvents = 'none'; }
   if (status) { status.style.display = 'none'; }
 
@@ -1541,18 +1586,18 @@ async function downloadCheck(e) {
     setTimeout(function() { URL.revokeObjectURL(objUrl); }, 2000);
     if (status) {
       status.style.color = '#2E7D32';
-      status.textContent = L('✓ Safety Car-Check heruntergeladen – bitte prüfen Sie Ihren Download-Ordner.','✓ Safety Car-Check downloaded – please check your Downloads folder.');
+      status.textContent = L('✓ Safety Car-Check heruntergeladen – bitte prüfen Sie Ihren Download-Ordner.','✓ Safety Car-Check downloaded – please check your Downloads folder.','✓ Safety Car-Check pobrany – prosimy sprawdzić folder pobranych plików.');
       status.style.display = 'block';
     }
   } catch (err) {
     window.open(url, '_blank', 'noopener');
     if (status) {
       status.style.color = '#2E7D32';
-      status.textContent = L('Der Safety Car-Check wurde in einem neuen Tab geöffnet.','The Safety Car-Check has opened in a new tab.');
+      status.textContent = L('Der Safety Car-Check wurde in einem neuen Tab geöffnet.','The Safety Car-Check has opened in a new tab.','Safety Car-Check został otwarty w nowej karcie.');
       status.style.display = 'block';
     }
   } finally {
-    if (label) label.textContent = L('Safety Car-Check herunterladen','Download Safety Car-Check');
+    if (label) label.textContent = L('Safety Car-Check herunterladen','Download Safety Car-Check','Pobierz Safety Car-Check');
     if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
     _checkDownloading = false;
   }
@@ -1560,7 +1605,7 @@ async function downloadCheck(e) {
 
 function loadUI() {
   if (!aData) return;
-  document.getElementById('lotNum').textContent = L('Auktionscode: ','Auction code: ') + (aData.auction_code || '---');
+  document.getElementById('lotNum').textContent = L('Auktionscode: ','Auction code: ','Kod aukcji: ') + (aData.auction_code || '---');
   document.getElementById('vName').textContent = aData.vehicle_name || '---';
   document.getElementById('vSub').textContent = aData.vehicle_sub || '';
   document.getElementById('auctionCodeTag').textContent = 'CODE: ' + (aData.auction_code || '---');
@@ -1629,7 +1674,7 @@ function updateBid() {
   var cb = aData.current_bid || 0, inc = aData.min_increment || 500, mn = cb + inc;
   document.getElementById('curBid').textContent = fmtEur(cb);
   document.getElementById('curBy').textContent = cb > 0 ? 'Anonymes Gebot' : 'Noch kein Gebot';
-  document.getElementById('bidHint').textContent = L('Mindestgebot: ','Minimum bid: ') + fmtEur(mn) + ' (+ ' + fmtEur(inc) + ')';
+  document.getElementById('bidHint').textContent = L('Mindestgebot: ','Minimum bid: ','Minimalna oferta: ') + fmtEur(mn) + ' (+ ' + fmtEur(inc) + ')';
   document.getElementById('bidInput').min = mn;
   document.getElementById('bidInput').placeholder = fmtEur(mn);
   updateMyStatus(cb);
@@ -1650,7 +1695,7 @@ function updateMyStatus(currentBid) {
   document.getElementById('myStatusLbl').textContent = leading ? 'Sie sind der Höchstbietende' : 'Sie wurden überboten';
   document.getElementById('myStatusVal').textContent = fmtEur(myBest);
   // Führend: keine Zusatzzeile (wäre doppelt zur Überschrift). Überboten: aktuelles Höchstgebot zeigen.
-  document.getElementById('myStatusInfo').textContent = leading ? '' : L('Höchstgebot ist jetzt ','Highest bid is now ') + fmtEur(currentBid);
+  document.getElementById('myStatusInfo').textContent = leading ? '' : L('Höchstgebot ist jetzt ','Highest bid is now ','Najwyższa oferta wynosi teraz ') + fmtEur(currentBid);
 }
 
 async function loadFullHistory() {
@@ -1666,7 +1711,7 @@ async function loadFullHistory() {
     var r = document.createElement('div');
     r.className = 'hf-row' + (i === 0 ? ' top' : '') + (isMe ? ' mine' : '');
     var t = new Date(b.created_at).toTimeString().slice(0, 8);
-    var displayName = isMe ? b.bidder + L(' (Sie)',' (You)') : L('Bieter ','Bidder ') + (i + 1);
+    var displayName = isMe ? b.bidder + L(' (Sie)',' (You)',' (Ty)') : L('Bieter ','Bidder ','Licytujący ') + (i + 1);
     r.innerHTML = '<span class="hf-bidder">' + esc(displayName) + '</span><span class="hf-amt' + (i === 0 ? ' top' : '') + '">' + fmtEur(b.amount) + '</span><span class="hf-time">' + t + '</span>';
     el.appendChild(r);
   }
@@ -1696,7 +1741,7 @@ async function placeBid() {
   var val = parseFloat(rawInput);
   var mn = (aData.current_bid || 0) + (aData.min_increment || 500);
   if (!val || isNaN(val)) { showMsg('Bitte gueltigen Betrag eingeben.', 'err'); return; }
-  if (val < mn) { showMsg(L('Gebot zu niedrig – Mindestgebot: ','Bid too low – minimum bid: ') + fmtEur(mn), 'err'); return; }
+  if (val < mn) { showMsg(L('Gebot zu niedrig – Mindestgebot: ','Bid too low – minimum bid: ','Oferta za niska – minimalna oferta: ') + fmtEur(mn), 'err'); return; }
   pendingBidAmount = Math.round(val);
   document.getElementById('bidConfirmAmount').textContent = fmtEur(pendingBidAmount);
   document.getElementById('bidConfirmVehicle').textContent = aData.vehicle_name || '';
@@ -1780,11 +1825,11 @@ async function endAuction() {
   document.getElementById('bidBtn').disabled = true;
   document.querySelectorAll('.qb').forEach(function(b) { b.disabled = true; });
   document.getElementById('soldOv').style.display = 'flex';
-  document.getElementById('soldWin').textContent = L('für ','for ') + fmtEur(aData ? aData.current_bid || 0 : 0);
+  document.getElementById('soldWin').textContent = L('für ','for ','za ') + fmtEur(aData ? aData.current_bid || 0 : 0);
   var myName = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
   if (aData && aData.top_bidder === myName) {
     document.getElementById('wonBadge').style.display = 'block';
-    await addNotification(cUser.id, 'ERSTEIGERT', L('Sie haben unverbindlich ersteigert: ','You have won (non-binding): ') + (aData.vehicle_name || '') + ' - ' + fmtEur(aData.current_bid || 0) + L('. Wir melden uns zur Abwicklung.','. We will contact you to complete the transaction.'), aData.id);
+    await addNotification(cUser.id, 'ERSTEIGERT', L('Sie haben unverbindlich ersteigert: ','You have won (non-binding): ','Wylicytowali Państwo niewiążąco: ') + (aData.vehicle_name || '') + ' - ' + fmtEur(aData.current_bid || 0) + L('. Wir melden uns zur Abwicklung.','. We will contact you to complete the transaction.','. Skontaktujemy się w sprawie realizacji.'), aData.id);
   }
 }
 
@@ -2138,7 +2183,7 @@ async function loadAdminUsers() {
         (u.phone ? '<div style="font-size:12px;color:var(--text3);margin-bottom:6px">📞 ' + esc(u.phone) + '</div>' : '') +
         '<div style="margin:6px 0">' + statusBadge + '</div>' +
         '<div class="user-card-stats"><div class="user-stat">Gebote: <span>' + (u.bid_count || 0) + '</span></div></div>' +
-        '<div style="margin-top:8px;font-size:12px;color:var(--text3);display:flex;align-items:center;gap:6px">E-Mail-Sprache: <select onchange="setUserLanguage(\'' + u.id + '\',this.value)" style="font-family:inherit;font-size:12px;padding:3px 6px;border:0.5px solid var(--border2);border-radius:6px;background:var(--white);color:var(--text)"><option value="de"' + (u.language !== 'en' ? ' selected' : '') + '>Deutsch</option><option value="en"' + (u.language === 'en' ? ' selected' : '') + '>English</option></select></div>' +
+        '<div style="margin-top:8px;font-size:12px;color:var(--text3);display:flex;align-items:center;gap:6px">E-Mail-Sprache: <select onchange="setUserLanguage(\'' + u.id + '\',this.value)" style="font-family:inherit;font-size:12px;padding:3px 6px;border:0.5px solid var(--border2);border-radius:6px;background:var(--white);color:var(--text)"><option value="de"' + (u.language !== 'en' && u.language !== 'pl' ? ' selected' : '') + '>Deutsch</option><option value="en"' + (u.language === 'en' ? ' selected' : '') + '>Englisch</option><option value="pl"' + (u.language === 'pl' ? ' selected' : '') + '>Polnisch</option></select></div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">' + actionBtn + deleteBtn + '</div>';
       container.appendChild(card);
     }
@@ -2155,7 +2200,7 @@ async function setUserLanguage(userId, lang) {
       body: JSON.stringify({userId: userId, language: lang})
     });
     if (!res.ok) { var d = await res.json(); alert('Fehler: ' + (d.error || 'Sprache konnte nicht geändert werden')); return; }
-    showAdminToast('✓ E-Mail-Sprache: ' + (lang === 'en' ? 'English' : 'Deutsch'), 'ok');
+    showAdminToast('✓ E-Mail-Sprache: ' + (lang === 'en' ? 'Englisch' : (lang === 'pl' ? 'Polnisch' : 'Deutsch')), 'ok');
   } catch(e) { alert('Verbindungsfehler.'); }
 }
 
@@ -2644,156 +2689,169 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
 <script>
 (function(){
   var DICT = [
-    ["Willkommen zurück!","Welcome back!"],
-    ["Melden Sie sich an, um an unseren Auktionen teilzunehmen.","Sign in to take part in our auctions."],
-    ["E-Mail-Adresse","E-Mail-Address"],
-    ["Passwort","Password"],
-    ["Jetzt einloggen","Log in now"],
-    ["Noch kein Konto?","No account yet?"],
-    ["Registrieren","Register"],
-    ["Passwort zurücksetzen","Reset password"],
-    ["Konto erstellen","Create account"],
-    ["Einmalig registrieren – dauerhafter Zugang zu allen Auktionen.","Register once – permanent access to all auctions."],
-    ["Ansprechpartner (Vor- & Zuname)","Contact person (first & last name)"],
-    ["Name Ihres Unternehmens","Company name"],
-    ["Telefonnummer","Phone number"],
-    ["Passwort bestätigen","Confirm password"],
-    ["Min. 8 Zeichen empfohlen","Min. 8 characters recommended"],
-    ["Hiermit stimme ich der Verarbeitung meiner Daten gemäß der Datenschutzerklärung zu. Die Datenschutzerklärung lässt sich aus dem Footer der Webseite entnehmen.","I hereby consent to the processing of my data in accordance with the privacy policy. The privacy policy can be found in the website footer."],
-    ["Jetzt registrieren","Register now"],
-    ["Bereits registriert?","Already registered?"],
-    ["Einloggen","Log in"],
-    ["Wir senden Ihnen einen Reset-Link per E-Mail zu.","We'll send you a reset link by E-Mail."],
-    ["Ihre E-Mail-Adresse","Your E-Mail-Address"],
-    ["Reset-Link senden","Send reset link"],
-    ["Bitte prüfen Sie auch Ihren Spam-Ordner, falls die E-Mail nicht ankommen sollte.","Please also check your spam folder if the E-Mail doesn't arrive."],
-    ["Zurück zum Login","Back to login"],
-    ["Neues Passwort","New password"],
-    ["Bitte neues Passwort eingeben","Please enter a new password"],
-    ["Mindestens 8 Zeichen","At least 8 characters"],
-    ["Wiederholen","Repeat"],
-    ["Passwort speichern","Save password"],
-    ["Auktion auswählen","Select auction"],
-    ["Aktive Auktion wählen oder Auktionscode eingeben","Choose an active auction or enter an auction code"],
-    ["oder Code eingeben","or enter code"],
-    ["AUKTIONSCODE","AUCTION CODE"],
-    ["Beitreten","Join"],
-    ["Lade Auktionen...","Loading auctions..."],
-    ["Dashboard","Dashboard"],
-    ["Ausloggen","Log out"],
-    ["Wechseln","Switch"],
-    ["Übersicht","Overview"],
-    ["Auktionen","Auctions"],
-    ["Watchlist","Watchlist"],
-    ["Meine Gebote","My bids"],
-    ["Navigation","Navigation"],
-    ["Konto","Account"],
-    ["Benachrichtigungen","Notifications"],
-    ["Konto wird geprüft.","Account under review."],
-    ["Sie können Auktionen ansehen, aber erst nach Freigabe durch unser Team mitbieten.","You can view auctions, but can only bid after approval by our team."],
-    ["Ich biete mit","I'm bidding"],
-    ["Aktuell führend","Currently leading"],
-    ["Ersteigert","Won"],
-    ["Anti-Sniping aktiv","Anti-sniping active"],
-    ["Aktiv","Active"],
-    ["Beendet","Ended"],
-    ["BEENDET","ENDED"],
-    ["VERKAUFT","SOLD"],
-    ["AKTIV","ACTIVE"],
-    ["Anonymes Gebot","Anonymous bid"],
-    ["Mein Gebot","My bid"],
-    ["Sie sind der Höchstbietende","You are the highest bidder"],
-    ["Sie wurden überboten","You have been outbid"],
-    ["Jetzt bieten","Bid now"],
-    ["Alle","All"],
-    ["Neu","New"],
-    ["Höchstbietend","Highest bidder"],
-    ["Überboten","Outbid"],
-    ["Nicht ersteigert","Not won"],
-    ["Wird geladen...","Loading..."],
-    ["Fahrzeugbeschreibung","Vehicle description"],
-    ["Vollständige Gebotshistorie","Full bid history"],
-    ["Noch keine Gebote","No bids yet"],
-    ["Verbleibende Zeit","Time remaining"],
-    ["Std","Hrs"],
-    ["Sek","Sec"],
-    ["Aktuelles Höchstgebot","Current highest bid"],
-    ["Noch kein Gebot","No bid yet"],
-    ["Mein letztes Gebot","My last bid"],
-    ["Unverbindlich ersteigert – wir melden uns zur Abwicklung","Won (non-binding) – we'll contact you to complete"],
-    ["Gebot abgeben","Place bid"],
-    ["Betrag in EUR","Amount in EUR"],
-    ["Bieten","Bid"],
-    ["Mindestgebot wird geladen...","Minimum bid loading..."],
-    ["Noch keine eigenen Gebote","No bids of your own yet"],
-    ["Suchen...","Search..."],
-    ["Gebot bestätigen","Confirm bid"],
-    ["Verbindliches Angebot","Binding offer"],
-    ["in Höhe von:","in the amount of:"],
-    ["Mit der Bestätigung geben Sie ein rechtlich verbindliches Gebot ab. Ein abgegebenes Gebot kann nicht zurückgenommen werden.","By confirming, you place a legally binding bid. A submitted bid cannot be withdrawn."],
-    ["Abbrechen","Cancel"],
-    ["Verbindlich bieten","Place binding bid"],
-    ["Profil-Einstellungen","Profile settings"],
-    ["Angemeldet als","Signed in as"],
-    ["E-Mail-Adresse ändern","Change E-Mail-Address"],
-    ["Neue E-Mail-Adresse","New E-Mail-Address"],
-    ["Passwort ändern","Change password"],
-    ["Neues Passwort (min. 8 Zeichen)","New password (min. 8 characters)"],
-    ["Safety Car-Check herunterladen","Download Safety Car-Check"],
-    ["Bitte gültige E-Mail eingeben.","Please enter a valid E-Mail."],
-    ["Bestätigungs-Mail an die neue Adresse gesendet. Bitte bestätigen.","Confirmation E-Mail sent to the new address. Please confirm."],
-    ["Passwort erfolgreich geändert.","Password changed successfully."],
-    ["Bitte Auktionscode eingeben.","Please enter an auction code."],
-    ["Bitte Unternehmensname eingeben.","Please enter a company name."],
-    ["Bitte Ansprechpartner eingeben.","Please enter a contact person."],
-    ["Bitte Telefonnummer eingeben.","Please enter a phone number."],
-    ["Passwörter stimmen nicht überein.","Passwords do not match."],
-    ["Bitte Datenschutzerklärung akzeptieren.","Please accept the privacy policy."],
-    ["Registrierung erhalten! Ihr Zugang wird geprüft. Bitte loggen Sie sich nach der Freigabe ein.","Registration received! Your access is being reviewed. Please log in after approval."],
-    ["Registrierung erhalten! Ihr Zugang wird geprüft.","Registration received! Your access is being reviewed."],
-    ["Registrierung fehlgeschlagen.","Registration failed."],
-    ["Verbindungsfehler. Bitte erneut versuchen.","Connection error. Please try again."],
-    ["Bitte alle Felder ausfuellen.","Please fill in all fields."],
-    ["Bitte warten...","Please wait..."],
-    ["BITTE WARTEN...","PLEASE WAIT..."],
-    ["Gültige E-Mail-Adresse eingeben.","Enter a valid E-Mail-Address."],
-    ["Passwort mindestens 8 Zeichen.","Password must be at least 8 characters."],
-    ["Sprache","Language"],
-    ["Deutsch","German"],
-    ["Englisch","English"],
-    ["Bitte gueltige E-Mail eingeben.","Please enter a valid E-Mail-Address."],
-    ["Reset-Link gesendet! Bitte E-Mail (auch Spam-Ordner) pruefen.","Reset link sent! Please check your E-Mail (including spam folder)."],
-    ["Passwort erfolgreich geaendert!","Password changed successfully!"],
-    ["Bitte gueltigen Betrag eingeben.","Please enter a valid amount."],
-    ["Session abgelaufen. Bitte neu einloggen.","Session expired. Please log in again."],
-    ["Fehler bei Gebotsabgabe.","Error placing bid."],
-    ["Gebot erfasst!","Bid placed!"],
-    ["Bitte PIN eingeben.","Please enter PIN."],
-    ["Zugang deaktiviert","Access deactivated"],
-    ["Ihr Zugang wurde deaktiviert. Bitte wenden Sie sich an SafetyCar falls Sie Fragen haben.","Your access has been deactivated. Please contact SafetyCar if you have any questions."],
-    ["Registrierung wird geprüft","Registration under review"],
-    ["Unser Team prüft Ihre Registrierung und schaltet den Zugang in Kürze frei.","Our team is reviewing your registration and will activate access shortly."],
-    ["Sie erhalten eine E-Mail, sobald Ihr Zugang aktiviert wurde.","You'll receive an E-Mail as soon as your access is activated."],
-    ["Aktive Auktionen","Active auctions"],
-    ["Keine aktiven Auktionen","No active auctions"],
-    ["Keine Fahrzeuge auf der Watchlist","No vehicles on your watchlist"],
-    ["Keine Auktionen","No auctions"],
-    ["Keine Auktionen vorhanden","No auctions available"],
-    ["Noch keine Gebote abgegeben","No bids placed yet"],
-    ["Führend","Leading"],
-    ["Verkauft für","Sold for"],
-    ["Gespeichert ✓","Saved ✓"],
-    ["Fahrzeug","Vehicle"],
-    ["Auktion endet","Auction ends"],
-    ["Alle gelesen","Mark all read"],
-    ["Keine Benachrichtigungen","No notifications"],
-    ["← Zurück zur Übersicht","← Back to overview"],
-    ["ÜBERBOTEN","OUTBID"],
-    ["ERSTEIGERT","WON"],
-    ["Anti-Sniping aktiv","Anti-sniping active"]
+    ["Willkommen zurück!", "Welcome back!", "Witamy ponownie!"],
+    ["Melden Sie sich an, um an unseren Auktionen teilzunehmen.", "Sign in to take part in our auctions.", "Zaloguj się, aby wziąć udział w naszych aukcjach."],
+    ["E-Mail-Adresse", "E-Mail-Address", "Adres e-mail"],
+    ["Passwort", "Password", "Hasło"],
+    ["Jetzt einloggen", "Log in now", "Zaloguj się"],
+    ["Noch kein Konto?", "No account yet?", "Nie masz jeszcze konta?"],
+    ["Registrieren", "Register", "Zarejestruj się"],
+    ["Passwort zurücksetzen", "Reset password", "Zresetuj hasło"],
+    ["Konto erstellen", "Create account", "Utwórz konto"],
+    ["Einmalig registrieren – dauerhafter Zugang zu allen Auktionen.", "Register once – permanent access to all auctions.", "Jednorazowa rejestracja – stały dostęp do wszystkich aukcji."],
+    ["Ansprechpartner (Vor- & Zuname)", "Contact person (first & last name)", "Osoba kontaktowa (imię i nazwisko)"],
+    ["Name Ihres Unternehmens", "Company name", "Nazwa firmy"],
+    ["Telefonnummer", "Phone number", "Numer telefonu"],
+    ["Passwort bestätigen", "Confirm password", "Potwierdź hasło"],
+    ["Min. 8 Zeichen empfohlen", "Min. 8 characters recommended", "Zalecane min. 8 znaków"],
+    ["Hiermit stimme ich der Verarbeitung meiner Daten gemäß der Datenschutzerklärung zu. Die Datenschutzerklärung lässt sich aus dem Footer der Webseite entnehmen.", "I hereby consent to the processing of my data in accordance with the privacy policy. The privacy policy can be found in the website footer.", "Niniejszym wyrażam zgodę na przetwarzanie moich danych zgodnie z polityką prywatności. Politykę prywatności znajdą Państwo w stopce strony."],
+    ["Jetzt registrieren", "Register now", "Zarejestruj się teraz"],
+    ["Bereits registriert?", "Already registered?", "Masz już konto?"],
+    ["Einloggen", "Log in", "Zaloguj się"],
+    ["Wir senden Ihnen einen Reset-Link per E-Mail zu.", "We'll send you a reset link by E-Mail.", "Wyślemy link do zresetowania hasła na Twój adres e-mail."],
+    ["Ihre E-Mail-Adresse", "Your E-Mail-Address", "Twój adres e-mail"],
+    ["Reset-Link senden", "Send reset link", "Wyślij link resetujący"],
+    ["Bitte prüfen Sie auch Ihren Spam-Ordner, falls die E-Mail nicht ankommen sollte.", "Please also check your spam folder if the E-Mail doesn't arrive.", "Prosimy sprawdzić również folder spam, jeśli wiadomość nie dotrze."],
+    ["Zurück zum Login", "Back to login", "Powrót do logowania"],
+    ["Neues Passwort", "New password", "Nowe hasło"],
+    ["Bitte neues Passwort eingeben", "Please enter a new password", "Prosimy wprowadzić nowe hasło"],
+    ["Mindestens 8 Zeichen", "At least 8 characters", "Minimum 8 znaków"],
+    ["Wiederholen", "Repeat", "Powtórz"],
+    ["Passwort speichern", "Save password", "Zapisz hasło"],
+    ["Auktion auswählen", "Select auction", "Wybierz aukcję"],
+    ["Aktive Auktion wählen oder Auktionscode eingeben", "Choose an active auction or enter an auction code", "Wybierz aktywną aukcję lub wpisz kod aukcji"],
+    ["oder Code eingeben", "or enter code", "lub wpisz kod"],
+    ["AUKTIONSCODE", "AUCTION CODE", "KOD AUKCJI"],
+    ["Beitreten", "Join", "Dołącz"],
+    ["Lade Auktionen...", "Loading auctions...", "Ładowanie aukcji..."],
+    ["Dashboard", "Dashboard", "Panel"],
+    ["Ausloggen", "Log out", "Wyloguj się"],
+    ["Wechseln", "Switch", "Zmień"],
+    ["Übersicht", "Overview", "Przegląd"],
+    ["Auktionen", "Auctions", "Aukcje"],
+    ["Watchlist", "Watchlist", "Obserwowane"],
+    ["Meine Gebote", "My bids", "Moje oferty"],
+    ["Navigation", "Navigation", "Nawigacja"],
+    ["Konto", "Account", "Konto"],
+    ["Benachrichtigungen", "Notifications", "Powiadomienia"],
+    ["Konto wird geprüft.", "Account under review.", "Konto jest weryfikowane."],
+    ["Sie können Auktionen ansehen, aber erst nach Freigabe durch unser Team mitbieten.", "You can view auctions, but can only bid after approval by our team.", "Mogą Państwo przeglądać aukcje, ale licytować dopiero po zatwierdzeniu przez nasz zespół."],
+    ["Ich biete mit", "I'm bidding", "Licytuję"],
+    ["Aktuell führend", "Currently leading", "Obecnie prowadzę"],
+    ["Ersteigert", "Won", "Wylicytowane"],
+    ["Anti-Sniping aktiv", "Anti-sniping active", "Ochrona przed snipingiem aktywna"],
+    ["Aktiv", "Active", "Aktywna"],
+    ["Beendet", "Ended", "Zakończona"],
+    ["BEENDET", "ENDED", "ZAKOŃCZONA"],
+    ["VERKAUFT", "SOLD", "SPRZEDANE"],
+    ["AKTIV", "ACTIVE", "AKTYWNA"],
+    ["Anonymes Gebot", "Anonymous bid", "Oferta anonimowa"],
+    ["Mein Gebot", "My bid", "Moja oferta"],
+    ["Sie sind der Höchstbietende", "You are the highest bidder", "Jest Pan/Pani najwyżej licytującym"],
+    ["Sie wurden überboten", "You have been outbid", "Twoja oferta została przebita"],
+    ["Jetzt bieten", "Bid now", "Licytuj teraz"],
+    ["Alle", "All", "Wszystkie"],
+    ["Neu", "New", "Nowe"],
+    ["Höchstbietend", "Highest bidder", "Najwyższa oferta"],
+    ["Überboten", "Outbid", "Przebita"],
+    ["Nicht ersteigert", "Not won", "Niewylicytowane"],
+    ["Wird geladen...", "Loading...", "Ładowanie..."],
+    ["Fahrzeugbeschreibung", "Vehicle description", "Opis pojazdu"],
+    ["Vollständige Gebotshistorie", "Full bid history", "Pełna historia ofert"],
+    ["Noch keine Gebote", "No bids yet", "Brak ofert"],
+    ["Verbleibende Zeit", "Time remaining", "Pozostały czas"],
+    ["Std", "Hrs", "godz"],
+    ["Sek", "Sec", "sek"],
+    ["Aktuelles Höchstgebot", "Current highest bid", "Aktualna najwyższa oferta"],
+    ["Noch kein Gebot", "No bid yet", "Jeszcze brak oferty"],
+    ["Mein letztes Gebot", "My last bid", "Moja ostatnia oferta"],
+    ["Unverbindlich ersteigert – wir melden uns zur Abwicklung", "Won (non-binding) – we'll contact you to complete", "Wylicytowane niewiążąco – skontaktujemy się w sprawie realizacji"],
+    ["Gebot abgeben", "Place bid", "Złóż ofertę"],
+    ["Betrag in EUR", "Amount in EUR", "Kwota w EUR"],
+    ["Bieten", "Bid", "Licytuj"],
+    ["Mindestgebot wird geladen...", "Minimum bid loading...", "Ładowanie minimalnej oferty..."],
+    ["Noch keine eigenen Gebote", "No bids of your own yet", "Brak własnych ofert"],
+    ["Suchen...", "Search...", "Szukaj..."],
+    ["Gebot bestätigen", "Confirm bid", "Potwierdź ofertę"],
+    ["Verbindliches Angebot", "Binding offer", "Wiążąca oferta"],
+    ["in Höhe von:", "in the amount of:", "w wysokości:"],
+    ["Mit der Bestätigung geben Sie ein rechtlich verbindliches Gebot ab. Ein abgegebenes Gebot kann nicht zurückgenommen werden.", "By confirming, you place a legally binding bid. A submitted bid cannot be withdrawn.", "Potwierdzając, składają Państwo prawnie wiążącą ofertę. Złożonej oferty nie można wycofać."],
+    ["Abbrechen", "Cancel", "Anuluj"],
+    ["Verbindlich bieten", "Place binding bid", "Złóż wiążącą ofertę"],
+    ["Profil-Einstellungen", "Profile settings", "Ustawienia profilu"],
+    ["Angemeldet als", "Signed in as", "Zalogowano jako"],
+    ["E-Mail-Adresse ändern", "Change E-Mail-Address", "Zmień adres e-mail"],
+    ["Neue E-Mail-Adresse", "New E-Mail-Address", "Nowy adres e-mail"],
+    ["Passwort ändern", "Change password", "Zmień hasło"],
+    ["Neues Passwort (min. 8 Zeichen)", "New password (min. 8 characters)", "Nowe hasło (min. 8 znaków)"],
+    ["Safety Car-Check herunterladen", "Download Safety Car-Check", "Pobierz Safety Car-Check"],
+    ["Bitte gültige E-Mail eingeben.", "Please enter a valid E-Mail.", "Prosimy podać prawidłowy adres e-mail."],
+    ["Bestätigungs-Mail an die neue Adresse gesendet. Bitte bestätigen.", "Confirmation E-Mail sent to the new address. Please confirm.", "Wiadomość potwierdzająca została wysłana na nowy adres. Prosimy o potwierdzenie."],
+    ["Passwort erfolgreich geändert.", "Password changed successfully.", "Hasło zostało zmienione."],
+    ["Bitte Auktionscode eingeben.", "Please enter an auction code.", "Prosimy wpisać kod aukcji."],
+    ["Bitte Unternehmensname eingeben.", "Please enter a company name.", "Prosimy podać nazwę firmy."],
+    ["Bitte Ansprechpartner eingeben.", "Please enter a contact person.", "Prosimy podać osobę kontaktową."],
+    ["Bitte Telefonnummer eingeben.", "Please enter a phone number.", "Prosimy podać numer telefonu."],
+    ["Passwörter stimmen nicht überein.", "Passwords do not match.", "Hasła nie są zgodne."],
+    ["Bitte Datenschutzerklärung akzeptieren.", "Please accept the privacy policy.", "Prosimy zaakceptować politykę prywatności."],
+    ["Registrierung erhalten! Ihr Zugang wird geprüft. Bitte loggen Sie sich nach der Freigabe ein.", "Registration received! Your access is being reviewed. Please log in after approval.", "Rejestracja przyjęta! Dostęp jest weryfikowany. Prosimy zalogować się po zatwierdzeniu."],
+    ["Registrierung erhalten! Ihr Zugang wird geprüft.", "Registration received! Your access is being reviewed.", "Rejestracja przyjęta! Dostęp jest weryfikowany."],
+    ["Registrierung fehlgeschlagen.", "Registration failed.", "Rejestracja nie powiodła się."],
+    ["Verbindungsfehler. Bitte erneut versuchen.", "Connection error. Please try again.", "Błąd połączenia. Prosimy spróbować ponownie."],
+    ["Bitte alle Felder ausfuellen.", "Please fill in all fields.", "Prosimy wypełnić wszystkie pola."],
+    ["Bitte warten...", "Please wait...", "Prosimy czekać..."],
+    ["BITTE WARTEN...", "PLEASE WAIT...", "PROSIMY CZEKAĆ..."],
+    ["Gültige E-Mail-Adresse eingeben.", "Enter a valid E-Mail-Address.", "Prosimy wprowadzić prawidłowy adres e-mail."],
+    ["Passwort mindestens 8 Zeichen.", "Password must be at least 8 characters.", "Hasło musi mieć co najmniej 8 znaków."],
+    ["Sprache", "Language", "Język"],
+    ["Deutsch", "German", "Niemiecki"],
+    ["Englisch", "English", "Angielski"],
+    ["Bitte gueltige E-Mail eingeben.", "Please enter a valid E-Mail-Address.", "Prosimy podać prawidłowy e-mail."],
+    ["Reset-Link gesendet! Bitte E-Mail (auch Spam-Ordner) pruefen.", "Reset link sent! Please check your E-Mail (including spam folder).", "Link resetujący został wysłany! Prosimy sprawdzić e-mail (także folder spam)."],
+    ["Passwort erfolgreich geaendert!", "Password changed successfully!", "Hasło zostało pomyślnie zmienione!"],
+    ["Bitte gueltigen Betrag eingeben.", "Please enter a valid amount.", "Prosimy podać prawidłową kwotę."],
+    ["Session abgelaufen. Bitte neu einloggen.", "Session expired. Please log in again.", "Sesja wygasła. Prosimy zalogować się ponownie."],
+    ["Fehler bei Gebotsabgabe.", "Error placing bid.", "Błąd podczas składania oferty."],
+    ["Gebot erfasst!", "Bid placed!", "Oferta przyjęta!"],
+    ["Bitte PIN eingeben.", "Please enter PIN.", "Prosimy wpisać PIN."],
+    ["Zugang deaktiviert", "Access deactivated", "Dostęp dezaktywowany"],
+    ["Ihr Zugang wurde deaktiviert. Bitte wenden Sie sich an SafetyCar falls Sie Fragen haben.", "Your access has been deactivated. Please contact SafetyCar if you have any questions.", "Państwa dostęp został dezaktywowany. W razie pytań prosimy o kontakt z Safety Car."],
+    ["Registrierung wird geprüft", "Registration under review", "Rejestracja jest weryfikowana"],
+    ["Unser Team prüft Ihre Registrierung und schaltet den Zugang in Kürze frei.", "Our team is reviewing your registration and will activate access shortly.", "Nasz zespół weryfikuje rejestrację i wkrótce aktywuje dostęp."],
+    ["Sie erhalten eine E-Mail, sobald Ihr Zugang aktiviert wurde.", "You'll receive an E-Mail as soon as your access is activated.", "Otrzymają Państwo wiadomość e-mail, gdy dostęp zostanie aktywowany."],
+    ["Aktive Auktionen", "Active auctions", "Aktywne aukcje"],
+    ["Keine aktiven Auktionen", "No active auctions", "Brak aktywnych aukcji"],
+    ["Keine Fahrzeuge auf der Watchlist", "No vehicles on your watchlist", "Brak pojazdów na liście obserwowanych"],
+    ["Keine Auktionen", "No auctions", "Brak aukcji"],
+    ["Keine Auktionen vorhanden", "No auctions available", "Brak dostępnych aukcji"],
+    ["Noch keine Gebote abgegeben", "No bids placed yet", "Nie złożono jeszcze żadnych ofert"],
+    ["Führend", "Leading", "Prowadzisz"],
+    ["Verkauft für", "Sold for", "Sprzedane za"],
+    ["Gespeichert ✓", "Saved ✓", "Zapisano ✓"],
+    ["Fahrzeug", "Vehicle", "Pojazd"],
+    ["Auktion endet", "Auction ends", "Koniec aukcji"],
+    ["Alle gelesen", "Mark all read", "Oznacz wszystkie jako przeczytane"],
+    ["Keine Benachrichtigungen", "No notifications", "Brak powiadomień"],
+    ["← Zurück zur Übersicht", "← Back to overview", "← Powrót do przeglądu"],
+    ["ÜBERBOTEN", "OUTBID", "PRZEBITA"],
+    ["ERSTEIGERT", "WON", "WYLICYTOWANE"],
+    ["Anti-Sniping aktiv", "Anti-sniping active", "Ochrona przed snipingiem aktywna"]
   ];
-  var DE2EN={}, EN2DE={};
-  DICT.forEach(function(p){ DE2EN[p[0]]=p[1]; if(EN2DE[p[1]]===undefined) EN2DE[p[1]]=p[0]; });
+  // Dreisprachig: jeder Text wird intern erst auf Deutsch zurueckgefuehrt und
+  // dann in die Zielsprache uebersetzt. Fehlt eine polnische Angabe, greift Englisch.
+  var TO_DE={}, FROM_DE={en:{}, pl:{}};
+  DICT.forEach(function(p){
+    var de=p[0], en=p[1], pl=(p[2]!==undefined && p[2]!=='') ? p[2] : p[1];
+    FROM_DE.en[de]=en; FROM_DE.pl[de]=pl;
+    if(TO_DE[en]===undefined) TO_DE[en]=de;
+    if(TO_DE[pl]===undefined) TO_DE[pl]=de;
+  });
+  function scTr(key, lang){
+    var de = (TO_DE[key]!==undefined) ? TO_DE[key] : key;
+    if(lang==='de') return de;
+    var m=FROM_DE[lang];
+    return (m && m[de]!==undefined) ? m[de] : de;
+  }
 
   var SC_LANG='de', _scApplying=false, _scT=null;
   window.SC_LANG=SC_LANG;
@@ -2812,34 +2870,33 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
         }
       });
       var nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
-      var map = lang==='en'?DE2EN:EN2DE;
       nodes.forEach(function(n){
         var raw=n.nodeValue, key=raw.trim();
-        if(map[key]!==undefined){
+        var out=scTr(key, lang);
+        if(out!==key){
           var i=raw.indexOf(key);
-          n.nodeValue = raw.slice(0,i) + map[key] + raw.slice(i+key.length);
+          n.nodeValue = raw.slice(0,i) + out + raw.slice(i+key.length);
         }
       });
-      var phMap = lang==='en'?DE2EN:EN2DE;
       document.querySelectorAll('[placeholder]').forEach(function(el){
         var key=(el.getAttribute('placeholder')||'').trim();
-        if(phMap[key]!==undefined) el.setAttribute('placeholder', phMap[key]);
+        var out=scTr(key, lang); if(out!==key) el.setAttribute('placeholder', out);
       });
       document.querySelectorAll('[title]').forEach(function(el){
         var key=(el.getAttribute('title')||'').trim();
-        if(phMap[key]!==undefined) el.setAttribute('title', phMap[key]);
+        var out=scTr(key, lang); if(out!==key) el.setAttribute('title', out);
       });
       document.documentElement.lang=lang;
     } finally { _scApplying=false; }
   }
 
-  window.L=function(de,en){ return window.SC_LANG==='en'?en:de; };
+  window.L=function(de,en,pl){ var l=window.SC_LANG; if(l==='en') return en; if(l==='pl') return (pl!==undefined&&pl!=='')?pl:en; return de; };
 
   window.SC_refreshDynamic=function(){
     try{
       if(typeof aData!=='undefined' && aData){
         var ln=document.getElementById('lotNum');
-        if(ln) ln.textContent = window.L('Auktionscode: ','Auction code: ') + (aData.auction_code||'---');
+        if(ln) ln.textContent = window.L('Auktionscode: ','Auction code: ','Kod aukcji: ') + (aData.auction_code||'---');
       }
       if(typeof updateBid==='function') updateBid();
       if(typeof loadFullHistory==='function') loadFullHistory();
@@ -2847,7 +2904,7 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
       var so=document.getElementById('soldOv');
       if(so && so.style.display!=='none' && typeof aData!=='undefined' && aData){
         var sw=document.getElementById('soldWin');
-        if(sw) sw.textContent = window.L('für ','for ') + fmtEur(aData.current_bid||0);
+        if(sw) sw.textContent = window.L('für ','for ','za ') + fmtEur(aData.current_bid||0);
       }
     }catch(e){}
   };
@@ -2866,7 +2923,9 @@ function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); 
     var de=document.createElement('button'); de.textContent='DE'; de.setAttribute('data-l','de'); de.onclick=function(){ window.scSetLang('de'); };
     var sep=document.createElement('span'); sep.className='sep'; sep.textContent='/';
     var en=document.createElement('button'); en.textContent='EN'; en.setAttribute('data-l','en'); en.onclick=function(){ window.scSetLang('en'); };
-    w.appendChild(de); w.appendChild(sep); w.appendChild(en);
+    var sep2=document.createElement('span'); sep2.className='sep'; sep2.textContent='/';
+    var pl=document.createElement('button'); pl.textContent='PL'; pl.setAttribute('data-l','pl'); pl.onclick=function(){ window.scSetLang('pl'); };
+    w.appendChild(de); w.appendChild(sep); w.appendChild(en); w.appendChild(sep2); w.appendChild(pl);
     return w;
   }
 
