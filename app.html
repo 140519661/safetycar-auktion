@@ -1765,7 +1765,7 @@ async function confirmBidSubmit() {
     if (!token) { showMsg('Session abgelaufen. Bitte neu einloggen.', 'err'); btn.disabled = false; return; }
     var res = await fetch(BACKEND_URL + '/api/bids/place', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token},
+      headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, 'x-sc-lang': (window.SC_LANG || 'de')},
       body: JSON.stringify({auctionId: aData.id, amount: amount})
     });
     var data = await res.json();
