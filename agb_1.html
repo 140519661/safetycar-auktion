@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AGB – Safety Car</title>
+  <meta name="description" content="Allgemeine Geschäftsbedingungen der Jenne, Zehner Safety Car GbR für die Teilnahme an der Safety Car-Auktion und den Kauf von Fahrzeugen durch gewerbliche Händler." />
+  <link rel="stylesheet" href="fonts.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --red: #B00000; --red-h: #C80000; --ink: #0A0A0A; --ink-b: #1C1C1C;
+      --text: #1a1a1a; --mid: #444; --muted: #777; --border: #E4E4E4;
+      --bg: #fff; --bg-off: #F8F8F8;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    .ds-header { background:#fff; padding:0 5%; height:104px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; border-bottom:1px solid #ECECEC; }
+    .ds-header .logo-img { height:46px; width:auto; display:block; }
+    .back-link { font-family:'Montserrat',sans-serif; font-weight:500; font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; color:#666; text-decoration:none; display:inline-flex; align-items:center; gap:7px; transition:color .2s; }
+    .back-link:hover { color:#111; }
+    .back-link svg { stroke:currentColor; fill:none; stroke-width:2; }
+
+    .ds-hero { background:var(--bg-off); border-bottom:1px solid var(--border); padding:56px 5% 48px; }
+    .ds-hero-inner { max-width:820px; margin:0 auto; }
+    .ds-tag { display:inline-block; font-family:'Montserrat',sans-serif; font-weight:600; font-size:.65rem; letter-spacing:.14em; text-transform:uppercase; color:var(--red); background:rgba(176,0,0,.08); border:1px solid rgba(176,0,0,.2); padding:4px 13px; border-radius:100px; margin-bottom:16px; }
+    .ds-hero h1 { font-family:'Montserrat',sans-serif; font-weight:800; font-size:clamp(1.8rem,4vw,2.6rem); letter-spacing:-.03em; line-height:1.1; margin-bottom:12px; }
+    .ds-hero p { color:var(--muted); font-size:.92rem; max-width:560px; }
+
+    .ds-content { max-width:820px; margin:0 auto; padding:56px 5% 80px; }
+    .ds-content h2 { font-family:'Montserrat',sans-serif; font-weight:700; font-size:1.25rem; letter-spacing:-.02em; margin:40px 0 14px; padding-top:24px; border-top:1px solid var(--border); color:var(--text); }
+    .ds-content p { font-size:.9rem; color:var(--mid); margin-bottom:12px; }
+    .ds-content p.cl { padding-left:44px; position:relative; }
+    .ds-content p.cl .n { position:absolute; left:0; top:0; font-weight:600; color:var(--text); }
+    .ds-content ul { margin:0 0 14px 44px; padding-left:18px; }
+    .ds-content li { font-size:.9rem; color:var(--mid); margin-bottom:6px; }
+    .ds-content a { color:var(--red); text-decoration:none; }
+    .ds-content a:hover { text-decoration:underline; }
+    .ds-content strong { color:var(--text); font-weight:600; }
+
+    .ds-box { background:var(--bg-off); border-left:3px solid var(--red); border-radius:0 8px 8px 0; padding:18px 22px; margin:18px 0 24px; }
+    .ds-box p { margin-bottom:0; font-size:.88rem; }
+
+    .ds-resp { background:var(--ink); color:#fff; border-radius:12px; padding:24px 26px; margin-bottom:8px; }
+    .ds-resp p { color:rgba(255,255,255,.7); font-size:.88rem; margin-bottom:4px; }
+    .ds-resp strong { color:#fff; }
+    .ds-resp a { color:#fff; }
+
+    .ds-toc { background:var(--bg-off); border:1px solid var(--border); border-radius:10px; padding:20px 24px; margin:24px 0 8px; }
+    .ds-toc p { font-family:'Montserrat',sans-serif; font-weight:600; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+    .ds-toc ol { padding-left:0; list-style:none; columns:2; column-gap:28px; }
+    .ds-toc li { font-size:.86rem; margin-bottom:6px; break-inside:avoid; }
+    .ds-toc a { color:var(--mid); }
+    .ds-toc a:hover { color:var(--red); }
+
+    .ds-footer { background:var(--ink); color:rgba(255,255,255,.4); padding:32px 5%; text-align:center; border-top:1px solid var(--ink-b); }
+    .ds-footer a { color:rgba(255,255,255,.6); text-decoration:none; font-size:.8rem; }
+    .ds-footer a:hover { color:#fff; }
+    .ds-footer-links { display:flex; gap:20px; justify-content:center; margin-bottom:14px; flex-wrap:wrap; }
+    .ds-footer-copy { font-size:.75rem; }
+
+    @media(max-width:600px){
+      .ds-content h2 { font-size:1.1rem; }
+      .ds-content p.cl { padding-left:36px; }
+      .ds-content ul { margin-left:36px; }
+      .ds-toc ol { columns:1; }
+    }
+    @media print {
+      .ds-header, .ds-footer, .ds-toc { display:none; }
+      .ds-hero { padding:0 0 16px; background:none; }
+      .ds-content { padding:0; max-width:none; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="ds-header">
+  <a href="index.html" aria-label="Safety Car – Zur Startseite"><img src="logo.png" alt="Safety Car" class="logo-img"></a>
+  <a href="index.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Zurück zur Webseite
+  </a>
+</header>
+
+<section class="ds-hero">
+  <div class="ds-hero-inner">
+    <span class="ds-tag">Rechtliches</span>
+    <h1>Allgemeine Geschäfts&shy;bedingungen</h1>
+    <p>für die Teilnahme an der Safety Car-Auktion und den Kauf von Fahrzeugen durch gewerbliche Händler</p>
+  </div>
+</section>
+
+<main class="ds-content">
+
+  <div class="ds-resp">
+    <p style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#B00000;margin-bottom:10px;">Vertragspartner</p>
+    <p><strong>Jenne, Zehner Safety Car GbR</strong></p>
+    <p>vertreten durch die Gesellschafter Jan-Luca Zehner und Simon Jenne</p>
+    <p>Hauptstraße 40, 70825 Korntal-Münchingen</p>
+    <p>E-Mail: <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a></p>
+    <p>Telefon: <a href="tel:+4915757076079" style="color:rgba(255,255,255,.7);">+49 157 570 760 79</a></p>
+  </div>
+
+  <nav class="ds-toc" aria-label="Inhaltsverzeichnis">
+    <p>Inhalt</p>
+    <ol>
+      <li><a href="#p1">§ 1 Geltungsbereich und Begriffe</a></li>
+      <li><a href="#p2">§ 2 Stellung von Safety Car</a></li>
+      <li><a href="#p3">§ 3 Registrierung und Händlerkonto</a></li>
+      <li><a href="#p4">§ 4 Ablauf der Auktion</a></li>
+      <li><a href="#p5">§ 5 Gebote und Bindungsfrist</a></li>
+      <li><a href="#p6">§ 6 Vertragsschluss</a></li>
+      <li><a href="#p7">§ 7 Kaufpreis, Umsatzsteuer, Zahlung</a></li>
+      <li><a href="#p8">§ 8 Übergabe, Abholung, Gefahrübergang</a></li>
+      <li><a href="#p9">§ 9 Fahrzeugzustand und Safety Car-Check</a></li>
+      <li><a href="#p10">§ 10 Sachmängel</a></li>
+      <li><a href="#p11">§ 11 Haftung</a></li>
+      <li><a href="#p12">§ 12 Pflichten des Händlers, Steuern</a></li>
+      <li><a href="#p13">§ 13 Pflichtverletzungen, Umgehungsverbot</a></li>
+      <li><a href="#p14">§ 14 Vertraulichkeit und Daten</a></li>
+      <li><a href="#p15">§ 15 Änderungen dieser AGB</a></li>
+      <li><a href="#p16">§ 16 Schlussbestimmungen</a></li>
+    </ol>
+  </nav>
+
+  <!-- § 1 -->
+  <h2 id="p1">§ 1 Geltungsbereich, Vertragspartner und Begriffe</h2>
+  <p class="cl"><span class="n">1.1</span>Diese Allgemeinen Geschäftsbedingungen („AGB“) gelten für die Nutzung der von der Jenne, Zehner Safety Car GbR („Safety Car“) unter auktion.safetycar.net betriebenen Auktionsplattform („Plattform“) sowie für alle Kaufverträge über Fahrzeuge, die Safety Car auf dieser Grundlage mit Händlern schließt.</p>
+  <p class="cl"><span class="n">1.2</span>Die Plattform richtet sich ausschließlich an Unternehmer im Sinne des § 14 BGB, die gewerblich mit Kraftfahrzeugen handeln („Händler“). Verbraucher im Sinne des § 13 BGB sind von der Teilnahme ausgeschlossen. Der Händler versichert, bei Registrierung und bei jedem Gebot in Ausübung seiner gewerblichen Tätigkeit zu handeln.</p>
+  <p class="cl"><span class="n">1.3</span>Abweichende, entgegenstehende oder ergänzende Bedingungen des Händlers werden nicht Vertragsbestandteil, es sei denn, Safety Car stimmt ihrer Geltung ausdrücklich in Textform zu. Dies gilt auch dann, wenn Safety Car in Kenntnis solcher Bedingungen leistet.</p>
+  <p class="cl"><span class="n">1.4</span>Im Sinne dieser AGB bezeichnen:</p>
+  <ul>
+    <li><strong>„Auktion“</strong> das zeitlich befristete Bietverfahren auf der Plattform;</li>
+    <li><strong>„Gebot“</strong> das verbindliche Angebot eines Händlers, ein Fahrzeug zum genannten Betrag zu kaufen;</li>
+    <li><strong>„Verkäufer“</strong> die Person, von der Safety Car das Fahrzeug ankauft;</li>
+    <li><strong>„Prüfprotokoll“</strong> die Dokumentation des Safety Car-Checks;</li>
+    <li><strong>„Abholort“</strong> den Standort des Fahrzeugs beim Verkäufer oder einen anderen von Safety Car benannten Übergabeort;</li>
+    <li><strong>„Werktage“</strong> die Tage Montag bis Freitag mit Ausnahme der gesetzlichen Feiertage in Baden-Württemberg.</li>
+  </ul>
+  <p class="cl"><span class="n">1.5</span>Die Pflichten nach § 312i Abs. 1 Satz 1 Nr. 1 bis 3 und Satz 2 BGB finden gemäß § 312i Abs. 2 Satz 2 BGB keine Anwendung.</p>
+
+  <!-- § 2 -->
+  <h2 id="p2">§ 2 Stellung von Safety Car und Geschäftsmodell</h2>
+  <p class="cl"><span class="n">2.1</span>Safety Car kauft Gebrauchtfahrzeuge im eigenen Namen und auf eigene Rechnung an und verkauft sie an Händler weiter. Safety Car ist selbst Verkäufer gegenüber dem Händler und handelt nicht als Vermittler oder Makler.</p>
+  <p class="cl"><span class="n">2.2</span>Der Kaufvertrag über ein Fahrzeug kommt ausschließlich zwischen Safety Car und dem Händler zustande. Zwischen Verkäufer und Händler entstehen keine vertraglichen Beziehungen.</p>
+  <p class="cl"><span class="n">2.3</span>Fahrzeuge werden in der Regel versteigert, bevor Safety Car sie vom Verkäufer erworben hat. Safety Car nimmt ein Gebot deshalb erst an, wenn der Ankauf gesichert ist (§ 5, § 6). Das Verhältnis zwischen Safety Car und dem Verkäufer richtet sich nach einem gesonderten Ankaufvertrag.</p>
+  <p class="cl"><span class="n">2.4</span>Ein Anspruch des Händlers auf Durchführung einer Auktion, auf ein bestimmtes Fahrzeugangebot oder auf einen bestimmten Preis besteht nicht.</p>
+
+  <!-- § 3 -->
+  <h2 id="p3">§ 3 Registrierung, Händlerkonto und Nutzungsverhältnis</h2>
+  <p class="cl"><span class="n">3.1</span>Die Teilnahme setzt eine Registrierung und die Freigabe durch Safety Car voraus. Der Händler macht alle angeforderten Angaben vollständig und wahrheitsgemäß und legt auf Verlangen Nachweise vor, insbesondere Gewerbeanmeldung oder Registerauszug, Identitätsnachweis des Vertretungsberechtigten und – soweit vorhanden – seine Umsatzsteuer-Identifikationsnummer. Safety Car ist berechtigt, die Umsatzsteuer-Identifikationsnummer beim Bundeszentralamt für Steuern bestätigen zu lassen.</p>
+  <p class="cl"><span class="n">3.2</span>Ein Anspruch auf Freigabe besteht nicht.</p>
+  <p class="cl"><span class="n">3.3</span>Der Händler hält seine Zugangsdaten geheim und schützt sie vor dem Zugriff Dritter. Über sein Konto abgegebene Gebote werden ihm zugerechnet, es sei denn, er hat den Missbrauch nicht zu vertreten. Einen Verdacht auf Missbrauch sowie Änderungen seiner Registrierungsdaten teilt er Safety Car unverzüglich mit.</p>
+  <p class="cl"><span class="n">3.4</span>Safety Car kann für jeden Händler ein Bietlimit festlegen. Das Bietlimit ist die Summe aller Beträge aus Höchstgeboten des Händlers, die noch in der Bindungsfrist sind, und aus Kaufverträgen, die noch nicht vollständig bezahlt sind. Neu freigegebene Händler erhalten ein Bietlimit von 15.000 EUR. Nach drei vollständig abgewickelten Käufen prüft Safety Car eine Erhöhung. Das jeweils geltende Bietlimit wird im Händlerkonto angezeigt. Gebote, die das Bietlimit überschreiten, nimmt die Plattform nicht an. Wird ein solches Gebot dennoch erfasst, ist Safety Car nicht verpflichtet, es zu berücksichtigen.</p>
+  <p class="cl"><span class="n">3.5</span>Das Nutzungsverhältnis läuft auf unbestimmte Zeit. Jede Partei kann es jederzeit in Textform kündigen. Das Recht zur Kündigung aus wichtigem Grund bleibt unberührt. Gebote in laufender Bindungsfrist und bereits geschlossene Kaufverträge werden nach diesen AGB abgewickelt.</p>
+  <p class="cl"><span class="n">3.6</span>Verstößt der Händler gegen wesentliche Pflichten aus diesen AGB, kann Safety Car das Händlerkonto vorübergehend sperren. Bei schwerwiegenden oder wiederholten Verstößen kann Safety Car das Nutzungsverhältnis aus wichtigem Grund kündigen. Bei der Wahl der Maßnahme berücksichtigt Safety Car die berechtigten Interessen des Händlers. § 13 bleibt unberührt.</p>
+
+  <!-- § 4 -->
+  <h2 id="p4">§ 4 Ablauf der Auktion</h2>
+  <p class="cl"><span class="n">4.1</span>Safety Car stellt das Fahrzeug mit Fahrzeugdaten, Lichtbildern, dem Prüfprotokoll und einem Startpreis auf der Plattform ein.</p>
+  <p class="cl"><span class="n">4.2</span>Beginn und Ende jeder Auktion werden auf der Plattform angezeigt. Auktionen finden in der Regel an Werktagen zwischen 17:00 und 20:00 Uhr (deutsche Zeit) statt.</p>
+  <p class="cl"><span class="n">4.3</span>Wird kurz vor Auktionsende ein Gebot abgegeben, verlängert sich die Auktion automatisch um den auf der Plattform angezeigten Zeitraum.</p>
+  <p class="cl"><span class="n">4.4</span>Gebote sind nur in der angezeigten Mindesterhöhung möglich. Gegenüber anderen Händlern werden Gebote anonym angezeigt.</p>
+  <p class="cl"><span class="n">4.5</span>Safety Car kann eine Auktion aus sachlichem Grund vorzeitig beenden, ein Fahrzeug zurückziehen oder eine Auktion wiederholen. Sachliche Gründe sind insbesondere technische Störungen, fehlerhafte Angaben zum Fahrzeug, eine Beschädigung des Fahrzeugs oder das Scheitern des Ankaufs. Ansprüche des Händlers hieraus bestehen nur bei Vorsatz oder grober Fahrlässigkeit von Safety Car.</p>
+
+  <!-- § 5 -->
+  <h2 id="p5">§ 5 Gebote und Bindungsfrist</h2>
+  <p class="cl"><span class="n">5.1</span>Jedes Gebot ist ein verbindliches Angebot des Händlers zum Abschluss eines Kaufvertrags über das jeweilige Fahrzeug zum gebotenen Betrag und zu den Bedingungen dieser AGB. Ein Gebot kann nicht zurückgenommen werden. Gesetzliche Anfechtungsrechte bleiben unberührt.</p>
+  <p class="cl"><span class="n">5.2</span>Das Ende der Auktion ist kein Zuschlag im Sinne des § 156 BGB. Allein durch das Auktionsende kommt kein Kaufvertrag zustande.</p>
+  <p class="cl"><span class="n">5.3</span>Der Händler, der bei Auktionsende das höchste wirksame Gebot abgegeben hat, ist an dieses Gebot bis zum Ablauf des dritten Werktags nach Auktionsende gebunden (Annahmefrist gemäß § 148 BGB). Alle übrigen Gebote erlöschen mit dem Auktionsende.</p>
+  <p class="cl"><span class="n">5.4</span>Safety Car ist nicht verpflichtet, das Höchstgebot anzunehmen. Das gilt insbesondere, wenn der Verkäufer das Ankaufsangebot von Safety Car nicht annimmt. Kommt innerhalb der Bindungsfrist keine Annahme zustande, erlischt das Gebot. Safety Car informiert den Händler unverzüglich, sobald feststeht, dass das Gebot nicht angenommen wird.</p>
+  <p class="cl"><span class="n">5.5</span>Safety Car kann Gebote zurückweisen oder streichen, die offensichtlich irrtümlich, missbräuchlich oder unter Verstoß gegen diese AGB abgegeben wurden.</p>
+
+  <!-- § 6 -->
+  <h2 id="p6">§ 6 Vertragsschluss</h2>
+  <p class="cl"><span class="n">6.1</span>Der Kaufvertrag kommt zustande, wenn Safety Car das Gebot innerhalb der Bindungsfrist annimmt. Safety Car erklärt die Annahme in Textform, in der Regel durch eine Auftragsbestätigung per E-Mail oder über die Plattform.</p>
+  <p class="cl"><span class="n">6.2</span>Safety Car kann den Händler bitten, das Gebot in Textform zu bestätigen („Gebotsbestätigung“). Die Gebotsbestätigung dient nur der Dokumentation. Sie ist keine Voraussetzung für das Zustandekommen des Vertrags und ändert dessen Inhalt nicht.</p>
+  <p class="cl"><span class="n">6.3</span>Nebenabreden, Änderungen und Ergänzungen bedürfen der Textform. Individuelle Vereinbarungen im Einzelfall haben Vorrang (§ 305b BGB).</p>
+
+  <!-- § 7 -->
+  <h2 id="p7">§ 7 Kaufpreis, Umsatzsteuer, Zahlung und Eigentumsvorbehalt</h2>
+  <p class="cl"><span class="n">7.1</span>Der Kaufpreis entspricht dem angenommenen Gebot. Hinzu kommen nur die Nebenkosten, die gesondert vereinbart sind oder nach diesen AGB anfallen, etwa für einen von Safety Car organisierten Transport oder für Standgeld.</p>
+  <p class="cl"><span class="n">7.2</span>Safety Car kauft Fahrzeuge in der Regel von Privatpersonen an. Safety Car verkauft sie deshalb grundsätzlich unter Anwendung der Differenzbesteuerung nach § 25a UStG. Gebote sind in diesem Fall Endpreise. Die Rechnung weist keine Umsatzsteuer gesondert aus und enthält den Hinweis „Gebrauchtgegenstände/Sonderregelung“ (§ 14a Abs. 6 UStG). Ein Vorsteuerabzug des Händlers ist ausgeschlossen. Die Differenzbesteuerung gilt auch dann, wenn das Fahrzeug in einen anderen Mitgliedstaat der Europäischen Union gelangt. Eine steuerfreie innergemeinschaftliche Lieferung ist dann nicht möglich (§ 25a Abs. 7 Nr. 3 UStG).</p>
+  <p class="cl"><span class="n">7.3</span>Ist ein Fahrzeug in der Auktion ausdrücklich als „regelbesteuert“ gekennzeichnet, gilt Folgendes:</p>
+  <ul>
+    <li>Das Gebot ist ein Nettobetrag.</li>
+    <li>Gelangt das Fahrzeug in einen anderen Mitgliedstaat und liegen die Voraussetzungen einer steuerfreien innergemeinschaftlichen Lieferung vor (§ 4 Nr. 1 Buchst. b, § 6a UStG), rechnet Safety Car ohne Umsatzsteuer ab.</li>
+    <li>Andernfalls schuldet der Händler zusätzlich die Umsatzsteuer in gesetzlicher Höhe.</li>
+    <li>Das gilt auch, wenn die Voraussetzungen nachträglich entfallen, etwa weil die Nachweise nach § 12.2 nicht vorliegen.</li>
+  </ul>
+  <p class="cl"><span class="n">7.4</span>Die Zahlung wird über einen Treuhanddienst abgewickelt (derzeit Paylax). Der Händler zahlt den vollständigen Kaufpreis innerhalb von zwei Werktagen nach Vertragsschluss auf das von Safety Car mitgeteilte Treuhandkonto ein. Die Auszahlung an Safety Car erfolgt nach den Bedingungen des Treuhanddienstes. Die Gebühren des Treuhanddienstes trägt Safety Car.</p>
+  <p class="cl"><span class="n">7.5</span>Barzahlungen werden nicht angenommen.</p>
+  <p class="cl"><span class="n">7.6</span>Das Fahrzeug wird erst übergeben, wenn der vollständige Kaufpreis beim Treuhanddienst eingegangen ist. Bis zur vollständigen Zahlung bleibt das Fahrzeug Eigentum von Safety Car. Die Zulassungsbescheinigung Teil II wird erst nach vollständiger Zahlung ausgehändigt.</p>
+  <p class="cl"><span class="n">7.7</span>Der Händler kann nur mit unbestrittenen oder rechtskräftig festgestellten Forderungen aufrechnen. Ein Zurückbehaltungsrecht kann er nur wegen Ansprüchen aus demselben Vertragsverhältnis ausüben.</p>
+  <p class="cl"><span class="n">7.8</span>Bei Zahlungsverzug schuldet der Händler Verzugszinsen in Höhe von neun Prozentpunkten über dem Basiszinssatz (§ 288 Abs. 2 BGB) sowie die Pauschale nach § 288 Abs. 5 BGB. Die Geltendmachung eines weitergehenden Schadens bleibt vorbehalten.</p>
+
+  <!-- § 8 -->
+  <h2 id="p8">§ 8 Übergabe, Abholung, Gefahrübergang und Standzeit</h2>
+  <p class="cl"><span class="n">8.1</span>Die Übergabe erfolgt am Abholort. Safety Car teilt dem Händler den Abholort und mögliche Abholtermine nach Zahlungseingang mit. Der Händler holt das Fahrzeug selbst ab oder lässt es durch eine von ihm beauftragte Transportperson abholen. Die Transportperson weist sich durch einen schriftlichen Abholauftrag des Händlers aus.</p>
+  <p class="cl"><span class="n">8.2</span>Bei der Übergabe wird ein Übergabeprotokoll mit Kilometerstand und äußerlich erkennbarem Zustand erstellt. Die Transportperson unterzeichnet das Protokoll für den Händler.</p>
+  <p class="cl"><span class="n">8.3</span>Der Händler holt das Fahrzeug innerhalb von drei Werktagen nach Zahlungseingang ab. Nach Ablauf dieser Frist kann Safety Car ein Standgeld von 15 EUR je angefangenem Kalendertag verlangen. Der Händler kann nachweisen, dass kein oder ein geringerer Aufwand entstanden ist. Ein weitergehender Schaden, insbesondere Kosten gegenüber dem Verkäufer, bleibt vorbehalten; das Standgeld wird darauf angerechnet. Holt der Händler das Fahrzeug auch nach Ablauf einer Nachfrist von sieben Kalendertagen nicht ab, gilt § 13.1.</p>
+  <p class="cl"><span class="n">8.4</span>Die Gefahr des zufälligen Untergangs und der zufälligen Verschlechterung geht mit der Übergabe auf den Händler über. Übergabe ist auch die Übergabe an die vom Händler beauftragte Transportperson. Befindet sich der Händler im Annahmeverzug, geht die Gefahr bereits mit Eintritt des Verzugs über.</p>
+  <p class="cl"><span class="n">8.5</span>Organisiert Safety Car auf Wunsch des Händlers den Transport, geschieht dies im Namen und für Rechnung des Händlers. Die Gefahr geht dann mit Übergabe an die Transportperson über (§ 447 BGB). Safety Car haftet nur für die sorgfältige Auswahl der Transportperson.</p>
+  <p class="cl"><span class="n">8.6</span>Fahrzeuge werden grundsätzlich außer Betrieb gesetzt übergeben. Kennzeichen werden nur übergeben, wenn dies ausdrücklich vereinbart ist.</p>
+
+  <!-- § 9 -->
+  <h2 id="p9">§ 9 Fahrzeugzustand, Safety Car-Check und vereinbarte Beschaffenheit</h2>
+  <p class="cl"><span class="n">9.1</span>Verkauft werden ausschließlich gebrauchte Fahrzeuge mit altersgemäßem und laufleistungsbedingtem Verschleiß.</p>
+  <p class="cl"><span class="n">9.2</span>Der Safety Car-Check ist kein Sachverständigengutachten. Er ist eine dokumentierte Zustandsaufnahme zum Prüfzeitpunkt anhand festgelegter Prüfpunkte. Er enthält keine Aussagen zum Fahrzeugwert und keine Aussagen zur künftigen Haltbarkeit einzelner Bauteile. Angaben zur Fahrzeughistorie beruhen auf den Angaben des Verkäufers und den vorgelegten Unterlagen. Safety Car gibt sie als solche weiter.</p>
+  <p class="cl"><span class="n">9.3</span>Als vereinbarte Beschaffenheit (§ 434 Abs. 2 Satz 1 Nr. 1 BGB) gelten ausschließlich die Werte, die im Prüfprotokoll ausdrücklich als gemessen oder festgestellt dokumentiert sind. Maßgeblich ist die bei Auktionsende veröffentlichte Fassung des Prüfprotokolls. Die Werte beziehen sich auf den Prüfzeitpunkt. Im Prüfprotokoll angegebene Messtoleranzen gehören zur Beschaffenheit. Eigenschaften, die nicht geprüft wurden oder nicht prüfbar sind, sind nicht Gegenstand der Beschaffenheitsvereinbarung.</p>
+  <p class="cl"><span class="n">9.4</span>Eine Garantie im Sinne der §§ 276 Abs. 1, 443 BGB übernimmt Safety Car nicht, auch nicht durch das Prüfprotokoll oder durch Bezeichnungen wie „geprüft“ oder „Safety Car-Check“.</p>
+  <p class="cl"><span class="n">9.5</span>Als Laufleistung gilt der zum Prüfzeitpunkt abgelesene Stand des Wegstreckenzählers. Die im Prüfprotokoll beschriebenen Plausibilitätsprüfungen werden nur in dem dort dokumentierten Umfang Beschaffenheit. Eine bestimmte tatsächliche Gesamtfahrleistung ist nur vereinbart, wenn das Prüfprotokoll sie ausdrücklich als festgestellt ausweist.</p>
+  <p class="cl"><span class="n">9.6</span>Weicht das Fahrzeug bei Gefahrübergang von der Beschaffenheit nach § 9.3 ab, gelten die gesetzlichen Rechte (§§ 437 ff. BGB) mit folgenden Maßgaben:</p>
+  <ul>
+    <li><strong>Nacherfüllung:</strong> Safety Car leistet nach eigener Wahl Nacherfüllung, indem es die erforderlichen Kosten der Mangelbeseitigung nach einem vom Händler vorgelegten und von Safety Car freigegebenen Kostenvoranschlag erstattet, oder indem es das Fahrzeug gegen Rückzahlung des Kaufpreises zurücknimmt.</li>
+    <li><strong>Prüfung durch Safety Car:</strong> Safety Car ist Gelegenheit zu geben, die Abweichung vor Beginn einer Reparatur zu prüfen oder prüfen zu lassen.</li>
+    <li><strong>Weitere Rechte:</strong> Schlägt die Nacherfüllung fehl oder verweigert Safety Car sie, kann der Händler nach den gesetzlichen Vorschriften zurücktreten oder den Kaufpreis mindern.</li>
+    <li><strong>Schadensersatz:</strong> Hierfür gilt § 11.</li>
+  </ul>
+
+  <!-- § 10 -->
+  <h2 id="p10">§ 10 Sachmängel</h2>
+  <p class="cl"><span class="n">10.1</span>Mit Ausnahme der Rechte wegen einer Abweichung von der vereinbarten Beschaffenheit nach § 9 sind Ansprüche und Rechte des Händlers wegen Sachmängeln ausgeschlossen.</p>
+  <p class="cl"><span class="n">10.2</span>Der Ausschluss nach § 10.1 gilt nicht:</p>
+  <ul>
+    <li>bei arglistigem Verschweigen eines Mangels (§ 444 BGB);</li>
+    <li>für Schadensersatzansprüche wegen Verletzung des Lebens, des Körpers oder der Gesundheit;</li>
+    <li>für Schadensersatzansprüche wegen vorsätzlicher oder grob fahrlässiger Pflichtverletzung von Safety Car, seiner gesetzlichen Vertreter oder Erfüllungsgehilfen;</li>
+    <li>für Ansprüche nach dem Produkthaftungsgesetz.</li>
+  </ul>
+  <p class="cl"><span class="n">10.3</span>Der Händler oder seine Transportperson untersucht das Fahrzeug bei der Übergabe. Offensichtliche Mängel und erkennbare Abweichungen vom Prüfprotokoll zeigt der Händler innerhalb von fünf Werktagen nach Übergabe in Textform an. Verdeckte Mängel zeigt er innerhalb von fünf Werktagen nach ihrer Entdeckung an. Unterbleibt die rechtzeitige Anzeige, sind Rechte wegen dieses Mangels ausgeschlossen, es sei denn, Safety Car hat den Mangel arglistig verschwiegen. § 377 HGB bleibt unberührt, soweit er anwendbar ist.</p>
+  <p class="cl"><span class="n">10.4</span>Ansprüche wegen Sachmängeln verjähren in zwölf Monaten ab Übergabe. Das gilt nicht in den Fällen des § 10.2. Dort gelten die gesetzlichen Verjährungsfristen.</p>
+
+  <!-- § 11 -->
+  <h2 id="p11">§ 11 Haftung</h2>
+  <p class="cl"><span class="n">11.1</span>Safety Car haftet unbeschränkt für Vorsatz und grobe Fahrlässigkeit, für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit, bei arglistigem Verschweigen eines Mangels und nach dem Produkthaftungsgesetz.</p>
+  <p class="cl"><span class="n">11.2</span>Bei einfacher Fahrlässigkeit haftet Safety Car nur bei Verletzung einer wesentlichen Vertragspflicht. Wesentlich ist eine Pflicht, deren Erfüllung die ordnungsgemäße Durchführung des Vertrags überhaupt erst ermöglicht und auf deren Einhaltung der Händler regelmäßig vertrauen darf. In diesem Fall ist die Haftung auf den vertragstypischen, bei Vertragsschluss vorhersehbaren Schaden begrenzt.</p>
+  <p class="cl"><span class="n">11.3</span>Safety Car schuldet keine bestimmte Verfügbarkeit der Plattform. Safety Car kann den Betrieb für Wartungsarbeiten unterbrechen und kündigt Wartungen nach Möglichkeit vorher an.</p>
+  <p class="cl"><span class="n">11.4</span>Die vorstehenden Haftungsbeschränkungen gelten auch zugunsten der Gesellschafter, gesetzlichen Vertreter und Erfüllungsgehilfen von Safety Car.</p>
+
+  <!-- § 12 -->
+  <h2 id="p12">§ 12 Pflichten des Händlers, Verbringung und Steuern</h2>
+  <p class="cl"><span class="n">12.1</span>Wird ein Fahrzeug ausnahmsweise zugelassen übergeben, meldet der Händler es innerhalb von fünf Werktagen nach Übergabe um oder setzt es außer Betrieb. Er weist dies Safety Car auf Verlangen nach. Bis dahin stellt der Händler Safety Car und den Verkäufer von Kosten und Ansprüchen Dritter frei, die aus der Nutzung des Fahrzeugs nach Übergabe entstehen.</p>
+  <p class="cl"><span class="n">12.2</span>Bei regelbesteuerten Fahrzeugen im Sinne des § 7.3 wirkt der Händler an den Nachweisen der innergemeinschaftlichen Lieferung mit. Insbesondere:</p>
+  <ul>
+    <li>verwendet er bei Vertragsschluss eine gültige, ihm von einem anderen Mitgliedstaat erteilte Umsatzsteuer-Identifikationsnummer;</li>
+    <li>übermittelt er Safety Car innerhalb von zehn Werktagen nach Ankunft des Fahrzeugs im Bestimmungsland eine vollständige Gelangensbestätigung im Sinne des § 17b UStDV einschließlich der Fahrzeug-Identifikationsnummer oder einen anderen zulässigen Nachweis;</li>
+    <li>stellt er, wenn er den Transport selbst organisiert, die erforderlichen Transportdokumente zur Verfügung.</li>
+  </ul>
+  <p class="cl"><span class="n">12.3</span>Sämtliche im Bestimmungsland anfallenden Steuern, Abgaben und Zulassungskosten trägt der Händler, insbesondere die polnische Verbrauchsteuer (Akcyza).</p>
+  <p class="cl"><span class="n">12.4</span>Für den Weiterverkauf an Verbraucher ist der Händler selbst verantwortlich. Die ihn dabei treffenden gesetzlichen Pflichten berühren das Verhältnis zu Safety Car nicht.</p>
+
+  <!-- § 13 -->
+  <h2 id="p13">§ 13 Pflichtverletzungen, Schadenspauschale und Umgehungsverbot</h2>
+  <p class="cl"><span class="n">13.1</span>Zahlt der Händler den Kaufpreis nicht fristgerecht ein oder holt er das Fahrzeug nicht ab, kann Safety Car nach fruchtlosem Ablauf einer angemessenen Nachfrist vom Vertrag zurücktreten und Schadensersatz statt der Leistung verlangen. Safety Car kann als pauschalierten Schadensersatz 10 % des Kaufpreises verlangen. Dem Händler bleibt der Nachweis vorbehalten, dass kein oder ein wesentlich geringerer Schaden entstanden ist. Safety Car bleibt der Nachweis eines höheren Schadens vorbehalten.</p>
+  <p class="cl"><span class="n">13.2</span>Für jedes Fahrzeug, das dem Händler auf der Plattform angeboten wurde, gilt ein Umgehungsverbot bis zwölf Monate nach Ende der betreffenden Auktion. In diesem Zeitraum erwirbt der Händler das Fahrzeug nicht unmittelbar oder über Dritte vom Verkäufer und vermittelt es nicht, es sei denn, der Erwerb erfolgt über Safety Car. Das Verbot gilt nicht, wenn der Händler nachweist, dass er mit dem Verkäufer über dieses Fahrzeug bereits vor dessen Einstellung auf der Plattform in Kontakt stand.</p>
+  <p class="cl"><span class="n">13.3</span>Verstößt der Händler schuldhaft gegen § 13.2, schuldet er für jedes betroffene Fahrzeug eine Vertragsstrafe. Safety Car setzt deren Höhe nach billigem Ermessen fest; sie beträgt höchstens 5.000 EUR. Im Streitfall überprüft das zuständige Gericht die Angemessenheit. Die Vertragsstrafe wird auf einen Schadensersatzanspruch angerechnet.</p>
+  <p class="cl"><span class="n">13.4</span>Bei wiederholten oder schwerwiegenden Verstößen gilt § 3.6. Bereits geschlossene Kaufverträge bleiben unberührt.</p>
+
+  <!-- § 14 -->
+  <h2 id="p14">§ 14 Vertraulichkeit, Daten und Nutzungsrechte</h2>
+  <p class="cl"><span class="n">14.1</span>Der Händler darf Prüfprotokolle, Lichtbilder und sonstige Unterlagen von Safety Car nur für eigene Kaufentscheidungen und den Weiterverkauf des bei Safety Car gekauften Fahrzeugs verwenden. Er gibt sie nur vollständig und unverändert weiter.</p>
+  <p class="cl"><span class="n">14.2</span>Die Verwendung der Bezeichnung und des Logos „Safety Car“ sowie Hinweise auf die Geschäftsbeziehung bedürfen der vorherigen Zustimmung in Textform.</p>
+  <p class="cl"><span class="n">14.3</span>Untersagt sind:</p>
+  <ul>
+    <li>das automatisierte Auslesen von Plattforminhalten;</li>
+    <li>die Weitergabe von Zugangsdaten an Dritte;</li>
+    <li>jede Einwirkung auf den Auktionsverlauf, insbesondere Scheingebote oder Absprachen mit anderen Bietern.</li>
+  </ul>
+  <p class="cl"><span class="n">14.4</span>Personenbezogene Daten des Verkäufers erhält der Händler nur, soweit dies für Abholung und Zulassung erforderlich ist. Das gilt insbesondere für Abholadresse und Kontaktdaten sowie für die Angaben in den Fahrzeugpapieren. Der Händler verarbeitet diese Daten ausschließlich zu diesen Zwecken und nach den Vorgaben der DSGVO. Er nutzt sie insbesondere nicht, um den Verkäufer für andere Zwecke zu kontaktieren.</p>
+  <p class="cl"><span class="n">14.5</span>Safety Car verarbeitet personenbezogene Daten nach Maßgabe der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+
+  <!-- § 15 -->
+  <h2 id="p15">§ 15 Änderungen dieser AGB</h2>
+  <p class="cl"><span class="n">15.1</span>Safety Car kann diese AGB mit Wirkung für künftige Auktionen ändern, wenn dafür ein sachlicher Grund besteht. Sachliche Gründe sind insbesondere Gesetzesänderungen, Rechtsprechung, Änderungen des Auktionsablaufs oder technische Weiterentwicklungen der Plattform. Die Änderungen teilt Safety Car dem Händler mindestens vier Wochen vor ihrem Inkrafttreten in Textform mit.</p>
+  <p class="cl"><span class="n">15.2</span>Nach Inkrafttreten kann der Händler erst wieder bieten, wenn er den geänderten AGB auf der Plattform ausdrücklich zugestimmt hat. Stimmt der Händler nicht zu, können beide Parteien das Nutzungsverhältnis nach § 3.5 kündigen.</p>
+  <p class="cl"><span class="n">15.3</span>Für bereits abgegebene Gebote und geschlossene Kaufverträge gelten die zum Zeitpunkt der Gebotsabgabe einbezogenen AGB fort.</p>
+
+  <!-- § 16 -->
+  <h2 id="p16">§ 16 Schlussbestimmungen</h2>
+  <p class="cl"><span class="n">16.1</span>Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts (CISG).</p>
+  <p class="cl"><span class="n">16.2</span>Ausschließlicher Gerichtsstand für alle Streitigkeiten aus oder im Zusammenhang mit diesen AGB und den auf ihrer Grundlage geschlossenen Verträgen ist der Sitz von Safety Car. Für Händler mit Sitz in einem anderen Mitgliedstaat der Europäischen Union gilt dies als Gerichtsstandsvereinbarung nach Art. 25 der Verordnung (EU) Nr. 1215/2012. Safety Car kann den Händler auch an dessen allgemeinem Gerichtsstand verklagen.</p>
+  <p class="cl"><span class="n">16.3</span>Vertragssprache ist Deutsch. Übersetzungen dieser AGB, etwa in die polnische oder englische Sprache, dienen dem besseren Verständnis. Bei Abweichungen ist die deutsche Fassung maßgeblich.</p>
+  <p class="cl"><span class="n">16.4</span>Sollte eine Bestimmung dieser AGB ganz oder teilweise unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt. An die Stelle der unwirksamen Bestimmung treten die gesetzlichen Vorschriften (§ 306 Abs. 2 BGB).</p>
+
+  <p style="margin-top:32px;font-size:.78rem;color:var(--muted);">Stand: September 2026</p>
+
+</main>
+
+<footer class="ds-footer">
+  <div class="ds-footer-links">
+    <a href="index.html">Startseite</a>
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+    <a href="agb.html">AGB</a>
+  </div>
+  <p class="ds-footer-copy">© 2026 Safety Car · Jenne, Zehner Safety Car GbR · Korntal-Münchingen</p>
+</footer>
+
+</body>
+</html>
