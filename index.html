@@ -27,7 +27,9 @@ a{text-decoration:none;color:inherit}
 /* ---- Top bar ---- */
 .top{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
 .top-in{display:flex;align-items:center;justify-content:space-between;height:62px}
-.logo{display:flex;flex-direction:column;line-height:1;gap:1px}
+.logo{display:flex;align-items:center;line-height:1}
+.logo img{height:52px;width:auto;display:block}
+@media(max-width:600px){.logo img{height:42px}}
 .logo .l1{font-family:'Montserrat';font-weight:800;font-size:.95rem;letter-spacing:.22em;color:var(--red)}
 .logo .l2{font-family:'Montserrat';font-weight:800;font-size:.95rem;letter-spacing:.22em;color:var(--ink)}
 .top-right{display:flex;align-items:center;gap:14px}
@@ -128,7 +130,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:30px 0;border-to
 
 <!-- TOP -->
 <header class="top"><div class="wrap top-in">
-  <a href="index.html" class="logo"><span class="l1">SAFETY</span><span class="l2">CAR</span></a>
+  <a href="index.html" class="logo" aria-label="Safety Car"><img src="logo.png" alt="Safety Car"></a>
   <div class="top-right">
     <div class="lang" role="group" aria-label="Sprache">
       <button data-lang="pl">PL</button><span class="sep">|</span>
