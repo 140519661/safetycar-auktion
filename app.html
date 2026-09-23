@@ -2650,32 +2650,50 @@ setInterval(function() {
 
 <footer style="background:#0A0A0A;border-top:1px solid #222;padding:14px 5%;text-align:center;"><div style="display:flex;gap:18px;justify-content:center;margin-bottom:6px;flex-wrap:wrap;"><a href="impressum.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none;">Impressum</a><a href="datenschutz.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none;">Datenschutzerklärung</a><a href="agb.html" style="color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none;">AGB</a></div><p style="color:rgba(255,255,255,.25);font-size:.72rem;">&copy; 2026 Safety Car &middot; Jenne, Zehner Safety Car GbR</p></footer>
 <style>
-#cookieBanner{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(20,20,20,.55);backdrop-filter:saturate(120%) blur(5px);-webkit-backdrop-filter:saturate(120%) blur(5px)}
+/* Datenschutz-Hinweis: reine Information, keine Einwilligung (nur technisch notwendiger Speicher, § 25 Abs. 2 Nr. 2 TDDDG) */
+#cookieBanner{position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;display:none;justify-content:center;pointer-events:none}
 #cookieBanner.show{display:flex}
-.cookie-inner{width:100%;max-width:520px;background:#fff;border-radius:16px;padding:30px 30px 26px;box-shadow:0 24px 70px rgba(0,0,0,.30);display:flex;flex-direction:column;gap:15px;animation:cookiePop .26s ease}
-@keyframes cookiePop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
-.cookie-title{font-weight:700;font-size:1.18rem;color:#111;margin:0}
-.cookie-text{font-size:.85rem;color:#555;line-height:1.6;margin:0}
+.cookie-inner{width:100%;max-width:640px;background:#fff;border:1px solid var(--border2,#E4E4E4);border-radius:14px;padding:18px 20px;box-shadow:0 12px 40px rgba(0,0,0,.18);display:flex;align-items:center;gap:18px;pointer-events:auto;animation:cookiePop .26s ease}
+@keyframes cookiePop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.cookie-body{flex:1;min-width:0}
+.cookie-title{font-weight:700;font-size:.95rem;color:#111;margin:0 0 4px}
+.cookie-text{font-size:.8rem;color:#555;line-height:1.55;margin:0}
 .cookie-text a{color:var(--red);font-weight:600;text-decoration:underline}
-.cookie-actions{display:flex;gap:12px;margin-top:6px}
-.cookie-actions button{flex:1;justify-content:center;padding:13px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;border:none}
-.cookie-accept{background:var(--red);color:#fff}
-.cookie-decline{background:#fff;color:var(--text2);border:1px solid var(--border2)}
-@media (max-width:480px){.cookie-inner{padding:24px 20px 20px;border-radius:14px}.cookie-actions{flex-direction:column}}
+.cookie-ok{flex:none;background:var(--red);color:#fff;border:none;border-radius:9px;padding:11px 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+@media (max-width:560px){.cookie-inner{flex-direction:column;align-items:stretch;gap:12px}.cookie-ok{width:100%}}
 </style>
-<div id="cookieBanner" role="dialog" aria-modal="true" aria-labelledby="cookieTitle">
+<div id="cookieBanner" role="region" aria-labelledby="cookieTitle">
   <div class="cookie-inner">
-    <p class="cookie-title" id="cookieTitle">Datenschutz &amp; Cookies</p>
-    <p class="cookie-text">Diese Anwendung verwendet ausschließlich technisch notwendige Cookies bzw. lokalen Speicher, um Ihren Login und die Auktionsfunktionen bereitzustellen. Es findet kein Tracking und keine Weitergabe zu Werbezwecken statt. Weitere Informationen finden Sie in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
-    <div class="cookie-actions">
-      <button type="button" class="cookie-decline" onclick="setCookieConsent('declined')">Ablehnen</button>
-      <button type="button" class="cookie-accept" onclick="setCookieConsent('accepted')">Akzeptieren</button>
+    <div class="cookie-body">
+      <p class="cookie-title" id="cookieTitle">Hinweis zum Datenschutz</p>
+      <p class="cookie-text" id="cookieText"></p>
     </div>
+    <button type="button" class="cookie-ok" id="cookieOk" onclick="scCookieAck()">Verstanden</button>
   </div>
 </div>
 <script>
-function setCookieConsent(v){ try{ localStorage.setItem('sc_cookie_consent',v); }catch(e){} var b=document.getElementById('cookieBanner'); if(b) b.classList.remove('show'); document.body.style.overflow=''; }
-(function(){ var v=null; try{ v=localStorage.getItem('sc_cookie_consent'); }catch(e){} if(!v){ var b=document.getElementById('cookieBanner'); if(b){ b.classList.add('show'); document.body.style.overflow='hidden'; } } })();
+(function(){
+  var TXT={
+    de:{t:'Hinweis zum Datenschutz',b:'Verstanden',x:'Diese Anwendung speichert ausschließlich technisch notwendige Informationen im lokalen Speicher Ihres Browsers (Anmeldung, Spracheinstellung, dieser Hinweis). Es findet kein Tracking und keine Werbung statt. Eine Einwilligung ist hierfür nicht erforderlich. Mehr dazu in unserer ',l:'Datenschutzerklärung'},
+    en:{t:'Privacy notice',b:'Got it',x:'This application only stores technically necessary information in your browser’s local storage (login, language setting, this notice). There is no tracking and no advertising. No consent is required for this. Find out more in our ',l:'privacy policy'},
+    pl:{t:'Informacja o ochronie danych',b:'Rozumiem',x:'Ta aplikacja zapisuje w pamięci lokalnej przeglądarki wyłącznie technicznie niezbędne informacje (logowanie, ustawienie języka, ta informacja). Nie stosujemy śledzenia ani reklam. Zgoda nie jest do tego wymagana. Więcej informacji w naszej ',l:'polityce prywatności'}
+  };
+  function lang(){ var l=window.SC_LANG; if(!l){ try{ l=localStorage.getItem('sc_lang_tool'); }catch(e){} } return TXT[l]?l:'de'; }
+  window.scCookieFill=function(){
+    var c=TXT[lang()], t=document.getElementById('cookieTitle'), x=document.getElementById('cookieText'), b=document.getElementById('cookieOk');
+    if(t) t.textContent=c.t;
+    if(b) b.textContent=c.b;
+    if(x){ x.textContent=c.x; var a=document.createElement('a'); a.href='datenschutz.html'; a.textContent=c.l; x.appendChild(a); x.appendChild(document.createTextNode('.')); }
+  };
+  window.scCookieAck=function(){ try{ localStorage.setItem('sc_cookie_consent','acknowledged'); }catch(e){} var bn=document.getElementById('cookieBanner'); if(bn) bn.classList.remove('show'); };
+  var seen=null; try{ seen=localStorage.getItem('sc_cookie_consent'); }catch(e){}
+  if(!seen){ window.scCookieFill(); var bn=document.getElementById('cookieBanner'); if(bn) bn.classList.add('show'); }
+  document.addEventListener('DOMContentLoaded', function(){
+    window.scCookieFill();
+    var orig=window.scSetLang;
+    if(typeof orig==='function' && !orig._scCookie){ var w=function(l){ orig(l); window.scCookieFill(); }; w._scCookie=true; window.scSetLang=w; }
+  });
+})();
 </script>
 
 <style>
