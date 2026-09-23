@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Datenschutzerklärung – Safety Car</title>
-  <meta name="description" content="Datenschutzerklärung der Jenne, Zehner Safety Car GbR – Fahrzeugankauf, Auktionsplattform für Händler, Treuhandabwicklung." />
+  <meta name="description" content="Datenschutzerklärung der Jenne, Zehner Safety Car GbR – Fahrzeugankauf, Auktionsplattform für Händler, Treuhandabwicklung. Privacy policy · Polityka prywatności." />
 
   <!-- ═══════════════════════════════════════
        FONTS – lokal eingebunden (DSGVO-konform, keine Google-Übertragung)
@@ -160,30 +160,51 @@
     @media(max-width:600px){
       .ds-content h2 { font-size:1.1rem; }
     }
+
+    /* ── Sprachumschalter (wie Startseite) ── */
+    .top-right { display:flex; align-items:center; gap:18px; }
+    .lang { display:inline-flex; align-items:center; gap:2px; border:1px solid var(--border); border-radius:8px; padding:3px 6px; background:#fff; }
+    .lang button { font-family:'Montserrat',sans-serif; font-weight:700; font-size:.72rem; letter-spacing:.03em; color:#9a9a9a; background:none; border:none; cursor:pointer; padding:3px 6px; border-radius:5px; }
+    .lang button.active { color:var(--red); }
+    .lang .sep { color:#d5d5d5; font-size:.72rem; }
+    body.l-de [data-l]:not([data-l="de"]),
+    body.l-en [data-l]:not([data-l="en"]),
+    body.l-pl [data-l]:not([data-l="pl"]) { display:none !important; }
+    @media(max-width:560px){ .back-link .bl-text { display:none; } .ds-header { height:80px; } .ds-header .logo-img { height:38px; } }
   </style>
 </head>
-<body>
+<body class="l-de">
 
 <!-- ── Header ── -->
 <header class="ds-header">
-  <a href="index.html" aria-label="Safety Car – Zur Startseite"><img src="logo.png" alt="Safety Car" class="logo-img"></a>
-  <a href="index.html" class="back-link">
-    <svg width="14" height="14" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-    Zurück zur Webseite
-  </a>
+  <a href="index.html" aria-label="Safety Car"><img src="logo.png" alt="Safety Car" class="logo-img"></a>
+  <div class="top-right">
+    <div class="lang" role="group" aria-label="Sprache / Language / Język">
+      <button type="button" data-lang="pl">PL</button><span class="sep">|</span>
+      <button type="button" data-lang="de">DE</button><span class="sep">|</span>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span class="bl-text"><span data-l="de">Zurück zur Webseite</span><span data-l="en">Back to website</span><span data-l="pl">Powrót do strony</span></span>
+    </a>
+  </div>
 </header>
 
 <!-- ── Hero ── -->
 <section class="ds-hero">
   <div class="ds-hero-inner">
-    <span class="ds-tag">Rechtliches</span>
-    <h1>Datenschutzerklärung</h1>
-    <p>Informationen zur Verarbeitung personenbezogener Daten beim Fahrzeugankauf, beim Weiterverkauf an Händler und beim Betrieb der Auktionsplattform (Art. 13 und 14 DSGVO).</p>
+    <span class="ds-tag"><span data-l="de">Rechtliches</span><span data-l="en">Legal</span><span data-l="pl">Informacje prawne</span></span>
+    <h1><span data-l="de">Datenschutzerklärung</span><span data-l="en">Privacy Policy</span><span data-l="pl">Polityka prywatności</span></h1>
+    <p data-l="de">Informationen zur Verarbeitung personenbezogener Daten beim Fahrzeugankauf, beim Weiterverkauf an Händler und beim Betrieb der Auktionsplattform (Art. 13 und 14 DSGVO).</p>
+    <p data-l="en">Information on the processing of personal data when purchasing vehicles, reselling them to dealers and operating the auction platform (Art. 13 and 14 GDPR).</p>
+    <p data-l="pl">Informacje o przetwarzaniu danych osobowych przy zakupie pojazdów, ich odsprzedaży dealerom oraz prowadzeniu platformy aukcyjnej (art. 13 i 14 RODO).</p>
   </div>
 </section>
 
 <!-- ── Content ── -->
 <main class="ds-content">
+<div data-l="de" lang="de">
   <!-- Verantwortlicher -->
   <div class="ds-resp">
     <p style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#B00000;margin-bottom:10px;">Verantwortlicher</p>
@@ -353,7 +374,7 @@
   </div>
 
   <h3>Zuständige Aufsichtsbehörde</h3>
-  <p>Der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg, Lautenschlagerstraße 20, 70173 Stuttgart.</p>
+  <p>Der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg, Lautenschlagerstraße 20, 70173 Stuttgart. Sie können sich auch an die Aufsichtsbehörde Ihres gewöhnlichen Aufenthaltsorts oder Arbeitsplatzes wenden, in Polen etwa an den Prezes Urzędu Ochrony Danych Osobowych (UODO).</p>
 
   <h3>Kontakt</h3>
   <p>Für Fragen zum Datenschutz und zur Ausübung Ihrer Rechte wenden Sie sich bitte an:</p>
@@ -364,18 +385,369 @@
 
   <p style="margin-top:32px;font-size:.78rem;color:var(--muted);">Stand: September 2026</p>
 
+</div>
+<div data-l="en" lang="en">
+  <div class="ds-resp">
+    <p style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#B00000;margin-bottom:10px;">Controller</p>
+    <p><strong>Jenne, Zehner Safety Car GbR</strong></p>
+    <p>represented by its partners Jan-Luca Zehner and Simon Jenne</p>
+    <p>Hauptstraße 40, 70825 Korntal-Münchingen, Germany</p>
+    <p>Email: <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a></p>
+    <p>Phone: <a href="tel:+4915757076079" style="color:rgba(255,255,255,.7);">+49 157 570 760 79</a></p>
+  </div>
+
+  <div class="ds-toc">
+    <p>Contents</p>
+    <ol>
+      <li><a href="#en-ueberblick">Overview of processing purposes</a></li>
+      <li><a href="#en-zugriff">Website access, hosting and security</a></li>
+      <li><a href="#en-dienstleister">Service providers and transfers to the USA</a></li>
+      <li><a href="#en-ankauf">Vehicle purchase (sellers)</a></li>
+      <li><a href="#en-check">Safety Car-Check</a></li>
+      <li><a href="#en-auktion">Auction platform and dealer accounts</a></li>
+      <li><a href="#en-emails">Automatic emails</a></li>
+      <li><a href="#en-zahlung">Escrow payment</a></li>
+      <li><a href="#en-empfaenger">Transport, handover and recipients</a></li>
+      <li><a href="#en-kontakt">Contacting us</a></li>
+      <li><a href="#en-cookies">Cookies and local storage</a></li>
+      <li><a href="#en-fonts">Fonts</a></li>
+      <li><a href="#en-speicher">Storage period and deletion</a></li>
+      <li><a href="#en-pflicht">Obligation to provide data, no automated decisions</a></li>
+      <li><a href="#en-rechte">Your rights</a></li>
+    </ol>
+  </div>
+
+  <h2 id="en-ueberblick">1. Overview of processing purposes</h2>
+  <p>Safety Car buys inspected used vehicles from private sellers and resells them to registered commercial car dealers. We process personal data for the following purposes:</p>
+  <ul>
+    <li>Purchase and resale of vehicles (initiation, inspection, performance of contracts)</li>
+    <li>Operation of this website and the auction platform, including dealer accounts</li>
+    <li>Payment via an escrow service, transport and handover</li>
+    <li>Security of the platform and protection against misuse</li>
+    <li>Compliance with legal obligations, in particular retention obligations under tax and commercial law</li>
+  </ul>
+  <p>We have not appointed a data protection officer, as the legal requirements for doing so (Art. 37 GDPR, Section 38 German Federal Data Protection Act – BDSG) are not met. For any data protection questions, please use the contact details above.</p>
+
+  <h2 id="en-zugriff">2. Website access, hosting and security</h2>
+  <h3>2.1 Server log files</h3>
+  <p>When you access our website and the auction platform, our hosting providers automatically process technical access data: IP address, date and time, requested page or interface, status code, amount of data transferred, referrer URL and browser and operating system information (user agent). This is necessary to deliver the pages, detect faults and ensure security.</p>
+  <p>The legal basis is our legitimate interest in stable and secure operation (<strong>Art. 6(1)(f) GDPR</strong>). Server log files are deleted automatically after seven days at the latest.</p>
+
+  <h3>2.2 Security log of the auction platform</h3>
+  <p>To protect against misuse, manipulation of auctions and unauthorised access, we log security-relevant actions in dealer accounts, such as registration, login and bidding. We store the user ID, the type of action, the time, the IP address and the user agent. For each bid, we additionally store a shortened, irreversible hash of the IP address in order to detect multiple or fake bids.</p>
+  <p>The legal basis is our legitimate interest in a fair auction process that cannot be manipulated (<strong>Art. 6(1)(f) GDPR</strong>). Entries in the security log are deleted after 90 days unless they are needed to investigate a specific incident. The hash for a bid is stored together with the bid data (see section 13).</p>
+
+  <h2 id="en-dienstleister">3. Service providers and transfers to the USA</h2>
+  <p>We use carefully selected service providers that process personal data on our behalf and strictly on our instructions (<strong>Art. 28 GDPR</strong>). We have concluded data processing agreements with these providers.</p>
+  <ul>
+    <li><strong>Database, user accounts and file storage:</strong> Supabase, Inc., USA. This stores dealers' account and registration data, bid data, the security log and vehicle documents. Data is hosted in a data centre in the European Union (Ireland).</li>
+    <li><strong>Server and application hosting (backend):</strong> Railway Corporation, USA.</li>
+    <li><strong>Website hosting (frontend):</strong> Vercel Inc., USA.</li>
+    <li><strong>Email delivery:</strong> Resend, Inc., USA, for the automatic emails described in section 7.</li>
+  </ul>
+  <p>Railway, Vercel and Resend process data in the USA. With Supabase, access from the USA, e.g. for maintenance and support, cannot be ruled out. For the USA, there is an adequacy decision of the European Commission (EU-US Data Privacy Framework). Where a provider is certified under it, the transfer is based on <strong>Art. 45 GDPR</strong>. Otherwise, we have agreed the EU Standard Contractual Clauses with the providers (<strong>Art. 46(2)(c) GDPR</strong>). The legal basis for using these providers is the performance of a contract (<strong>Art. 6(1)(b) GDPR</strong>) and our legitimate interest in secure and reliable operation (<strong>Art. 6(1)(f) GDPR</strong>).</p>
+
+  <h3>Program library via jsDelivr</h3>
+  <p>The auction platform loads a program library via the content delivery network jsDelivr (operated by Prospect One and its network partners Cloudflare and Fastly). In the process, your IP address is transmitted to these providers; processing in the USA is possible. The legal basis is our legitimate interest in providing the application reliably and quickly (<strong>Art. 6(1)(f) GDPR</strong>). Where data is transferred to the USA, the transfer is based on the EU-US Data Privacy Framework or on the EU Standard Contractual Clauses.</p>
+
+  <h2 id="en-ankauf">4. Vehicle purchase (sellers)</h2>
+  <p>When we buy a vehicle, we process the seller's data: name, address, telephone number and email address, vehicle and condition data including the inspection report, bank details for payment of the purchase price, and the contract documents. We receive this data directly from the seller. Where we approach a seller about a publicly advertised vehicle, the vehicle and contact details come from the respective advertisement.</p>
+  <p>The legal basis is the performance of the contract or pre-contractual measures (<strong>Art. 6(1)(b) GDPR</strong>) and, for retaining business records, compliance with legal obligations (<strong>Art. 6(1)(c) GDPR</strong>). Approaching a seller about a public advertisement is based on our legitimate interest in purchasing vehicles (<strong>Art. 6(1)(f) GDPR</strong>).</p>
+
+  <h3>4.1 Identity document and registration certificate</h3>
+  <div class="ds-box">
+    <p>To verify identity and ownership, we process a copy of the identity document and of the registration certificate Part&nbsp;II (vehicle title). We only make a copy of a German identity card with the holder's consent (Section 20(2) German Identity Card Act – PAuswG). The copy is identifiable as such; you may black out information that is not needed, such as the access number, height or eye colour. The transfer is encrypted. We delete the copy of the identity document once the transaction has been completed, unless a statutory retention obligation applies.</p>
+  </div>
+  <p>Legal basis: <strong>Art. 6(1)(b) GDPR</strong> (contract or initiation of a contract) and our legitimate interest in preventing fraud and the purchase of stolen vehicles (<strong>Art. 6(1)(f) GDPR</strong>).</p>
+
+  <h2 id="en-check">5. Safety Car-Check</h2>
+  <p>As part of the Safety Car-Check, an automotive mechatronics technician inspects the vehicle on site. This produces an inspection report and photographs documenting the vehicle's condition. We process in particular vehicle data, technical findings, the vehicle identification number and the photographs.</p>
+  <div class="ds-box">
+    <p>Vehicle photos are taken in such a way that, as far as possible, no persons or personal features of third parties are captured. The licence plate is made unrecognisable for the auction. The photos serve exclusively to document the condition of the vehicle.</p>
+  </div>
+  <p>The legal basis is the performance of the contract or pre-contractual measures (<strong>Art. 6(1)(b) GDPR</strong>). The inspection report forms the basis for the subsequent dealer auction.</p>
+
+  <h2 id="en-auktion">6. Auction platform and dealer accounts</h2>
+  <p>During registration, we process the company name, the name of the contact person, email address, telephone number, the selected language and the password, which is stored only in encrypted (hashed) form. Before approving a dealer account, we may request further evidence, in particular a trade registration or register extract, address and VAT identification number. During ongoing use, we process account data, bids, purchases and communications with the dealer.</p>
+  <p>The legal basis is the initiation and performance of the contractual relationship (<strong>Art. 6(1)(b) GDPR</strong>) and our legitimate interest in a verified, trustworthy dealer network (<strong>Art. 6(1)(f) GDPR</strong>). We have the VAT identification number confirmed by the German Federal Central Tax Office (Bundeszentralamt für Steuern) where this is necessary for VAT purposes (<strong>Art. 6(1)(c) GDPR</strong>).</p>
+  <div class="ds-box">
+    <p>During the auction, participating dealers only receive <strong>vehicle-related information</strong> – inspection report, vehicle data and photographs. <strong>The seller's personal data is not disclosed during the auction.</strong> Bids are displayed anonymously to other dealers.</p>
+  </div>
+
+  <h2 id="en-emails">7. Automatic emails</h2>
+  <p>We send registered dealers automatic emails that are part of using the platform: registration confirmation, account approval, notification of being outbid, notification of the highest bid at the end of an auction, notifications of new auctions and of an auction ending soon, and password reset emails. The emails are sent via Resend in the language selected during registration.</p>
+  <p>The legal basis is the performance of the user agreement (<strong>Art. 6(1)(b) GDPR</strong>). You can unsubscribe from notifications of new auctions and auctions ending soon at any time by sending a short message to <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a>.</p>
+
+  <h2 id="en-zahlung">8. Escrow payment</h2>
+  <p>Payment of the purchase price is processed via the escrow service Paylax. For this purpose, we transmit the data required for processing – in particular name or company name, contact details, contract and payment data – to Paylax. The legal basis is the performance of the contract (<strong>Art. 6(1)(b) GDPR</strong>).</p>
+  <p>Where Paylax collects data for its own purposes, in particular to comply with statutory verification and identification obligations, it processes this data as an independent controller; in this respect, the Paylax privacy policy also applies. In addition, we transmit payment data to the banks involved where this is necessary for processing.</p>
+
+  <h2 id="en-empfaenger">9. Transport, handover and recipients</h2>
+  <p>Once a purchase contract with a dealer has been concluded, we pass on the data required for collection to the purchasing dealer and to the transport provider commissioned by the dealer or by us, in particular the pick-up address, the seller's name and telephone number and vehicle data. The purchasing dealer may be established in another member state of the European Union, in particular in Poland. No transfer to countries outside the EU or EEA takes place in this context.</p>
+  <div class="ds-box">
+    <p>The vehicle documents, in particular the registration certificate Part&nbsp;II, contain information about the previous keeper. They are handed over to the purchasing dealer together with the vehicle, as they are essential for registration and resale. Dealers are contractually obliged to use this data exclusively for the collection, registration and resale of the vehicle.</p>
+  </div>
+  <p>The legal basis is the performance of the purchase contract with the seller, which includes the resale of the vehicle (<strong>Art. 6(1)(b) GDPR</strong>), and our legitimate interest in completing the resale (<strong>Art. 6(1)(f) GDPR</strong>).</p>
+  <p><strong>Categories of recipients overall:</strong> escrow service, banks, transport providers, purchasing dealers, IT and hosting providers (section 3), tax advisors and public authorities within the scope of legal obligations.</p>
+
+  <h2 id="en-kontakt">10. Contacting us</h2>
+  <p>If you contact us by email or telephone, we process your details to handle your enquiry. The legal basis is the performance of pre-contractual measures (<strong>Art. 6(1)(b) GDPR</strong>) or our legitimate interest in answering enquiries (<strong>Art. 6(1)(f) GDPR</strong>). We delete the data once the enquiry has been dealt with, unless statutory retention obligations apply (see section 13).</p>
+
+  <h2 id="en-cookies">11. Cookies and local storage</h2>
+  <p>The auction platform uses <strong>only technically necessary storage</strong> in your browser's local storage:</p>
+  <ul>
+    <li><strong>Login session</strong> (Supabase) – keeps you logged in; removed when you log out.</li>
+    <li><strong>Language setting</strong> – stores the selected display language.</li>
+    <li><strong>Privacy notice</strong> – stores that you have acknowledged the privacy notice.</li>
+  </ul>
+  <p>This storage is strictly necessary for the use of the platform that you have expressly requested and therefore does not require consent (<strong>Section 25(2) No. 2 German Telecommunications Digital Services Data Protection Act – TDDDG</strong>). Subsequent processing is based on <strong>Art. 6(1)(b) GDPR</strong>. We do not use tracking, analytics or advertising cookies. You can delete the local storage at any time via your browser settings.</p>
+
+  <h2 id="en-fonts">12. Fonts</h2>
+  <p>The fonts used are <strong>hosted locally on our server</strong>. No connection to third-party servers (in particular Google) is established for this purpose when you access our pages.</p>
+
+  <h2 id="en-speicher">13. Storage period and deletion</h2>
+  <p>We store personal data only for as long as necessary for the stated purposes or as required by statutory retention obligations. The data is then deleted. In detail:</p>
+  <ul>
+    <li><strong>Server log files:</strong> seven days at most.</li>
+    <li><strong>Security log:</strong> 90 days, unless a specific incident occurs.</li>
+    <li><strong>Copies of identity documents:</strong> deleted once the transaction has been completed.</li>
+    <li><strong>Dealer account:</strong> until the account is deleted; bids and purchases beyond that until the limitation periods for contractual claims have expired (generally three years from the end of the year of the auction).</li>
+    <li><strong>Accounting records</strong> (e.g. invoices, purchase contracts as accounting records): eight years (Section 147(1) No. 4, (3) German Fiscal Code – AO; Section 257(1) No. 4, (4) German Commercial Code – HGB).</li>
+    <li><strong>Commercial and business letters</strong> and other documents relevant for tax purposes: six years.</li>
+    <li><strong>Books, inventories and annual financial statements:</strong> ten years.</li>
+  </ul>
+  <p>Retention periods begin at the end of the calendar year in which the document was created.</p>
+
+  <h2 id="en-pflicht">14. Obligation to provide data, no automated decisions</h2>
+  <p>Providing the data marked as required is necessary for concluding and performing the contracts and for using the platform. Without this data, we cannot carry out the purchase, the registration or the sale. There is no statutory obligation to provide the data unless statutory identification or verification obligations apply.</p>
+  <p>No decision-making based solely on automated processing, including profiling, within the meaning of Art. 22 GDPR takes place. Decisions on approving dealer accounts and accepting bids are made by us personally.</p>
+
+  <h2 id="en-rechte">15. Your rights</h2>
+  <p>As a data subject, you have the following rights:</p>
+  <ul>
+    <li><strong>Access</strong> to information about the processing of your personal data (Art. 15 GDPR)</li>
+    <li><strong>Rectification</strong> of inaccurate or incomplete data (Art. 16 GDPR)</li>
+    <li><strong>Erasure</strong> of your data (Art. 17 GDPR), unless statutory retention obligations apply</li>
+    <li><strong>Restriction</strong> of processing (Art. 18 GDPR)</li>
+    <li><strong>Data portability</strong> in a structured, commonly used and machine-readable format (Art. 20 GDPR)</li>
+    <li><strong>Withdrawal</strong> of consent given, with effect for the future (Art. 7(3) GDPR)</li>
+    <li><strong>Complaint</strong> to a data protection supervisory authority (Art. 77 GDPR)</li>
+  </ul>
+
+  <div class="ds-box">
+    <p><strong>Right to object under Art. 21 GDPR:</strong> Where we process your data on the basis of legitimate interests (Art. 6(1)(f) GDPR), you have the right to object to this processing at any time on grounds relating to your particular situation. We will then no longer process the data unless we can demonstrate compelling legitimate grounds for the processing which override your interests, rights and freedoms, or the processing serves the establishment, exercise or defence of legal claims. You may object at any time, without giving reasons, to the use of your email address for notifications of new auctions.</p>
+  </div>
+
+  <h3>Competent supervisory authority</h3>
+  <p>Der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg (State Commissioner for Data Protection and Freedom of Information of Baden-Württemberg), Lautenschlagerstraße 20, 70173 Stuttgart, Germany. You may also lodge a complaint with the supervisory authority of your place of residence or work, e.g. in Poland the Prezes Urzędu Ochrony Danych Osobowych (UODO).</p>
+
+  <h3>Contact</h3>
+  <p>For questions about data protection and to exercise your rights, please contact:</p>
+  <p>Jenne, Zehner Safety Car GbR<br/>
+  Hauptstraße 40, 70825 Korntal-Münchingen, Germany<br/>
+  Email: <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a><br/>
+  Phone: <a href="tel:+4915757076079">+49 157 570 760 79</a></p>
+
+  <p style="margin-top:32px;font-size:.78rem;color:var(--muted);">Last updated: September 2026 · This is a translation of the German privacy policy.</p>
+</div>
+<div data-l="pl" lang="pl">
+  <div class="ds-resp">
+    <p style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#B00000;margin-bottom:10px;">Administrator danych</p>
+    <p><strong>Jenne, Zehner Safety Car GbR</strong></p>
+    <p>reprezentowana przez wspólników Jan-Lucę Zehnera i Simona Jennego</p>
+    <p>Hauptstraße 40, 70825 Korntal-Münchingen, Niemcy</p>
+    <p>E-mail: <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a></p>
+    <p>Telefon: <a href="tel:+4915757076079" style="color:rgba(255,255,255,.7);">+49 157 570 760 79</a></p>
+  </div>
+
+  <div class="ds-toc">
+    <p>Spis treści</p>
+    <ol>
+      <li><a href="#pl-ueberblick">Przegląd celów przetwarzania</a></li>
+      <li><a href="#pl-zugriff">Korzystanie ze strony, hosting i bezpieczeństwo</a></li>
+      <li><a href="#pl-dienstleister">Usługodawcy i przekazywanie danych do USA</a></li>
+      <li><a href="#pl-ankauf">Zakup pojazdu (sprzedający)</a></li>
+      <li><a href="#pl-check">Safety Car-Check</a></li>
+      <li><a href="#pl-auktion">Platforma aukcyjna i konta dealerów</a></li>
+      <li><a href="#pl-emails">Automatyczne wiadomości e-mail</a></li>
+      <li><a href="#pl-zahlung">Płatność przez rachunek powierniczy</a></li>
+      <li><a href="#pl-empfaenger">Transport, wydanie pojazdu i odbiorcy</a></li>
+      <li><a href="#pl-kontakt">Kontakt z nami</a></li>
+      <li><a href="#pl-cookies">Pliki cookie i pamięć lokalna</a></li>
+      <li><a href="#pl-fonts">Czcionki</a></li>
+      <li><a href="#pl-speicher">Okres przechowywania i usuwanie</a></li>
+      <li><a href="#pl-pflicht">Obowiązek podania danych, brak zautomatyzowanych decyzji</a></li>
+      <li><a href="#pl-rechte">Twoje prawa</a></li>
+    </ol>
+  </div>
+
+  <h2 id="pl-ueberblick">1. Przegląd celów przetwarzania</h2>
+  <p>Safety Car kupuje sprawdzone pojazdy używane od prywatnych sprzedających i odsprzedaje je zarejestrowanym dealerom samochodowym prowadzącym działalność gospodarczą. Przetwarzamy dane osobowe w następujących celach:</p>
+  <ul>
+    <li>zakup i odsprzedaż pojazdów (nawiązanie kontaktu, kontrola, realizacja umów),</li>
+    <li>prowadzenie niniejszej strony internetowej i platformy aukcyjnej, w tym kont dealerów,</li>
+    <li>realizacja płatności przez usługę rachunku powierniczego, transport i wydanie pojazdu,</li>
+    <li>bezpieczeństwo platformy i ochrona przed nadużyciami,</li>
+    <li>wypełnianie obowiązków prawnych, w szczególności obowiązków przechowywania wynikających z prawa podatkowego i handlowego.</li>
+  </ul>
+  <p>Nie wyznaczyliśmy inspektora ochrony danych, ponieważ nie są spełnione przesłanki prawne (art. 37 RODO, § 38 niemieckiej federalnej ustawy o ochronie danych – BDSG). W sprawach dotyczących ochrony danych prosimy o kontakt pod wskazanymi powyżej danymi.</p>
+
+  <h2 id="pl-zugriff">2. Korzystanie ze strony, hosting i bezpieczeństwo</h2>
+  <h3>2.1 Logi serwera</h3>
+  <p>Podczas korzystania z naszej strony internetowej i platformy aukcyjnej nasi dostawcy hostingu automatycznie przetwarzają techniczne dane dostępowe: adres IP, datę i godzinę, żądaną stronę lub interfejs, kod statusu, ilość przesłanych danych, adres URL strony odsyłającej oraz informacje o przeglądarce i systemie operacyjnym (user agent). Jest to niezbędne do wyświetlania stron, wykrywania usterek i zapewnienia bezpieczeństwa.</p>
+  <p>Podstawą prawną jest nasz prawnie uzasadniony interes w stabilnym i bezpiecznym działaniu (<strong>art. 6 ust. 1 lit. f RODO</strong>). Logi serwera są automatycznie usuwane najpóźniej po siedmiu dniach.</p>
+
+  <h3>2.2 Dziennik bezpieczeństwa platformy aukcyjnej</h3>
+  <p>W celu ochrony przed nadużyciami, manipulacją aukcjami i nieuprawnionym dostępem rejestrujemy czynności istotne dla bezpieczeństwa na koncie dealera, takie jak rejestracja, logowanie i składanie ofert. Zapisujemy przy tym identyfikator użytkownika, rodzaj czynności, czas, adres IP oraz user agent. Do każdej oferty zapisujemy dodatkowo skróconą, nieodwracalną wartość skrótu (hash) adresu IP, aby móc wykrywać wielokrotne lub pozorne oferty.</p>
+  <p>Podstawą prawną jest nasz prawnie uzasadniony interes w uczciwym i odpornym na manipulacje przebiegu aukcji (<strong>art. 6 ust. 1 lit. f RODO</strong>). Wpisy w dzienniku bezpieczeństwa usuwamy po 90 dniach, chyba że są potrzebne do wyjaśnienia konkretnego incydentu. Wartość skrótu przypisana do oferty jest przechowywana razem z danymi oferty (zob. punkt 13).</p>
+
+  <h2 id="pl-dienstleister">3. Usługodawcy i przekazywanie danych do USA</h2>
+  <p>Korzystamy ze starannie wybranych usługodawców, którzy przetwarzają dane osobowe wyłącznie na nasze polecenie i w naszym imieniu (<strong>art. 28 RODO</strong>). Z tymi dostawcami zawarliśmy umowy powierzenia przetwarzania danych.</p>
+  <ul>
+    <li><strong>Baza danych, konta użytkowników i przechowywanie plików:</strong> Supabase, Inc., USA. Przechowywane są tu dane kont i rejestracji dealerów, dane ofert, dziennik bezpieczeństwa oraz dokumenty pojazdów. Dane są przechowywane w centrum danych w Unii Europejskiej (Irlandia).</li>
+    <li><strong>Hosting serwera i aplikacji (backend):</strong> Railway Corporation, USA.</li>
+    <li><strong>Hosting strony internetowej (frontend):</strong> Vercel Inc., USA.</li>
+    <li><strong>Wysyłka e-maili:</strong> Resend, Inc., USA – automatyczne wiadomości opisane w punkcie 7.</li>
+  </ul>
+  <p>W przypadku Railway, Vercel i Resend dane są przetwarzane w USA. W przypadku Supabase nie można wykluczyć dostępu z USA, np. w ramach konserwacji i wsparcia technicznego. Dla USA obowiązuje decyzja Komisji Europejskiej stwierdzająca odpowiedni stopień ochrony (EU-US Data Privacy Framework). Jeżeli dostawca posiada certyfikację w ramach tego mechanizmu, przekazanie odbywa się na podstawie <strong>art. 45 RODO</strong>. W pozostałym zakresie uzgodniliśmy z dostawcami standardowe klauzule umowne UE (<strong>art. 46 ust. 2 lit. c RODO</strong>). Podstawą prawną korzystania z usługodawców jest wykonanie umowy (<strong>art. 6 ust. 1 lit. b RODO</strong>) oraz nasz prawnie uzasadniony interes w bezpiecznym i niezawodnym działaniu (<strong>art. 6 ust. 1 lit. f RODO</strong>).</p>
+
+  <h3>Biblioteka programistyczna przez jsDelivr</h3>
+  <p>Platforma aukcyjna ładuje bibliotekę programistyczną za pośrednictwem sieci dostarczania treści jsDelivr (obsługiwanej przez Prospect One oraz partnerów sieciowych Cloudflare i Fastly). Przy tym Twój adres IP jest przekazywany tym dostawcom; możliwe jest przetwarzanie w USA. Podstawą prawną jest nasz prawnie uzasadniony interes w niezawodnym i szybkim udostępnianiu aplikacji (<strong>art. 6 ust. 1 lit. f RODO</strong>). Jeżeli dane trafiają do USA, przekazanie opiera się na EU-US Data Privacy Framework lub na standardowych klauzulach umownych UE.</p>
+
+  <h2 id="pl-ankauf">4. Zakup pojazdu (sprzedający)</h2>
+  <p>Przy zakupie pojazdu przetwarzamy dane sprzedającego: imię i nazwisko, adres, numer telefonu i adres e-mail, dane pojazdu i jego stanu wraz z protokołem kontroli, dane rachunku bankowego do zapłaty ceny oraz dokumenty umowy. Dane te otrzymujemy bezpośrednio od sprzedającego. Jeżeli kontaktujemy się ze sprzedającym w sprawie publicznie ogłoszonego pojazdu, dane pojazdu i dane kontaktowe pochodzą z danego ogłoszenia.</p>
+  <p>Podstawą prawną jest wykonanie umowy lub podjęcie działań przed jej zawarciem (<strong>art. 6 ust. 1 lit. b RODO</strong>), a w zakresie przechowywania dokumentacji handlowej – wypełnienie obowiązku prawnego (<strong>art. 6 ust. 1 lit. c RODO</strong>). Kontakt w sprawie publicznego ogłoszenia następuje na podstawie naszego prawnie uzasadnionego interesu w zakupie pojazdów (<strong>art. 6 ust. 1 lit. f RODO</strong>).</p>
+
+  <h3>4.1 Dokument tożsamości i dowód rejestracyjny</h3>
+  <div class="ds-box">
+    <p>W celu weryfikacji tożsamości i własności przetwarzamy kopię dokumentu tożsamości oraz niemieckiego dowodu rejestracyjnego część&nbsp;II (Zulassungsbescheinigung Teil&nbsp;II). Kopię niemieckiego dowodu osobistego sporządzamy wyłącznie za zgodą jego posiadacza (§ 20 ust. 2 niemieckiej ustawy o dowodach osobistych – PAuswG). Kopia jest oznaczona jako kopia; niepotrzebne dane, np. numer dostępu, wzrost lub kolor oczu, możesz zaczernić. Przesyłanie odbywa się w formie zaszyfrowanej. Kopię dokumentu tożsamości usuwamy po zakończeniu transakcji, o ile nie sprzeciwia się temu ustawowy obowiązek przechowywania.</p>
+  </div>
+  <p>Podstawa prawna: <strong>art. 6 ust. 1 lit. b RODO</strong> (umowa lub jej przygotowanie) oraz nasz prawnie uzasadniony interes w zapobieganiu oszustwom i nabyciu skradzionych pojazdów (<strong>art. 6 ust. 1 lit. f RODO</strong>).</p>
+
+  <h2 id="pl-check">5. Safety Car-Check</h2>
+  <p>W ramach Safety Car-Check mechatronik samochodowy sprawdza pojazd na miejscu. Powstaje przy tym protokół kontroli oraz zdjęcia dokumentujące stan pojazdu. Przetwarzamy w szczególności dane pojazdu, ustalenia techniczne, numer identyfikacyjny pojazdu (VIN) oraz zdjęcia.</p>
+  <div class="ds-box">
+    <p>Zdjęcia pojazdu wykonywane są w taki sposób, aby w miarę możliwości nie utrwalać osób ani cech osobowych osób trzecich. Tablica rejestracyjna jest na potrzeby aukcji zamazywana. Zdjęcia służą wyłącznie dokumentacji stanu pojazdu.</p>
+  </div>
+  <p>Podstawą prawną jest wykonanie umowy lub podjęcie działań przed jej zawarciem (<strong>art. 6 ust. 1 lit. b RODO</strong>). Protokół kontroli stanowi podstawę późniejszej aukcji dla dealerów.</p>
+
+  <h2 id="pl-auktion">6. Platforma aukcyjna i konta dealerów</h2>
+  <p>Podczas rejestracji przetwarzamy nazwę przedsiębiorstwa, imię i nazwisko osoby kontaktowej, adres e-mail, numer telefonu, wybrany język oraz hasło, które przechowywane jest wyłącznie w postaci zaszyfrowanej (hash). Przed zatwierdzeniem konta dealera możemy zażądać dalszych dokumentów, w szczególności wpisu do CEIDG lub odpisu z rejestru, adresu oraz numeru identyfikacyjnego VAT UE. W trakcie korzystania z platformy przetwarzamy dane konta, oferty, zakupy oraz korespondencję z dealerem.</p>
+  <p>Podstawą prawną jest nawiązanie i wykonanie stosunku umownego (<strong>art. 6 ust. 1 lit. b RODO</strong>) oraz nasz prawnie uzasadniony interes w posiadaniu zweryfikowanej i wiarygodnej sieci dealerów (<strong>art. 6 ust. 1 lit. f RODO</strong>). Numer identyfikacyjny VAT UE weryfikujemy w niemieckim Federalnym Centralnym Urzędzie Podatkowym (Bundeszentralamt für Steuern), o ile jest to konieczne dla rozliczenia podatku VAT (<strong>art. 6 ust. 1 lit. c RODO</strong>).</p>
+  <div class="ds-box">
+    <p>W trakcie aukcji uczestniczący dealerzy otrzymują wyłącznie <strong>informacje dotyczące pojazdu</strong> – protokół kontroli, dane pojazdu i zdjęcia. <strong>Dane osobowe sprzedającego nie są ujawniane w trakcie aukcji.</strong> Oferty są wyświetlane innym dealerom anonimowo.</p>
+  </div>
+
+  <h2 id="pl-emails">7. Automatyczne wiadomości e-mail</h2>
+  <p>Zarejestrowanym dealerom wysyłamy automatyczne wiadomości e-mail, które są częścią korzystania z platformy: potwierdzenie rejestracji, aktywacja konta, powiadomienie o przebiciu oferty, powiadomienie o najwyższej ofercie po zakończeniu aukcji, powiadomienia o nowych aukcjach i zbliżającym się końcu aukcji oraz wiadomości dotyczące resetowania hasła. Wiadomości są wysyłane przez Resend w języku wybranym podczas rejestracji.</p>
+  <p>Podstawą prawną jest wykonanie umowy o korzystanie z platformy (<strong>art. 6 ust. 1 lit. b RODO</strong>). Z powiadomień o nowych aukcjach i zbliżającym się końcu aukcji możesz w każdej chwili zrezygnować, wysyłając krótką wiadomość na adres <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a>.</p>
+
+  <h2 id="pl-zahlung">8. Płatność przez rachunek powierniczy</h2>
+  <p>Zapłata ceny realizowana jest za pośrednictwem usługi rachunku powierniczego Paylax. W tym celu przekazujemy do Paylax dane niezbędne do realizacji płatności – w szczególności imię i nazwisko lub firmę, dane kontaktowe, dane umowy i płatności. Podstawą prawną jest wykonanie umowy (<strong>art. 6 ust. 1 lit. b RODO</strong>).</p>
+  <p>W zakresie, w jakim Paylax zbiera dane we własnych celach, w szczególności w celu wypełnienia ustawowych obowiązków weryfikacyjnych i identyfikacyjnych, przetwarza je jako samodzielny administrator; w tym zakresie zastosowanie ma dodatkowo polityka prywatności Paylax. Ponadto przekazujemy dane płatnicze bankom uczestniczącym w transakcji, o ile jest to niezbędne do jej realizacji.</p>
+
+  <h2 id="pl-empfaenger">9. Transport, wydanie pojazdu i odbiorcy</h2>
+  <p>Po zawarciu umowy sprzedaży z dealerem przekazujemy dane niezbędne do odbioru pojazdu kupującemu dealerowi oraz przewoźnikowi zleconemu przez niego lub przez nas, w szczególności adres odbioru, imię i nazwisko oraz numer telefonu sprzedającego, a także dane pojazdu. Kupujący dealer może mieć siedzibę w innym państwie członkowskim Unii Europejskiej, w szczególności w Polsce. W tym zakresie nie dochodzi do przekazania danych do państw spoza UE lub EOG.</p>
+  <div class="ds-box">
+    <p>Dokumenty pojazdu, w szczególności dowód rejestracyjny część&nbsp;II, zawierają dane dotychczasowego posiadacza. Są one przekazywane kupującemu dealerowi wraz z pojazdem, ponieważ są niezbędne do rejestracji i dalszej sprzedaży. Dealerzy są umownie zobowiązani do wykorzystywania tych danych wyłącznie w celu odbioru, rejestracji i dalszej sprzedaży pojazdu.</p>
+  </div>
+  <p>Podstawą prawną jest wykonanie umowy zakupu ze sprzedającym, która obejmuje dalszą sprzedaż pojazdu (<strong>art. 6 ust. 1 lit. b RODO</strong>), oraz nasz prawnie uzasadniony interes w realizacji dalszej sprzedaży (<strong>art. 6 ust. 1 lit. f RODO</strong>).</p>
+  <p><strong>Kategorie odbiorców łącznie:</strong> usługa rachunku powierniczego, banki, przewoźnicy, kupujący dealerzy, dostawcy usług IT i hostingu (punkt 3), doradcy podatkowi oraz organy państwowe w ramach obowiązków prawnych.</p>
+
+  <h2 id="pl-kontakt">10. Kontakt z nami</h2>
+  <p>Jeżeli kontaktujesz się z nami e-mailowo lub telefonicznie, przetwarzamy Twoje dane w celu obsługi zapytania. Podstawą prawną jest podjęcie działań przed zawarciem umowy (<strong>art. 6 ust. 1 lit. b RODO</strong>) lub nasz prawnie uzasadniony interes w udzielaniu odpowiedzi na zapytania (<strong>art. 6 ust. 1 lit. f RODO</strong>). Dane usuwamy po załatwieniu sprawy, chyba że sprzeciwiają się temu ustawowe obowiązki przechowywania (zob. punkt 13).</p>
+
+  <h2 id="pl-cookies">11. Pliki cookie i pamięć lokalna</h2>
+  <p>Platforma aukcyjna korzysta <strong>wyłącznie z technicznie niezbędnego zapisu danych</strong> w pamięci lokalnej przeglądarki (local storage):</p>
+  <ul>
+    <li><strong>Sesja logowania</strong> (Supabase) – utrzymuje zalogowanie; jest usuwana po wylogowaniu.</li>
+    <li><strong>Ustawienie języka</strong> – zapisuje wybrany język wyświetlania.</li>
+    <li><strong>Informacja o ochronie danych</strong> – zapisuje, że zapoznałeś się z informacją o ochronie danych.</li>
+  </ul>
+  <p>Zapis ten jest bezwzględnie niezbędny do wyraźnie żądanego przez Ciebie korzystania z platformy i dlatego nie wymaga zgody (<strong>§ 25 ust. 2 pkt 2 niemieckiej ustawy TDDDG</strong>). Dalsze przetwarzanie odbywa się na podstawie <strong>art. 6 ust. 1 lit. b RODO</strong>. Nie stosujemy plików cookie służących śledzeniu, analityce ani reklamie. Pamięć lokalną możesz w każdej chwili usunąć w ustawieniach przeglądarki.</p>
+
+  <h2 id="pl-fonts">12. Czcionki</h2>
+  <p>Używane czcionki są <strong>udostępniane lokalnie z naszego serwera</strong>. Podczas otwierania naszych stron nie jest w tym celu nawiązywane połączenie z serwerami podmiotów trzecich (w szczególności Google).</p>
+
+  <h2 id="pl-speicher">13. Okres przechowywania i usuwanie</h2>
+  <p>Przechowujemy dane osobowe tylko tak długo, jak jest to niezbędne do wskazanych celów lub wymagają tego ustawowe obowiązki przechowywania. Następnie dane są usuwane. Szczegółowo:</p>
+  <ul>
+    <li><strong>Logi serwera:</strong> maksymalnie siedem dni.</li>
+    <li><strong>Dziennik bezpieczeństwa:</strong> 90 dni, chyba że wystąpi konkretny incydent.</li>
+    <li><strong>Kopie dokumentów tożsamości:</strong> usunięcie po zakończeniu transakcji.</li>
+    <li><strong>Konto dealera:</strong> do czasu usunięcia konta; oferty i zakupy ponadto do upływu terminów przedawnienia roszczeń umownych (co do zasady trzy lata od końca roku, w którym odbyła się aukcja).</li>
+    <li><strong>Dowody księgowe</strong> (np. faktury, umowy sprzedaży jako dowody księgowe): osiem lat (§ 147 ust. 1 pkt 4, ust. 3 niemieckiej ordynacji podatkowej – AO; § 257 ust. 1 pkt 4, ust. 4 niemieckiego kodeksu handlowego – HGB).</li>
+    <li><strong>Korespondencja handlowa</strong> i inne dokumenty istotne podatkowo: sześć lat.</li>
+    <li><strong>Księgi, inwentarze i sprawozdania finansowe:</strong> dziesięć lat.</li>
+  </ul>
+  <p>Okresy przechowywania rozpoczynają się z końcem roku kalendarzowego, w którym dokument powstał.</p>
+
+  <h2 id="pl-pflicht">14. Obowiązek podania danych, brak zautomatyzowanych decyzji</h2>
+  <p>Podanie danych oznaczonych jako wymagane jest niezbędne do zawarcia i wykonania umów oraz do korzystania z platformy. Bez tych danych nie możemy przeprowadzić zakupu, rejestracji ani sprzedaży. Ustawowy obowiązek podania danych nie istnieje, chyba że zastosowanie mają ustawowe obowiązki identyfikacyjne lub dowodowe.</p>
+  <p>Nie podejmujemy decyzji opierających się wyłącznie na zautomatyzowanym przetwarzaniu, w tym profilowaniu, w rozumieniu art. 22 RODO. O zatwierdzeniu kont dealerów i przyjęciu ofert decydujemy osobiście.</p>
+
+  <h2 id="pl-rechte">15. Twoje prawa</h2>
+  <p>Jako osobie, której dane dotyczą, przysługują Ci następujące prawa:</p>
+  <ul>
+    <li><strong>dostęp</strong> do informacji o przetwarzaniu Twoich danych osobowych (art. 15 RODO),</li>
+    <li><strong>sprostowanie</strong> nieprawidłowych lub niekompletnych danych (art. 16 RODO),</li>
+    <li><strong>usunięcie</strong> danych (art. 17 RODO), o ile nie sprzeciwiają się temu ustawowe obowiązki przechowywania,</li>
+    <li><strong>ograniczenie</strong> przetwarzania (art. 18 RODO),</li>
+    <li><strong>przenoszenie danych</strong> w ustrukturyzowanym, powszechnie używanym formacie nadającym się do odczytu maszynowego (art. 20 RODO),</li>
+    <li><strong>cofnięcie</strong> udzielonej zgody ze skutkiem na przyszłość (art. 7 ust. 3 RODO),</li>
+    <li><strong>wniesienie skargi</strong> do organu nadzorczego ds. ochrony danych (art. 77 RODO).</li>
+  </ul>
+
+  <div class="ds-box">
+    <p><strong>Prawo sprzeciwu na podstawie art. 21 RODO:</strong> Jeżeli przetwarzamy Twoje dane na podstawie prawnie uzasadnionych interesów (art. 6 ust. 1 lit. f RODO), masz prawo w każdej chwili wnieść sprzeciw wobec takiego przetwarzania z przyczyn związanych z Twoją szczególną sytuacją. Wówczas nie będziemy już przetwarzać tych danych, chyba że wykażemy istnienie ważnych prawnie uzasadnionych podstaw do przetwarzania, nadrzędnych wobec Twoich interesów, praw i wolności, lub podstaw do ustalenia, dochodzenia lub obrony roszczeń. Wobec wykorzystywania Twojego adresu e-mail do powiadomień o nowych aukcjach możesz w każdej chwili wnieść sprzeciw bez podania przyczyny.</p>
+  </div>
+
+  <h3>Właściwy organ nadzorczy</h3>
+  <p>Der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg (Pełnomocnik ds. Ochrony Danych i Wolności Informacji Badenii-Wirtembergii), Lautenschlagerstraße 20, 70173 Stuttgart, Niemcy. Skargę możesz także wnieść do organu nadzorczego w miejscu swojego zwykłego pobytu lub pracy, w Polsce do Prezesa Urzędu Ochrony Danych Osobowych (UODO), ul. Stawki 2, 00-193 Warszawa.</p>
+
+  <h3>Kontakt</h3>
+  <p>W sprawach dotyczących ochrony danych oraz w celu wykonania swoich praw prosimy o kontakt:</p>
+  <p>Jenne, Zehner Safety Car GbR<br/>
+  Hauptstraße 40, 70825 Korntal-Münchingen, Niemcy<br/>
+  E-mail: <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a><br/>
+  Telefon: <a href="tel:+4915757076079">+49 157 570 760 79</a></p>
+
+  <p style="margin-top:32px;font-size:.78rem;color:var(--muted);">Stan: wrzesień 2026 · Niniejszy tekst jest tłumaczeniem niemieckiej polityki prywatności.</p>
+</div>
 </main>
 
 <!-- ── Footer ── -->
 <footer class="ds-footer">
   <div class="ds-footer-links">
-    <a href="index.html">Startseite</a>
-    <a href="impressum.html">Impressum</a>
-    <a href="datenschutz.html">Datenschutz</a>
-    <a href="agb.html">AGB</a>
+    <a href="index.html"><span data-l="de">Startseite</span><span data-l="en">Home</span><span data-l="pl">Strona główna</span></a>
+    <a href="impressum.html"><span data-l="de">Impressum</span><span data-l="en">Legal notice</span><span data-l="pl">Nota prawna</span></a>
+    <a href="datenschutz.html"><span data-l="de">Datenschutz</span><span data-l="en">Privacy</span><span data-l="pl">Prywatność</span></a>
+    <a href="agb.html"><span data-l="de">AGB</span><span data-l="en">Terms</span><span data-l="pl">Regulamin</span></a>
   </div>
   <p class="ds-footer-copy">© 2026 Safety Car · Jenne, Zehner Safety Car GbR · Korntal-Münchingen</p>
 </footer>
+
+<script>
+(function(){
+  var ALLOWED=['de','en','pl'];
+  var TITLES={de:'Datenschutzerklärung – Safety Car',en:'Privacy Policy – Safety Car',pl:'Polityka prywatności – Safety Car'};
+  function apply(lang){
+    if(ALLOWED.indexOf(lang)<0) lang='de';
+    document.body.classList.remove('l-de','l-en','l-pl');
+    document.body.classList.add('l-'+lang);
+    document.documentElement.lang=lang;
+    document.title=TITLES[lang];
+    document.querySelectorAll('.lang button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-lang')===lang); });
+    try{ localStorage.setItem('sc_op_lang',lang); }catch(e){}
+  }
+  document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click', function(){ apply(b.getAttribute('data-lang')); }); });
+  var lang=null;
+  try{ lang=new URLSearchParams(location.search).get('lang'); }catch(e){}
+  if(ALLOWED.indexOf(lang)<0){ try{ lang=localStorage.getItem('sc_op_lang')||localStorage.getItem('sc_lang_tool'); }catch(e){} }
+  if(ALLOWED.indexOf(lang)<0){ var nl=(navigator.language||'de').toLowerCase(); lang=nl.indexOf('pl')===0?'pl':(nl.indexOf('en')===0?'en':'de'); }
+  apply(lang);
+})();
+</script>
 
 </body>
 </html>

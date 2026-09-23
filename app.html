@@ -2683,7 +2683,7 @@ setInterval(function() {
     var c=TXT[lang()], t=document.getElementById('cookieTitle'), x=document.getElementById('cookieText'), b=document.getElementById('cookieOk');
     if(t) t.textContent=c.t;
     if(b) b.textContent=c.b;
-    if(x){ x.textContent=c.x; var a=document.createElement('a'); a.href='datenschutz.html'; a.textContent=c.l; x.appendChild(a); x.appendChild(document.createTextNode('.')); }
+    if(x){ x.textContent=c.x; var a=document.createElement('a'); a.href='datenschutz.html?lang='+lang(); a.textContent=c.l; x.appendChild(a); x.appendChild(document.createTextNode('.')); }
   };
   window.scCookieAck=function(){ try{ localStorage.setItem('sc_cookie_consent','acknowledged'); }catch(e){} var bn=document.getElementById('cookieBanner'); if(bn) bn.classList.remove('show'); };
   var seen=null; try{ seen=localStorage.getItem('sc_cookie_consent'); }catch(e){}
