@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AGB – Safety Car</title>
-  <meta name="description" content="Allgemeine Geschäftsbedingungen der Jenne, Zehner Safety Car GbR für die Teilnahme an der Safety Car-Auktion und den Kauf von Fahrzeugen durch gewerbliche Händler." />
+  <meta name="description" content="Allgemeine Geschäftsbedingungen der Jenne, Zehner Safety Car GbR für die Teilnahme an der Safety Car-Auktion und den Kauf von Fahrzeugen durch gewerbliche Händler. Terms and Conditions · Ogólne Warunki Handlowe." />
   <link rel="stylesheet" href="fonts.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -71,27 +71,48 @@
       .ds-hero { padding:0 0 16px; background:none; }
       .ds-content { padding:0; max-width:none; }
     }
+
+    .top-right { display:flex; align-items:center; gap:18px; }
+    .lang { display:inline-flex; align-items:center; gap:2px; border:1px solid var(--border); border-radius:8px; padding:3px 6px; background:#fff; }
+    .lang button { font-family:'Montserrat',sans-serif; font-weight:700; font-size:.72rem; letter-spacing:.03em; color:#9a9a9a; background:none; border:none; cursor:pointer; padding:3px 6px; border-radius:5px; }
+    .lang button.active { color:var(--red); }
+    .lang .sep { color:#d5d5d5; font-size:.72rem; }
+    body.l-de [data-l]:not([data-l="de"]),
+    body.l-en [data-l]:not([data-l="en"]),
+    body.l-pl [data-l]:not([data-l="pl"]) { display:none !important; }
+    @media(max-width:560px){ .back-link .bl-text { display:none; } .ds-header { height:80px; } .ds-header .logo-img { height:38px; } }
+    @media print { .lang { display:none; } }
   </style>
 </head>
-<body>
+<body class="l-de">
 
 <header class="ds-header">
-  <a href="index.html" aria-label="Safety Car – Zur Startseite"><img src="logo.png" alt="Safety Car" class="logo-img"></a>
-  <a href="index.html" class="back-link">
-    <svg width="14" height="14" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-    Zurück zur Webseite
-  </a>
+  <a href="index.html" aria-label="Safety Car"><img src="logo.png" alt="Safety Car" class="logo-img"></a>
+  <div class="top-right">
+    <div class="lang" role="group" aria-label="Sprache / Language / Język">
+      <button type="button" data-lang="pl">PL</button><span class="sep">|</span>
+      <button type="button" data-lang="de">DE</button><span class="sep">|</span>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span class="bl-text"><span data-l="de">Zurück zur Webseite</span><span data-l="en">Back to website</span><span data-l="pl">Powrót do strony</span></span>
+    </a>
+  </div>
 </header>
 
 <section class="ds-hero">
   <div class="ds-hero-inner">
-    <span class="ds-tag">Rechtliches</span>
-    <h1>Allgemeine Geschäfts&shy;bedingungen</h1>
-    <p>für die Teilnahme an der Safety Car-Auktion und den Kauf von Fahrzeugen durch gewerbliche Händler</p>
+    <span class="ds-tag"><span data-l="de">Rechtliches</span><span data-l="en">Legal</span><span data-l="pl">Informacje prawne</span></span>
+    <h1><span data-l="de">Allgemeine Geschäfts&shy;bedingungen</span><span data-l="en">General Terms and Conditions</span><span data-l="pl">Ogólne Warunki Handlowe</span></h1>
+    <p data-l="de">für die Teilnahme an der Safety Car-Auktion und den Kauf von Fahrzeugen durch gewerbliche Händler</p>
+    <p data-l="en">for participation in the Safety Car auction and the purchase of vehicles by commercial dealers</p>
+    <p data-l="pl">dotyczące udziału w aukcji Safety Car oraz zakupu pojazdów przez dealerów prowadzących działalność gospodarczą</p>
   </div>
 </section>
 
 <main class="ds-content">
+<div data-l="de" lang="de">
 
   <div class="ds-resp">
     <p style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#B00000;margin-bottom:10px;">Vertragspartner</p>
@@ -286,17 +307,405 @@
 
   <p style="margin-top:32px;font-size:.78rem;color:var(--muted);">Stand: September 2026</p>
 
+</div>
+<div data-l="en" lang="en">
+  <div class="ds-resp">
+    <p style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#B00000;margin-bottom:10px;">Contracting party</p>
+    <p><strong>Jenne, Zehner Safety Car GbR</strong></p>
+    <p>represented by its partners Jan-Luca Zehner and Simon Jenne</p>
+    <p>Hauptstraße 40, 70825 Korntal-Münchingen, Germany</p>
+    <p>Email: <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a></p>
+    <p>Phone: <a href="tel:+4915757076079" style="color:rgba(255,255,255,.7);">+49 157 570 760 79</a></p>
+  </div>
+
+  <div class="ds-box" style="margin-top:20px">
+    <p>This English version is provided for convenience only. The German version is legally binding (§ 16.3). Terms of German law are given in brackets where useful.</p>
+  </div>
+
+  <nav class="ds-toc" aria-label="Contents">
+    <p>Contents</p>
+    <ol>
+      <li><a href="#en-p1">§ 1 Scope and definitions</a></li>
+      <li><a href="#en-p2">§ 2 Role of Safety Car</a></li>
+      <li><a href="#en-p3">§ 3 Registration and dealer account</a></li>
+      <li><a href="#en-p4">§ 4 Auction procedure</a></li>
+      <li><a href="#en-p5">§ 5 Bids and binding period</a></li>
+      <li><a href="#en-p6">§ 6 Conclusion of contract</a></li>
+      <li><a href="#en-p7">§ 7 Price, VAT, payment</a></li>
+      <li><a href="#en-p8">§ 8 Handover, collection, passing of risk</a></li>
+      <li><a href="#en-p9">§ 9 Vehicle condition and Safety Car-Check</a></li>
+      <li><a href="#en-p10">§ 10 Material defects</a></li>
+      <li><a href="#en-p11">§ 11 Liability</a></li>
+      <li><a href="#en-p12">§ 12 Dealer obligations, taxes</a></li>
+      <li><a href="#en-p13">§ 13 Breaches, non-circumvention</a></li>
+      <li><a href="#en-p14">§ 14 Confidentiality and data</a></li>
+      <li><a href="#en-p15">§ 15 Amendments to these Terms</a></li>
+      <li><a href="#en-p16">§ 16 Final provisions</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="en-p1">§ 1 Scope, contracting party and definitions</h2>
+  <p class="cl"><span class="n">1.1</span>These General Terms and Conditions (“Terms”) apply to the use of the auction platform operated by Jenne, Zehner Safety Car GbR (“Safety Car”) at auktion.safetycar.net (“Platform”) and to all purchase contracts for vehicles that Safety Car concludes with dealers on this basis.</p>
+  <p class="cl"><span class="n">1.2</span>The Platform is directed exclusively at entrepreneurs within the meaning of Section 14 German Civil Code (BGB) who trade in motor vehicles on a commercial basis (“Dealers”). Consumers within the meaning of Section 13 BGB are excluded from participation. The Dealer warrants that it acts in the course of its commercial activity when registering and when placing any bid.</p>
+  <p class="cl"><span class="n">1.3</span>Deviating, conflicting or supplementary terms of the Dealer do not become part of the contract unless Safety Car expressly agrees to their application in text form. This also applies if Safety Car performs with knowledge of such terms.</p>
+  <p class="cl"><span class="n">1.4</span>In these Terms:</p>
+  <ul>
+    <li><strong>“Auction”</strong> means the time-limited bidding procedure on the Platform;</li>
+    <li><strong>“Bid”</strong> means a Dealer’s binding offer to purchase a vehicle for the stated amount;</li>
+    <li><strong>“Seller”</strong> means the person from whom Safety Car purchases the vehicle;</li>
+    <li><strong>“Inspection Report”</strong> means the documentation of the Safety Car-Check;</li>
+    <li><strong>“Pick-up Location”</strong> means the location of the vehicle at the Seller’s premises or another handover location designated by Safety Car;</li>
+    <li><strong>“Working Days”</strong> means Monday to Friday, excluding public holidays in Baden-Württemberg.</li>
+  </ul>
+  <p class="cl"><span class="n">1.5</span>The obligations under Section 312i(1) sentence 1 nos. 1 to 3 and sentence 2 BGB do not apply pursuant to Section 312i(2) sentence 2 BGB.</p>
+
+  <h2 id="en-p2">§ 2 Role of Safety Car and business model</h2>
+  <p class="cl"><span class="n">2.1</span>Safety Car purchases used vehicles in its own name and for its own account and resells them to Dealers. Safety Car is itself the seller vis-à-vis the Dealer and does not act as an agent or broker.</p>
+  <p class="cl"><span class="n">2.2</span>The purchase contract for a vehicle is concluded exclusively between Safety Car and the Dealer. No contractual relationship arises between the Seller and the Dealer.</p>
+  <p class="cl"><span class="n">2.3</span>As a rule, vehicles are auctioned before Safety Car has acquired them from the Seller. Safety Car therefore accepts a Bid only once the purchase from the Seller is secured (§ 5, § 6). The relationship between Safety Car and the Seller is governed by a separate purchase agreement.</p>
+  <p class="cl"><span class="n">2.4</span>The Dealer has no claim to the holding of an Auction, to a particular vehicle offer or to a particular price.</p>
+
+  <h2 id="en-p3">§ 3 Registration, dealer account and user relationship</h2>
+  <p class="cl"><span class="n">3.1</span>Participation requires registration and approval by Safety Car. The Dealer shall provide all requested information completely and truthfully and, upon request, submit evidence, in particular a trade registration or register extract, proof of identity of its authorised representative and – where available – its VAT identification number. Safety Car may have the VAT identification number confirmed by the German Federal Central Tax Office (Bundeszentralamt für Steuern).</p>
+  <p class="cl"><span class="n">3.2</span>There is no claim to approval.</p>
+  <p class="cl"><span class="n">3.3</span>The Dealer shall keep its access data secret and protect it against access by third parties. Bids placed via its account are attributed to the Dealer unless it is not responsible for the misuse. The Dealer shall notify Safety Car without undue delay of any suspected misuse and of any changes to its registration data.</p>
+  <p class="cl"><span class="n">3.4</span>Safety Car may set a bidding limit for each Dealer. The bidding limit is the total of all amounts from the Dealer’s highest Bids that are still within the binding period and from purchase contracts not yet paid in full. Newly approved Dealers receive a bidding limit of EUR 15,000. After three fully completed purchases, Safety Car will review an increase. The applicable bidding limit is displayed in the dealer account. The Platform does not accept Bids exceeding the bidding limit. If such a Bid is nevertheless recorded, Safety Car is not obliged to take it into account.</p>
+  <p class="cl"><span class="n">3.5</span>The user relationship runs for an indefinite period. Either party may terminate it at any time in text form. The right to terminate for good cause remains unaffected. Bids within a running binding period and purchase contracts already concluded are processed in accordance with these Terms.</p>
+  <p class="cl"><span class="n">3.6</span>If the Dealer breaches material obligations under these Terms, Safety Car may temporarily block the dealer account. In the event of serious or repeated breaches, Safety Car may terminate the user relationship for good cause. When choosing the measure, Safety Car takes the Dealer’s legitimate interests into account. § 13 remains unaffected.</p>
+
+  <h2 id="en-p4">§ 4 Auction procedure</h2>
+  <p class="cl"><span class="n">4.1</span>Safety Car lists the vehicle on the Platform with vehicle data, photographs, the Inspection Report and a starting price.</p>
+  <p class="cl"><span class="n">4.2</span>The start and end of each Auction are displayed on the Platform. Auctions usually take place on Working Days between 5:00 p.m. and 8:00 p.m. (German time).</p>
+  <p class="cl"><span class="n">4.3</span>If a Bid is placed shortly before the end of an Auction, the Auction is automatically extended by the period displayed on the Platform.</p>
+  <p class="cl"><span class="n">4.4</span>Bids are only possible in the displayed minimum increment. Bids are displayed anonymously to other Dealers.</p>
+  <p class="cl"><span class="n">4.5</span>Safety Car may end an Auction early, withdraw a vehicle or repeat an Auction for objective reasons. Objective reasons include in particular technical faults, incorrect information about the vehicle, damage to the vehicle or failure of the purchase from the Seller. The Dealer only has claims arising from this in the event of intent or gross negligence on the part of Safety Car.</p>
+
+  <h2 id="en-p5">§ 5 Bids and binding period</h2>
+  <p class="cl"><span class="n">5.1</span>Each Bid is a binding offer by the Dealer to conclude a purchase contract for the respective vehicle at the amount bid and on the terms of these Terms. A Bid cannot be withdrawn. Statutory rights of rescission (Anfechtung) remain unaffected.</p>
+  <p class="cl"><span class="n">5.2</span>The end of the Auction is not an acceptance by the auctioneer (Zuschlag) within the meaning of Section 156 BGB. No purchase contract is concluded merely by the end of the Auction.</p>
+  <p class="cl"><span class="n">5.3</span>The Dealer who has placed the highest valid Bid at the end of the Auction is bound by that Bid until the end of the third Working Day after the end of the Auction (acceptance period pursuant to Section 148 BGB). All other Bids lapse at the end of the Auction.</p>
+  <p class="cl"><span class="n">5.4</span>Safety Car is not obliged to accept the highest Bid. This applies in particular if the Seller does not accept Safety Car’s purchase offer. If no acceptance takes place within the binding period, the Bid lapses. Safety Car will inform the Dealer without undue delay as soon as it is clear that the Bid will not be accepted.</p>
+  <p class="cl"><span class="n">5.5</span>Safety Car may reject or delete Bids that were obviously placed by mistake, abusively or in breach of these Terms.</p>
+
+  <h2 id="en-p6">§ 6 Conclusion of contract</h2>
+  <p class="cl"><span class="n">6.1</span>The purchase contract is concluded when Safety Car accepts the Bid within the binding period. Safety Car declares acceptance in text form, usually by an order confirmation by email or via the Platform.</p>
+  <p class="cl"><span class="n">6.2</span>Safety Car may ask the Dealer to confirm the Bid in text form (“Bid Confirmation”). The Bid Confirmation serves documentation purposes only. It is not a prerequisite for the conclusion of the contract and does not change its content.</p>
+  <p class="cl"><span class="n">6.3</span>Side agreements, amendments and supplements require text form. Individual agreements in a specific case take precedence (Section 305b BGB).</p>
+
+  <h2 id="en-p7">§ 7 Purchase price, VAT, payment and retention of title</h2>
+  <p class="cl"><span class="n">7.1</span>The purchase price corresponds to the accepted Bid. Only ancillary costs that have been separately agreed or arise under these Terms are added, e.g. for transport organised by Safety Car or for storage fees.</p>
+  <p class="cl"><span class="n">7.2</span>Safety Car generally purchases vehicles from private individuals. It therefore generally sells them under the margin scheme pursuant to Section 25a German VAT Act (UStG). In this case, Bids are final prices. The invoice does not show VAT separately and contains the note “Gebrauchtgegenstände/Sonderregelung” (second-hand goods/special arrangements, Section 14a(6) UStG). The Dealer is not entitled to deduct input VAT. The margin scheme also applies if the vehicle is transported to another member state of the European Union. A VAT-exempt intra-Community supply is not possible in this case (Section 25a(7) no. 3 UStG).</p>
+  <p class="cl"><span class="n">7.3</span>If a vehicle is expressly marked as “standard VAT” (regelbesteuert) in the Auction, the following applies:</p>
+  <ul>
+    <li>The Bid is a net amount.</li>
+    <li>If the vehicle is transported to another member state and the requirements for a VAT-exempt intra-Community supply are met (Section 4 no. 1(b), Section 6a UStG), Safety Car invoices without VAT.</li>
+    <li>Otherwise, the Dealer additionally owes VAT at the statutory rate.</li>
+    <li>This also applies if the requirements cease to be met subsequently, e.g. because the evidence under § 12.2 is not provided.</li>
+  </ul>
+  <p class="cl"><span class="n">7.4</span>Payment is processed via an escrow service (currently Paylax). The Dealer shall pay the full purchase price into the escrow account notified by Safety Car within two Working Days of conclusion of the contract. Payment to Safety Car is made in accordance with the terms of the escrow service. The fees of the escrow service are borne by Safety Car.</p>
+  <p class="cl"><span class="n">7.5</span>Cash payments are not accepted.</p>
+  <p class="cl"><span class="n">7.6</span>The vehicle is only handed over once the full purchase price has been received by the escrow service. The vehicle remains the property of Safety Car until full payment. The registration certificate Part II (Zulassungsbescheinigung Teil II) is only handed over after full payment.</p>
+  <p class="cl"><span class="n">7.7</span>The Dealer may only set off undisputed or legally established claims. It may only exercise a right of retention on the basis of claims arising from the same contractual relationship.</p>
+  <p class="cl"><span class="n">7.8</span>In the event of default in payment, the Dealer owes default interest of nine percentage points above the base interest rate (Section 288(2) BGB) and the lump sum under Section 288(5) BGB. Safety Car reserves the right to claim further damages.</p>
+
+  <h2 id="en-p8">§ 8 Handover, collection, passing of risk and storage</h2>
+  <p class="cl"><span class="n">8.1</span>Handover takes place at the Pick-up Location. Safety Car informs the Dealer of the Pick-up Location and possible collection dates after receipt of payment. The Dealer collects the vehicle itself or has it collected by a carrier commissioned by it. The carrier identifies itself with a written collection order from the Dealer.</p>
+  <p class="cl"><span class="n">8.2</span>A handover report recording the mileage and the externally visible condition is prepared at handover. The carrier signs the report on behalf of the Dealer.</p>
+  <p class="cl"><span class="n">8.3</span>The Dealer shall collect the vehicle within three Working Days of receipt of payment. After expiry of this period, Safety Car may charge a storage fee of EUR 15 per commenced calendar day. The Dealer may prove that no or lower costs were incurred. Safety Car reserves the right to claim further damages, in particular costs vis-à-vis the Seller; the storage fee is credited against these. If the Dealer does not collect the vehicle even after expiry of a grace period of seven calendar days, § 13.1 applies.</p>
+  <p class="cl"><span class="n">8.4</span>The risk of accidental loss and accidental deterioration passes to the Dealer upon handover. Handover also includes handover to the carrier commissioned by the Dealer. If the Dealer is in default of acceptance, the risk passes upon occurrence of the default.</p>
+  <p class="cl"><span class="n">8.5</span>If Safety Car organises transport at the Dealer’s request, it does so in the name and for the account of the Dealer. The risk then passes upon handover to the carrier (Section 447 BGB). Safety Car is only liable for the careful selection of the carrier.</p>
+  <p class="cl"><span class="n">8.6</span>Vehicles are generally handed over deregistered. Licence plates are only handed over if expressly agreed.</p>
+
+  <h2 id="en-p9">§ 9 Vehicle condition, Safety Car-Check and agreed quality</h2>
+  <p class="cl"><span class="n">9.1</span>Only used vehicles with wear and tear consistent with their age and mileage are sold.</p>
+  <p class="cl"><span class="n">9.2</span>The Safety Car-Check is not an expert appraisal. It is a documented recording of the condition at the time of inspection based on defined inspection points. It contains no statements on the value of the vehicle and no statements on the future durability of individual components. Information on the vehicle history is based on the Seller’s statements and the documents presented. Safety Car passes this information on as such.</p>
+  <p class="cl"><span class="n">9.3</span>Only the values expressly documented as measured or ascertained in the Inspection Report are deemed agreed quality (Section 434(2) sentence 1 no. 1 BGB). The version of the Inspection Report published at the end of the Auction is decisive. The values relate to the time of inspection. Measurement tolerances stated in the Inspection Report form part of the quality. Characteristics that were not inspected or cannot be inspected are not subject to the quality agreement.</p>
+  <p class="cl"><span class="n">9.4</span>Safety Car does not give any guarantee within the meaning of Sections 276(1), 443 BGB, including by way of the Inspection Report or by designations such as “inspected” or “Safety Car-Check”.</p>
+  <p class="cl"><span class="n">9.5</span>The mileage is the odometer reading taken at the time of inspection. The plausibility checks described in the Inspection Report only constitute quality to the extent documented there. A specific actual total mileage is only agreed if the Inspection Report expressly states it as ascertained.</p>
+  <p class="cl"><span class="n">9.6</span>If the vehicle deviates from the quality under § 9.3 at the time the risk passes, the statutory rights (Sections 437 et seq. BGB) apply with the following provisos:</p>
+  <ul>
+    <li><strong>Subsequent performance:</strong> At its option, Safety Car provides subsequent performance either by reimbursing the necessary costs of remedying the defect on the basis of a cost estimate submitted by the Dealer and approved by Safety Car, or by taking back the vehicle against repayment of the purchase price.</li>
+    <li><strong>Inspection by Safety Car:</strong> Safety Car must be given the opportunity to inspect the deviation, or have it inspected, before any repair begins.</li>
+    <li><strong>Further rights:</strong> If subsequent performance fails or Safety Car refuses it, the Dealer may withdraw from the contract or reduce the purchase price in accordance with the statutory provisions.</li>
+    <li><strong>Damages:</strong> § 11 applies.</li>
+  </ul>
+
+  <h2 id="en-p10">§ 10 Material defects</h2>
+  <p class="cl"><span class="n">10.1</span>With the exception of rights arising from a deviation from the agreed quality under § 9, the Dealer’s claims and rights in respect of material defects are excluded.</p>
+  <p class="cl"><span class="n">10.2</span>The exclusion under § 10.1 does not apply:</p>
+  <ul>
+    <li>in the event of fraudulent concealment of a defect (Section 444 BGB);</li>
+    <li>to claims for damages due to injury to life, body or health;</li>
+    <li>to claims for damages due to an intentional or grossly negligent breach of duty by Safety Car, its legal representatives or vicarious agents;</li>
+    <li>to claims under the German Product Liability Act (Produkthaftungsgesetz).</li>
+  </ul>
+  <p class="cl"><span class="n">10.3</span>The Dealer or its carrier shall examine the vehicle at handover. The Dealer shall notify obvious defects and recognisable deviations from the Inspection Report in text form within five Working Days of handover. Hidden defects shall be notified within five Working Days of their discovery. If timely notification is not given, rights in respect of that defect are excluded, unless Safety Car fraudulently concealed the defect. Section 377 German Commercial Code (HGB) remains unaffected where applicable.</p>
+  <p class="cl"><span class="n">10.4</span>Claims for material defects become time-barred twelve months after handover. This does not apply in the cases of § 10.2. The statutory limitation periods apply there.</p>
+
+  <h2 id="en-p11">§ 11 Liability</h2>
+  <p class="cl"><span class="n">11.1</span>Safety Car is liable without limitation for intent and gross negligence, for damage resulting from injury to life, body or health, in the event of fraudulent concealment of a defect and under the German Product Liability Act.</p>
+  <p class="cl"><span class="n">11.2</span>In the event of simple negligence, Safety Car is only liable for the breach of a material contractual obligation. A material obligation is one whose fulfilment makes the proper performance of the contract possible in the first place and on whose fulfilment the Dealer may regularly rely. In this case, liability is limited to the damage typical for the contract and foreseeable at the time the contract was concluded.</p>
+  <p class="cl"><span class="n">11.3</span>Safety Car does not owe any particular availability of the Platform. Safety Car may interrupt operation for maintenance work and will announce maintenance in advance where possible.</p>
+  <p class="cl"><span class="n">11.4</span>The above limitations of liability also apply in favour of Safety Car’s partners, legal representatives and vicarious agents.</p>
+
+  <h2 id="en-p12">§ 12 Dealer obligations, transport abroad and taxes</h2>
+  <p class="cl"><span class="n">12.1</span>If a vehicle is exceptionally handed over while still registered, the Dealer shall re-register or deregister it within five Working Days of handover. It shall provide evidence of this to Safety Car upon request. Until then, the Dealer shall indemnify Safety Car and the Seller against costs and third-party claims arising from the use of the vehicle after handover.</p>
+  <p class="cl"><span class="n">12.2</span>For vehicles with standard VAT within the meaning of § 7.3, the Dealer shall cooperate in providing evidence of the intra-Community supply. In particular, the Dealer shall:</p>
+  <ul>
+    <li>use a valid VAT identification number issued to it by another member state when concluding the contract;</li>
+    <li>send Safety Car, within ten Working Days of the vehicle’s arrival in the country of destination, a complete entry certificate (Gelangensbestätigung) within the meaning of Section 17b German VAT Implementing Ordinance (UStDV), including the vehicle identification number, or other admissible evidence;</li>
+    <li>provide the necessary transport documents if it organises the transport itself.</li>
+  </ul>
+  <p class="cl"><span class="n">12.3</span>All taxes, duties and registration costs incurred in the country of destination are borne by the Dealer, in particular the Polish excise duty (akcyza).</p>
+  <p class="cl"><span class="n">12.4</span>The Dealer is itself responsible for resale to consumers. The statutory obligations incumbent on it in this regard do not affect its relationship with Safety Car.</p>
+
+  <h2 id="en-p13">§ 13 Breaches of duty, liquidated damages and non-circumvention</h2>
+  <p class="cl"><span class="n">13.1</span>If the Dealer does not pay the purchase price into escrow on time or does not collect the vehicle, Safety Car may, after an appropriate grace period has expired without result, withdraw from the contract and claim damages in lieu of performance. Safety Car may claim 10% of the purchase price as liquidated damages. The Dealer may prove that no damage or substantially lower damage was incurred. Safety Car may prove higher damage.</p>
+  <p class="cl"><span class="n">13.2</span>For each vehicle offered to the Dealer on the Platform, a non-circumvention obligation applies until twelve months after the end of the relevant Auction. During this period, the Dealer shall not acquire the vehicle from the Seller directly or via third parties, nor act as intermediary for it, unless the acquisition takes place via Safety Car. The obligation does not apply if the Dealer proves that it was in contact with the Seller regarding this vehicle before it was listed on the Platform.</p>
+  <p class="cl"><span class="n">13.3</span>If the Dealer culpably breaches § 13.2, it owes a contractual penalty for each vehicle concerned. Safety Car determines the amount at its reasonable discretion; it amounts to a maximum of EUR 5,000. In the event of a dispute, the competent court reviews its appropriateness. The contractual penalty is credited against any claim for damages.</p>
+  <p class="cl"><span class="n">13.4</span>In the event of repeated or serious breaches, § 3.6 applies. Purchase contracts already concluded remain unaffected.</p>
+
+  <h2 id="en-p14">§ 14 Confidentiality, data and rights of use</h2>
+  <p class="cl"><span class="n">14.1</span>The Dealer may use Inspection Reports, photographs and other documents from Safety Car only for its own purchasing decisions and for the resale of the vehicle purchased from Safety Car. It shall only pass them on in full and unaltered.</p>
+  <p class="cl"><span class="n">14.2</span>Use of the name and logo “Safety Car” and references to the business relationship require prior consent in text form.</p>
+  <p class="cl"><span class="n">14.3</span>The following are prohibited:</p>
+  <ul>
+    <li>automated extraction of Platform content;</li>
+    <li>passing on access data to third parties;</li>
+    <li>any interference with the course of an Auction, in particular sham bids or collusion with other bidders.</li>
+  </ul>
+  <p class="cl"><span class="n">14.4</span>The Dealer only receives personal data of the Seller to the extent necessary for collection and registration. This applies in particular to the pick-up address and contact details and to the information in the vehicle documents. The Dealer processes this data exclusively for these purposes and in accordance with the GDPR. In particular, it does not use the data to contact the Seller for other purposes.</p>
+  <p class="cl"><span class="n">14.5</span>Safety Car processes personal data in accordance with the <a href="datenschutz.html?lang=en">privacy policy</a>.</p>
+
+  <h2 id="en-p15">§ 15 Amendments to these Terms</h2>
+  <p class="cl"><span class="n">15.1</span>Safety Car may amend these Terms with effect for future Auctions if there is an objective reason for doing so. Objective reasons include in particular changes in legislation, case law, changes to the auction procedure or technical developments of the Platform. Safety Car notifies the Dealer of the amendments in text form at least four weeks before they take effect.</p>
+  <p class="cl"><span class="n">15.2</span>After they take effect, the Dealer can only bid again once it has expressly agreed to the amended Terms on the Platform. If the Dealer does not agree, either party may terminate the user relationship in accordance with § 3.5.</p>
+  <p class="cl"><span class="n">15.3</span>Bids already placed and purchase contracts already concluded continue to be governed by the Terms incorporated at the time the Bid was placed.</p>
+
+  <h2 id="en-p16">§ 16 Final provisions</h2>
+  <p class="cl"><span class="n">16.1</span>The law of the Federal Republic of Germany applies, excluding the UN Convention on Contracts for the International Sale of Goods (CISG).</p>
+  <p class="cl"><span class="n">16.2</span>The exclusive place of jurisdiction for all disputes arising from or in connection with these Terms and the contracts concluded on their basis is the registered office of Safety Car. For Dealers established in another member state of the European Union, this constitutes an agreement on jurisdiction pursuant to Article 25 of Regulation (EU) No 1215/2012. Safety Car may also sue the Dealer at the Dealer’s general place of jurisdiction.</p>
+  <p class="cl"><span class="n">16.3</span>The language of the contract is German. Translations of these Terms, e.g. into Polish or English, serve to facilitate understanding. In the event of discrepancies, the German version prevails.</p>
+  <p class="cl"><span class="n">16.4</span>Should any provision of these Terms be or become invalid in whole or in part, the validity of the remaining provisions remains unaffected. The invalid provision is replaced by the statutory provisions (Section 306(2) BGB).</p>
+
+  <p style="margin-top:32px;font-size:.78rem;color:var(--muted);">Last updated: September 2026 · Translation – the German version is binding.</p>
+</div>
+<div data-l="pl" lang="pl">
+  <div class="ds-resp">
+    <p style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#B00000;margin-bottom:10px;">Strona umowy</p>
+    <p><strong>Jenne, Zehner Safety Car GbR</strong></p>
+    <p>reprezentowana przez wspólników Jan-Lucę Zehnera i Simona Jennego</p>
+    <p>Hauptstraße 40, 70825 Korntal-Münchingen, Niemcy</p>
+    <p>E-mail: <a href="mailto:kontakt@safetycar.net">kontakt@safetycar.net</a></p>
+    <p>Telefon: <a href="tel:+4915757076079" style="color:rgba(255,255,255,.7);">+49 157 570 760 79</a></p>
+  </div>
+
+  <div class="ds-box" style="margin-top:20px">
+    <p>Niniejsza polska wersja służy wyłącznie lepszemu zrozumieniu. Wiążąca jest wersja niemiecka (§ 16.3). Tam, gdzie jest to pomocne, w nawiasach podano niemieckie pojęcia prawne.</p>
+  </div>
+
+  <nav class="ds-toc" aria-label="Spis treści">
+    <p>Spis treści</p>
+    <ol>
+      <li><a href="#pl-p1">§ 1 Zakres stosowania i definicje</a></li>
+      <li><a href="#pl-p2">§ 2 Rola Safety Car</a></li>
+      <li><a href="#pl-p3">§ 3 Rejestracja i konto dealera</a></li>
+      <li><a href="#pl-p4">§ 4 Przebieg aukcji</a></li>
+      <li><a href="#pl-p5">§ 5 Oferty i okres związania</a></li>
+      <li><a href="#pl-p6">§ 6 Zawarcie umowy</a></li>
+      <li><a href="#pl-p7">§ 7 Cena, VAT, płatność</a></li>
+      <li><a href="#pl-p8">§ 8 Wydanie, odbiór, przejście ryzyka</a></li>
+      <li><a href="#pl-p9">§ 9 Stan pojazdu i Safety Car-Check</a></li>
+      <li><a href="#pl-p10">§ 10 Wady fizyczne</a></li>
+      <li><a href="#pl-p11">§ 11 Odpowiedzialność</a></li>
+      <li><a href="#pl-p12">§ 12 Obowiązki dealera, podatki</a></li>
+      <li><a href="#pl-p13">§ 13 Naruszenia, zakaz obchodzenia</a></li>
+      <li><a href="#pl-p14">§ 14 Poufność i dane</a></li>
+      <li><a href="#pl-p15">§ 15 Zmiany OWH</a></li>
+      <li><a href="#pl-p16">§ 16 Postanowienia końcowe</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="pl-p1">§ 1 Zakres stosowania, strona umowy i definicje</h2>
+  <p class="cl"><span class="n">1.1</span>Niniejsze Ogólne Warunki Handlowe („OWH”) mają zastosowanie do korzystania z platformy aukcyjnej prowadzonej przez Jenne, Zehner Safety Car GbR („Safety Car”) pod adresem auktion.safetycar.net („Platforma”) oraz do wszystkich umów sprzedaży pojazdów, które Safety Car zawiera na tej podstawie z dealerami.</p>
+  <p class="cl"><span class="n">1.2</span>Platforma jest skierowana wyłącznie do przedsiębiorców w rozumieniu § 14 niemieckiego kodeksu cywilnego (BGB), którzy zawodowo prowadzą handel pojazdami mechanicznymi („Dealerzy”). Konsumenci w rozumieniu § 13 BGB są wyłączeni z udziału. Dealer zapewnia, że przy rejestracji i przy każdej ofercie działa w ramach swojej działalności gospodarczej.</p>
+  <p class="cl"><span class="n">1.3</span>Odmienne, sprzeczne lub uzupełniające warunki Dealera nie stają się częścią umowy, chyba że Safety Car wyraźnie zgodzi się na ich stosowanie w formie dokumentowej (Textform). Dotyczy to również sytuacji, w której Safety Car spełnia świadczenie, wiedząc o takich warunkach.</p>
+  <p class="cl"><span class="n">1.4</span>W rozumieniu niniejszych OWH:</p>
+  <ul>
+    <li><strong>„Aukcja”</strong> oznacza ograniczoną w czasie procedurę licytacji na Platformie;</li>
+    <li><strong>„Oferta”</strong> oznacza wiążącą ofertę Dealera zakupu pojazdu za wskazaną kwotę;</li>
+    <li><strong>„Sprzedający”</strong> oznacza osobę, od której Safety Car kupuje pojazd;</li>
+    <li><strong>„Protokół kontroli”</strong> oznacza dokumentację Safety Car-Check;</li>
+    <li><strong>„Miejsce odbioru”</strong> oznacza miejsce, w którym pojazd znajduje się u Sprzedającego, lub inne miejsce wydania wskazane przez Safety Car;</li>
+    <li><strong>„Dni robocze”</strong> oznaczają dni od poniedziałku do piątku z wyjątkiem dni ustawowo wolnych od pracy w Badenii-Wirtembergii.</li>
+  </ul>
+  <p class="cl"><span class="n">1.5</span>Obowiązki wynikające z § 312i ust. 1 zd. 1 pkt 1–3 i zd. 2 BGB nie mają zastosowania zgodnie z § 312i ust. 2 zd. 2 BGB.</p>
+
+  <h2 id="pl-p2">§ 2 Rola Safety Car i model biznesowy</h2>
+  <p class="cl"><span class="n">2.1</span>Safety Car kupuje pojazdy używane we własnym imieniu i na własny rachunek i odsprzedaje je Dealerom. Safety Car jest sprzedawcą wobec Dealera i nie działa jako pośrednik ani agent.</p>
+  <p class="cl"><span class="n">2.2</span>Umowa sprzedaży pojazdu zostaje zawarta wyłącznie między Safety Car a Dealerem. Między Sprzedającym a Dealerem nie powstaje żaden stosunek umowny.</p>
+  <p class="cl"><span class="n">2.3</span>Z reguły pojazdy są licytowane, zanim Safety Car nabędzie je od Sprzedającego. Dlatego Safety Car przyjmuje Ofertę dopiero wtedy, gdy zakup od Sprzedającego jest zabezpieczony (§ 5, § 6). Stosunek między Safety Car a Sprzedającym reguluje odrębna umowa zakupu.</p>
+  <p class="cl"><span class="n">2.4</span>Dealerowi nie przysługuje roszczenie o przeprowadzenie Aukcji, o określoną ofertę pojazdów ani o określoną cenę.</p>
+
+  <h2 id="pl-p3">§ 3 Rejestracja, konto dealera i stosunek korzystania z Platformy</h2>
+  <p class="cl"><span class="n">3.1</span>Udział wymaga rejestracji i zatwierdzenia przez Safety Car. Dealer podaje wszystkie wymagane informacje w sposób kompletny i zgodny z prawdą i na żądanie przedkłada dokumenty, w szczególności wpis do CEIDG lub odpis z rejestru, dokument tożsamości osoby uprawnionej do reprezentacji oraz – jeżeli posiada – numer identyfikacyjny VAT UE. Safety Car jest uprawniony do weryfikacji numeru VAT UE w niemieckim Federalnym Centralnym Urzędzie Podatkowym (Bundeszentralamt für Steuern).</p>
+  <p class="cl"><span class="n">3.2</span>Nie przysługuje roszczenie o zatwierdzenie konta.</p>
+  <p class="cl"><span class="n">3.3</span>Dealer zachowuje swoje dane dostępowe w tajemnicy i chroni je przed dostępem osób trzecich. Oferty złożone za pośrednictwem jego konta są mu przypisywane, chyba że nie ponosi on odpowiedzialności za nadużycie. O podejrzeniu nadużycia oraz o zmianach danych rejestracyjnych Dealer niezwłocznie informuje Safety Car.</p>
+  <p class="cl"><span class="n">3.4</span>Safety Car może ustalić dla każdego Dealera limit licytacji. Limit licytacji to suma wszystkich kwot z najwyższych Ofert Dealera, które pozostają w okresie związania, oraz z umów sprzedaży, które nie zostały jeszcze w pełni zapłacone. Nowo zatwierdzeni Dealerzy otrzymują limit licytacji w wysokości 15 000 EUR. Po trzech w pełni zrealizowanych zakupach Safety Car rozważy jego podwyższenie. Obowiązujący limit jest wyświetlany na koncie dealera. Platforma nie przyjmuje Ofert przekraczających limit. Jeżeli taka Oferta zostanie mimo to zarejestrowana, Safety Car nie jest zobowiązany do jej uwzględnienia.</p>
+  <p class="cl"><span class="n">3.5</span>Stosunek korzystania z Platformy zawierany jest na czas nieokreślony. Każda ze stron może go w każdej chwili wypowiedzieć w formie dokumentowej. Prawo do wypowiedzenia z ważnych powodów pozostaje nienaruszone. Oferty w biegnącym okresie związania i zawarte już umowy sprzedaży są realizowane zgodnie z niniejszymi OWH.</p>
+  <p class="cl"><span class="n">3.6</span>Jeżeli Dealer narusza istotne obowiązki wynikające z niniejszych OWH, Safety Car może tymczasowo zablokować konto dealera. W przypadku poważnych lub powtarzających się naruszeń Safety Car może wypowiedzieć stosunek korzystania z Platformy z ważnych powodów. Przy wyborze środka Safety Car uwzględnia uzasadnione interesy Dealera. § 13 pozostaje nienaruszony.</p>
+
+  <h2 id="pl-p4">§ 4 Przebieg aukcji</h2>
+  <p class="cl"><span class="n">4.1</span>Safety Car wystawia pojazd na Platformie wraz z danymi pojazdu, zdjęciami, Protokołem kontroli i ceną wywoławczą.</p>
+  <p class="cl"><span class="n">4.2</span>Początek i koniec każdej Aukcji są wyświetlane na Platformie. Aukcje odbywają się z reguły w Dni robocze w godzinach od 17:00 do 20:00 (czasu niemieckiego).</p>
+  <p class="cl"><span class="n">4.3</span>Jeżeli Oferta zostanie złożona tuż przed końcem Aukcji, Aukcja zostaje automatycznie przedłużona o okres wskazany na Platformie.</p>
+  <p class="cl"><span class="n">4.4</span>Oferty można składać wyłącznie z zachowaniem wskazanego minimalnego postąpienia. Oferty są wyświetlane innym Dealerom anonimowo.</p>
+  <p class="cl"><span class="n">4.5</span>Safety Car może z uzasadnionej przyczyny przedwcześnie zakończyć Aukcję, wycofać pojazd lub powtórzyć Aukcję. Uzasadnionymi przyczynami są w szczególności zakłócenia techniczne, błędne dane dotyczące pojazdu, uszkodzenie pojazdu lub niedojście do skutku zakupu od Sprzedającego. Roszczenia Dealera z tego tytułu przysługują wyłącznie w przypadku winy umyślnej lub rażącego niedbalstwa Safety Car.</p>
+
+  <h2 id="pl-p5">§ 5 Oferty i okres związania</h2>
+  <p class="cl"><span class="n">5.1</span>Każda Oferta jest wiążącą ofertą Dealera zawarcia umowy sprzedaży danego pojazdu za zaoferowaną kwotę i na warunkach niniejszych OWH. Oferty nie można wycofać. Ustawowe prawo do uchylenia się od skutków oświadczenia woli (Anfechtung) pozostaje nienaruszone.</p>
+  <p class="cl"><span class="n">5.2</span>Zakończenie Aukcji nie stanowi przybicia (Zuschlag) w rozumieniu § 156 BGB. Samo zakończenie Aukcji nie prowadzi do zawarcia umowy sprzedaży.</p>
+  <p class="cl"><span class="n">5.3</span>Dealer, który w chwili zakończenia Aukcji złożył najwyższą ważną Ofertę, jest nią związany do upływu trzeciego Dnia roboczego po zakończeniu Aukcji (termin na przyjęcie oferty zgodnie z § 148 BGB). Wszystkie pozostałe Oferty wygasają z chwilą zakończenia Aukcji.</p>
+  <p class="cl"><span class="n">5.4</span>Safety Car nie jest zobowiązany do przyjęcia najwyższej Oferty. Dotyczy to w szczególności sytuacji, w której Sprzedający nie przyjmie oferty zakupu Safety Car. Jeżeli w okresie związania nie dojdzie do przyjęcia, Oferta wygasa. Safety Car niezwłocznie informuje Dealera, gdy tylko stanie się jasne, że Oferta nie zostanie przyjęta.</p>
+  <p class="cl"><span class="n">5.5</span>Safety Car może odrzucić lub usunąć Oferty, które zostały złożone w sposób oczywiście omyłkowy, stanowiący nadużycie lub z naruszeniem niniejszych OWH.</p>
+
+  <h2 id="pl-p6">§ 6 Zawarcie umowy</h2>
+  <p class="cl"><span class="n">6.1</span>Umowa sprzedaży zostaje zawarta, gdy Safety Car przyjmie Ofertę w okresie związania. Safety Car składa oświadczenie o przyjęciu w formie dokumentowej, z reguły w postaci potwierdzenia zamówienia wysłanego e-mailem lub za pośrednictwem Platformy.</p>
+  <p class="cl"><span class="n">6.2</span>Safety Car może poprosić Dealera o potwierdzenie Oferty w formie dokumentowej („Potwierdzenie oferty”). Potwierdzenie oferty służy wyłącznie celom dokumentacyjnym. Nie jest warunkiem zawarcia umowy i nie zmienia jej treści.</p>
+  <p class="cl"><span class="n">6.3</span>Porozumienia dodatkowe, zmiany i uzupełnienia wymagają formy dokumentowej. Indywidualne uzgodnienia w konkretnym przypadku mają pierwszeństwo (§ 305b BGB).</p>
+
+  <h2 id="pl-p7">§ 7 Cena, podatek VAT, płatność i zastrzeżenie własności</h2>
+  <p class="cl"><span class="n">7.1</span>Cena sprzedaży odpowiada przyjętej Ofercie. Doliczane są wyłącznie koszty dodatkowe uzgodnione odrębnie lub wynikające z niniejszych OWH, np. za transport zorganizowany przez Safety Car lub opłaty postojowe.</p>
+  <p class="cl"><span class="n">7.2</span>Safety Car kupuje pojazdy z reguły od osób prywatnych. Dlatego sprzedaje je co do zasady z zastosowaniem procedury marży zgodnie z § 25a niemieckiej ustawy o VAT (UStG). Oferty są w takim przypadku cenami końcowymi. Faktura nie wykazuje odrębnie podatku VAT i zawiera adnotację „Gebrauchtgegenstände/Sonderregelung” (towary używane – procedura szczególna, § 14a ust. 6 UStG). Dealerowi nie przysługuje prawo do odliczenia podatku naliczonego. Procedura marży ma zastosowanie również wtedy, gdy pojazd zostanie przewieziony do innego państwa członkowskiego Unii Europejskiej. Zwolniona z podatku wewnątrzwspólnotowa dostawa towarów nie jest wówczas możliwa (§ 25a ust. 7 pkt 3 UStG).</p>
+  <p class="cl"><span class="n">7.3</span>Jeżeli pojazd został w Aukcji wyraźnie oznaczony jako „opodatkowany na zasadach ogólnych” (regelbesteuert), obowiązują następujące zasady:</p>
+  <ul>
+    <li>Oferta jest kwotą netto.</li>
+    <li>Jeżeli pojazd zostanie przewieziony do innego państwa członkowskiego i spełnione są przesłanki zwolnionej z podatku wewnątrzwspólnotowej dostawy towarów (§ 4 pkt 1 lit. b, § 6a UStG), Safety Car wystawia fakturę bez podatku VAT.</li>
+    <li>W przeciwnym razie Dealer jest dodatkowo zobowiązany do zapłaty podatku VAT w wysokości ustawowej.</li>
+    <li>Dotyczy to również sytuacji, w której przesłanki odpadną później, np. z powodu braku dowodów zgodnie z § 12.2.</li>
+  </ul>
+  <p class="cl"><span class="n">7.4</span>Płatność realizowana jest za pośrednictwem usługi rachunku powierniczego (obecnie Paylax). Dealer wpłaca pełną cenę sprzedaży na rachunek powierniczy wskazany przez Safety Car w ciągu dwóch Dni roboczych od zawarcia umowy. Wypłata na rzecz Safety Car następuje zgodnie z warunkami usługi powierniczej. Opłaty za usługę powierniczą ponosi Safety Car.</p>
+  <p class="cl"><span class="n">7.5</span>Płatności gotówkowe nie są przyjmowane.</p>
+  <p class="cl"><span class="n">7.6</span>Pojazd zostaje wydany dopiero po wpływie pełnej ceny sprzedaży na rachunek powierniczy. Do czasu pełnej zapłaty pojazd pozostaje własnością Safety Car. Niemiecki dowód rejestracyjny część II (Zulassungsbescheinigung Teil II) zostaje wydany dopiero po pełnej zapłacie.</p>
+  <p class="cl"><span class="n">7.7</span>Dealer może potrącać wyłącznie wierzytelności bezsporne lub stwierdzone prawomocnym orzeczeniem. Prawo zatrzymania może wykonywać wyłącznie z tytułu roszczeń wynikających z tego samego stosunku umownego.</p>
+  <p class="cl"><span class="n">7.8</span>W przypadku zwłoki w zapłacie Dealer jest zobowiązany do zapłaty odsetek za opóźnienie w wysokości dziewięciu punktów procentowych powyżej stopy bazowej (§ 288 ust. 2 BGB) oraz ryczałtu zgodnie z § 288 ust. 5 BGB. Safety Car zastrzega sobie prawo dochodzenia dalszej szkody.</p>
+
+  <h2 id="pl-p8">§ 8 Wydanie, odbiór, przejście ryzyka i postój</h2>
+  <p class="cl"><span class="n">8.1</span>Wydanie następuje w Miejscu odbioru. Po wpływie płatności Safety Car informuje Dealera o Miejscu odbioru i możliwych terminach odbioru. Dealer odbiera pojazd osobiście lub zleca jego odbiór przewoźnikowi. Przewoźnik legitymuje się pisemnym zleceniem odbioru wystawionym przez Dealera.</p>
+  <p class="cl"><span class="n">8.2</span>Przy wydaniu sporządza się protokół wydania ze stanem licznika i widocznym z zewnątrz stanem pojazdu. Przewoźnik podpisuje protokół w imieniu Dealera.</p>
+  <p class="cl"><span class="n">8.3</span>Dealer odbiera pojazd w ciągu trzech Dni roboczych od wpływu płatności. Po upływie tego terminu Safety Car może naliczać opłatę postojową w wysokości 15 EUR za każdy rozpoczęty dzień kalendarzowy. Dealer może wykazać, że nie powstały żadne koszty lub powstały koszty niższe. Safety Car zastrzega sobie prawo dochodzenia dalszej szkody, w szczególności kosztów wobec Sprzedającego; opłata postojowa jest na nią zaliczana. Jeżeli Dealer nie odbierze pojazdu również po upływie dodatkowego terminu siedmiu dni kalendarzowych, zastosowanie ma § 13.1.</p>
+  <p class="cl"><span class="n">8.4</span>Ryzyko przypadkowej utraty i przypadkowego pogorszenia stanu pojazdu przechodzi na Dealera z chwilą wydania. Wydaniem jest również wydanie przewoźnikowi zleconemu przez Dealera. Jeżeli Dealer pozostaje w zwłoce z przyjęciem świadczenia, ryzyko przechodzi już z chwilą popadnięcia w zwłokę.</p>
+  <p class="cl"><span class="n">8.5</span>Jeżeli Safety Car na życzenie Dealera organizuje transport, czyni to w imieniu i na rachunek Dealera. Ryzyko przechodzi wówczas z chwilą wydania pojazdu przewoźnikowi (§ 447 BGB). Safety Car odpowiada wyłącznie za staranny wybór przewoźnika.</p>
+  <p class="cl"><span class="n">8.6</span>Pojazdy są co do zasady wydawane wyrejestrowane. Tablice rejestracyjne są wydawane tylko wtedy, gdy zostało to wyraźnie uzgodnione.</p>
+
+  <h2 id="pl-p9">§ 9 Stan pojazdu, Safety Car-Check i uzgodnione właściwości</h2>
+  <p class="cl"><span class="n">9.1</span>Sprzedawane są wyłącznie pojazdy używane, ze zużyciem odpowiadającym ich wiekowi i przebiegowi.</p>
+  <p class="cl"><span class="n">9.2</span>Safety Car-Check nie jest opinią rzeczoznawcy. Jest udokumentowanym zapisem stanu pojazdu w chwili kontroli na podstawie ustalonych punktów kontrolnych. Nie zawiera wypowiedzi na temat wartości pojazdu ani przyszłej trwałości poszczególnych podzespołów. Informacje o historii pojazdu opierają się na oświadczeniach Sprzedającego i przedłożonych dokumentach. Safety Car przekazuje je jako takie.</p>
+  <p class="cl"><span class="n">9.3</span>Za uzgodnione właściwości (umowa o właściwościach, § 434 ust. 2 zd. 1 pkt 1 BGB) uważa się wyłącznie wartości, które w Protokole kontroli zostały wyraźnie udokumentowane jako zmierzone lub stwierdzone. Rozstrzygająca jest wersja Protokołu kontroli opublikowana w chwili zakończenia Aukcji. Wartości odnoszą się do chwili kontroli. Tolerancje pomiarowe wskazane w Protokole kontroli stanowią część właściwości. Cechy, które nie zostały sprawdzone lub nie mogą zostać sprawdzone, nie są przedmiotem umowy o właściwościach.</p>
+  <p class="cl"><span class="n">9.4</span>Safety Car nie udziela gwarancji w rozumieniu §§ 276 ust. 1, 443 BGB, również poprzez Protokół kontroli lub określenia takie jak „sprawdzony” lub „Safety Car-Check”.</p>
+  <p class="cl"><span class="n">9.5</span>Za przebieg uważa się stan licznika odczytany w chwili kontroli. Kontrole wiarygodności opisane w Protokole kontroli stanowią właściwość wyłącznie w zakresie tam udokumentowanym. Określony rzeczywisty przebieg całkowity jest uzgodniony tylko wtedy, gdy Protokół kontroli wyraźnie wskazuje go jako stwierdzony.</p>
+  <p class="cl"><span class="n">9.6</span>Jeżeli w chwili przejścia ryzyka pojazd odbiega od właściwości określonych w § 9.3, obowiązują uprawnienia ustawowe (§§ 437 i nast. BGB) z następującymi zastrzeżeniami:</p>
+  <ul>
+    <li><strong>Świadczenie uzupełniające:</strong> Safety Car według własnego wyboru spełnia świadczenie uzupełniające poprzez zwrot niezbędnych kosztów usunięcia wady na podstawie kosztorysu przedłożonego przez Dealera i zatwierdzonego przez Safety Car albo poprzez odebranie pojazdu za zwrotem ceny sprzedaży.</li>
+    <li><strong>Sprawdzenie przez Safety Car:</strong> Przed rozpoczęciem naprawy Safety Car należy umożliwić sprawdzenie odstępstwa osobiście lub przez osobę trzecią.</li>
+    <li><strong>Dalsze uprawnienia:</strong> Jeżeli świadczenie uzupełniające nie powiedzie się lub Safety Car odmówi jego spełnienia, Dealer może zgodnie z przepisami ustawowymi odstąpić od umowy lub obniżyć cenę.</li>
+    <li><strong>Odszkodowanie:</strong> zastosowanie ma § 11.</li>
+  </ul>
+
+  <h2 id="pl-p10">§ 10 Wady fizyczne</h2>
+  <p class="cl"><span class="n">10.1</span>Z wyjątkiem uprawnień z tytułu odstępstwa od uzgodnionych właściwości zgodnie z § 9 roszczenia i uprawnienia Dealera z tytułu wad fizycznych (rękojmia) są wyłączone.</p>
+  <p class="cl"><span class="n">10.2</span>Wyłączenie zgodnie z § 10.1 nie ma zastosowania:</p>
+  <ul>
+    <li>w przypadku podstępnego zatajenia wady (§ 444 BGB);</li>
+    <li>do roszczeń odszkodowawczych z tytułu naruszenia życia, ciała lub zdrowia;</li>
+    <li>do roszczeń odszkodowawczych z tytułu umyślnego lub rażąco niedbałego naruszenia obowiązków przez Safety Car, jego przedstawicieli ustawowych lub osoby, którymi się posługuje;</li>
+    <li>do roszczeń wynikających z niemieckiej ustawy o odpowiedzialności za produkt (Produkthaftungsgesetz).</li>
+  </ul>
+  <p class="cl"><span class="n">10.3</span>Dealer lub jego przewoźnik bada pojazd przy wydaniu. Wady oczywiste i rozpoznawalne odstępstwa od Protokołu kontroli Dealer zgłasza w formie dokumentowej w ciągu pięciu Dni roboczych od wydania. Wady ukryte zgłasza w ciągu pięciu Dni roboczych od ich wykrycia. W razie braku terminowego zgłoszenia uprawnienia z tytułu danej wady są wyłączone, chyba że Safety Car podstępnie zataił wadę. § 377 niemieckiego kodeksu handlowego (HGB) pozostaje nienaruszony, o ile ma zastosowanie.</p>
+  <p class="cl"><span class="n">10.4</span>Roszczenia z tytułu wad fizycznych przedawniają się z upływem dwunastu miesięcy od wydania. Nie dotyczy to przypadków określonych w § 10.2. W tych przypadkach obowiązują ustawowe terminy przedawnienia.</p>
+
+  <h2 id="pl-p11">§ 11 Odpowiedzialność</h2>
+  <p class="cl"><span class="n">11.1</span>Safety Car ponosi nieograniczoną odpowiedzialność za winę umyślną i rażące niedbalstwo, za szkody wynikające z naruszenia życia, ciała lub zdrowia, w przypadku podstępnego zatajenia wady oraz na podstawie niemieckiej ustawy o odpowiedzialności za produkt.</p>
+  <p class="cl"><span class="n">11.2</span>W przypadku zwykłego niedbalstwa Safety Car odpowiada wyłącznie za naruszenie istotnego obowiązku umownego. Istotny jest obowiązek, którego wykonanie w ogóle umożliwia prawidłową realizację umowy i na którego przestrzeganie Dealer może regularnie polegać. W takim przypadku odpowiedzialność jest ograniczona do szkody typowej dla umowy i możliwej do przewidzenia w chwili jej zawarcia.</p>
+  <p class="cl"><span class="n">11.3</span>Safety Car nie gwarantuje określonej dostępności Platformy. Safety Car może przerwać jej działanie w celu przeprowadzenia prac konserwacyjnych i w miarę możliwości zapowiada je z wyprzedzeniem.</p>
+  <p class="cl"><span class="n">11.4</span>Powyższe ograniczenia odpowiedzialności obowiązują również na rzecz wspólników, przedstawicieli ustawowych i osób, którymi posługuje się Safety Car.</p>
+
+  <h2 id="pl-p12">§ 12 Obowiązki Dealera, wywóz i podatki</h2>
+  <p class="cl"><span class="n">12.1</span>Jeżeli pojazd wyjątkowo zostanie wydany jako zarejestrowany, Dealer przerejestruje go lub wyrejestruje w ciągu pięciu Dni roboczych od wydania. Na żądanie przedstawia Safety Car dowód tego. Do tego czasu Dealer zwalnia Safety Car i Sprzedającego z kosztów i roszczeń osób trzecich wynikających z używania pojazdu po jego wydaniu.</p>
+  <p class="cl"><span class="n">12.2</span>W przypadku pojazdów opodatkowanych na zasadach ogólnych w rozumieniu § 7.3 Dealer współdziała przy dokumentowaniu wewnątrzwspólnotowej dostawy towarów. W szczególności:</p>
+  <ul>
+    <li>przy zawarciu umowy posługuje się ważnym numerem identyfikacyjnym VAT UE nadanym mu przez inne państwo członkowskie;</li>
+    <li>w ciągu dziesięciu Dni roboczych od przybycia pojazdu do kraju przeznaczenia przekazuje Safety Car kompletne potwierdzenie dostarczenia (Gelangensbestätigung) w rozumieniu § 17b niemieckiego rozporządzenia wykonawczego do ustawy o VAT (UStDV), wraz z numerem VIN, lub inny dopuszczalny dowód;</li>
+    <li>jeżeli sam organizuje transport, udostępnia niezbędne dokumenty przewozowe.</li>
+  </ul>
+  <p class="cl"><span class="n">12.3</span>Wszystkie podatki, opłaty i koszty rejestracji powstające w kraju przeznaczenia ponosi Dealer, w szczególności polski podatek akcyzowy.</p>
+  <p class="cl"><span class="n">12.4</span>Za dalszą sprzedaż konsumentom Dealer odpowiada samodzielnie. Ciążące na nim w tym zakresie obowiązki ustawowe nie mają wpływu na stosunek z Safety Car.</p>
+
+  <h2 id="pl-p13">§ 13 Naruszenia obowiązków, ryczałtowe odszkodowanie i zakaz obchodzenia</h2>
+  <p class="cl"><span class="n">13.1</span>Jeżeli Dealer nie wpłaci terminowo ceny sprzedaży na rachunek powierniczy lub nie odbierze pojazdu, Safety Car może po bezskutecznym upływie odpowiedniego dodatkowego terminu odstąpić od umowy i żądać odszkodowania zamiast świadczenia. Safety Car może żądać ryczałtowego odszkodowania w wysokości 10% ceny sprzedaży. Dealer może wykazać, że szkoda nie powstała lub jest istotnie niższa. Safety Car może wykazać szkodę wyższą.</p>
+  <p class="cl"><span class="n">13.2</span>W odniesieniu do każdego pojazdu, który został zaoferowany Dealerowi na Platformie, obowiązuje zakaz obchodzenia Safety Car przez okres dwunastu miesięcy od zakończenia danej Aukcji. W tym okresie Dealer nie nabywa pojazdu od Sprzedającego bezpośrednio ani za pośrednictwem osób trzecich i nie pośredniczy w jego sprzedaży, chyba że nabycie następuje za pośrednictwem Safety Car. Zakaz nie obowiązuje, jeżeli Dealer wykaże, że przed wystawieniem pojazdu na Platformie pozostawał w kontakcie ze Sprzedającym w sprawie tego pojazdu.</p>
+  <p class="cl"><span class="n">13.3</span>Jeżeli Dealer w sposób zawiniony naruszy § 13.2, jest zobowiązany do zapłaty kary umownej za każdy pojazd, którego naruszenie dotyczy. Safety Car ustala jej wysokość według słusznego uznania; wynosi ona maksymalnie 5 000 EUR. W razie sporu jej adekwatność podlega kontroli właściwego sądu. Kara umowna jest zaliczana na poczet roszczenia odszkodowawczego.</p>
+  <p class="cl"><span class="n">13.4</span>W przypadku powtarzających się lub poważnych naruszeń zastosowanie ma § 3.6. Zawarte już umowy sprzedaży pozostają nienaruszone.</p>
+
+  <h2 id="pl-p14">§ 14 Poufność, dane i prawa do korzystania</h2>
+  <p class="cl"><span class="n">14.1</span>Dealer może wykorzystywać Protokoły kontroli, zdjęcia i inne dokumenty Safety Car wyłącznie do własnych decyzji zakupowych oraz do dalszej sprzedaży pojazdu kupionego od Safety Car. Przekazuje je dalej wyłącznie w całości i bez zmian.</p>
+  <p class="cl"><span class="n">14.2</span>Korzystanie z nazwy i logo „Safety Car” oraz powoływanie się na relację handlową wymaga uprzedniej zgody w formie dokumentowej.</p>
+  <p class="cl"><span class="n">14.3</span>Zabronione są:</p>
+  <ul>
+    <li>automatyczne pobieranie treści z Platformy;</li>
+    <li>przekazywanie danych dostępowych osobom trzecim;</li>
+    <li>jakiekolwiek wpływanie na przebieg Aukcji, w szczególności oferty pozorne lub zmowy z innymi licytującymi.</li>
+  </ul>
+  <p class="cl"><span class="n">14.4</span>Dealer otrzymuje dane osobowe Sprzedającego wyłącznie w zakresie niezbędnym do odbioru i rejestracji pojazdu. Dotyczy to w szczególności adresu odbioru i danych kontaktowych oraz danych zawartych w dokumentach pojazdu. Dealer przetwarza te dane wyłącznie w tych celach i zgodnie z RODO. W szczególności nie wykorzystuje ich do kontaktowania się ze Sprzedającym w innych celach.</p>
+  <p class="cl"><span class="n">14.5</span>Safety Car przetwarza dane osobowe zgodnie z <a href="datenschutz.html?lang=pl">polityką prywatności</a>.</p>
+
+  <h2 id="pl-p15">§ 15 Zmiany niniejszych OWH</h2>
+  <p class="cl"><span class="n">15.1</span>Safety Car może zmienić niniejsze OWH ze skutkiem dla przyszłych Aukcji, jeżeli istnieje ku temu uzasadniona przyczyna. Uzasadnionymi przyczynami są w szczególności zmiany przepisów, orzecznictwa, przebiegu aukcji lub rozwój techniczny Platformy. Safety Car informuje Dealera o zmianach w formie dokumentowej co najmniej cztery tygodnie przed ich wejściem w życie.</p>
+  <p class="cl"><span class="n">15.2</span>Po wejściu zmian w życie Dealer może ponownie składać Oferty dopiero po wyraźnym zaakceptowaniu zmienionych OWH na Platformie. Jeżeli Dealer ich nie zaakceptuje, każda ze stron może wypowiedzieć stosunek korzystania z Platformy zgodnie z § 3.5.</p>
+  <p class="cl"><span class="n">15.3</span>Do złożonych już Ofert i zawartych umów sprzedaży stosuje się nadal OWH obowiązujące w chwili złożenia Oferty.</p>
+
+  <h2 id="pl-p16">§ 16 Postanowienia końcowe</h2>
+  <p class="cl"><span class="n">16.1</span>Zastosowanie ma prawo Republiki Federalnej Niemiec z wyłączeniem Konwencji Narodów Zjednoczonych o umowach międzynarodowej sprzedaży towarów (CISG).</p>
+  <p class="cl"><span class="n">16.2</span>Wyłącznym sądem właściwym dla wszystkich sporów wynikających z niniejszych OWH i umów zawartych na ich podstawie lub z nimi związanych jest sąd właściwy dla siedziby Safety Car. W odniesieniu do Dealerów z siedzibą w innym państwie członkowskim Unii Europejskiej stanowi to umowę jurysdykcyjną w rozumieniu art. 25 rozporządzenia (UE) nr 1215/2012. Safety Car może również pozwać Dealera przed sądem właściwym dla jego siedziby.</p>
+  <p class="cl"><span class="n">16.3</span>Językiem umowy jest język niemiecki. Tłumaczenia niniejszych OWH, np. na język polski lub angielski, służą lepszemu zrozumieniu. W razie rozbieżności rozstrzygająca jest wersja niemiecka.</p>
+  <p class="cl"><span class="n">16.4</span>Jeżeli którekolwiek z postanowień niniejszych OWH jest lub stanie się w całości lub w części nieważne, nie narusza to ważności pozostałych postanowień. W miejsce nieważnego postanowienia wchodzą przepisy ustawowe (§ 306 ust. 2 BGB).</p>
+
+  <p style="margin-top:32px;font-size:.78rem;color:var(--muted);">Stan: wrzesień 2026 · Tłumaczenie – wiążąca jest wersja niemiecka.</p>
+</div>
 </main>
 
 <footer class="ds-footer">
   <div class="ds-footer-links">
-    <a href="index.html">Startseite</a>
-    <a href="impressum.html">Impressum</a>
-    <a href="datenschutz.html">Datenschutz</a>
-    <a href="agb.html">AGB</a>
+    <a href="index.html"><span data-l="de">Startseite</span><span data-l="en">Home</span><span data-l="pl">Strona główna</span></a>
+    <a href="impressum.html"><span data-l="de">Impressum</span><span data-l="en">Legal notice</span><span data-l="pl">Nota prawna</span></a>
+    <a href="datenschutz.html"><span data-l="de">Datenschutz</span><span data-l="en">Privacy</span><span data-l="pl">Prywatność</span></a>
+    <a href="agb.html"><span data-l="de">AGB</span><span data-l="en">Terms</span><span data-l="pl">Regulamin</span></a>
   </div>
   <p class="ds-footer-copy">© 2026 Safety Car · Jenne, Zehner Safety Car GbR · Korntal-Münchingen</p>
 </footer>
+
+<script>
+(function(){
+  var ALLOWED=['de','en','pl'];
+  var TITLES={de:'AGB – Safety Car',en:'Terms and Conditions – Safety Car',pl:'Ogólne Warunki Handlowe – Safety Car'};
+  function apply(lang){
+    if(ALLOWED.indexOf(lang)<0) lang='de';
+    document.body.classList.remove('l-de','l-en','l-pl');
+    document.body.classList.add('l-'+lang);
+    document.documentElement.lang=lang;
+    document.title=TITLES[lang];
+    document.querySelectorAll('.lang button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-lang')===lang); });
+    document.querySelectorAll('.ds-footer a[href="datenschutz.html"], .ds-footer a[href^="datenschutz.html?"]').forEach(function(a){ a.setAttribute('href','datenschutz.html?lang='+lang); });
+    try{ localStorage.setItem('sc_op_lang',lang); }catch(e){}
+  }
+  document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click', function(){ apply(b.getAttribute('data-lang')); }); });
+  var lang=null;
+  try{ lang=new URLSearchParams(location.search).get('lang'); }catch(e){}
+  if(ALLOWED.indexOf(lang)<0){ try{ lang=localStorage.getItem('sc_op_lang')||localStorage.getItem('sc_lang_tool'); }catch(e){} }
+  if(ALLOWED.indexOf(lang)<0){ var nl=(navigator.language||'de').toLowerCase(); lang=nl.indexOf('pl')===0?'pl':(nl.indexOf('en')===0?'en':'de'); }
+  apply(lang);
+})();
+</script>
 
 </body>
 </html>
