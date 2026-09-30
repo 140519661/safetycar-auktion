@@ -162,6 +162,27 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:30px 0;border-to
 .ck-ok{flex:none;background:var(--red);color:#fff;border:none;border-radius:9px;padding:11px 22px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit}
 .ck-ok:hover{background:var(--red-h,#C80000)}
 @media(max-width:560px){.ck-in{flex-direction:column;align-items:stretch;gap:12px}.ck-ok{width:100%}}
+
+/* ── Einheitliche Haptik: Karten heben sich beim Darueberfahren leicht an ── */
+.step,.chip,.reg{transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}
+.step:hover,.chip:hover,.reg:hover{transform:translateY(-4px);border-color:#d9d9d9;box-shadow:0 10px 26px rgba(0,0,0,.07)}
+.step .n{transition:transform .35s ease}
+.step:hover .n{transform:scale(1.08)}
+.chip.hl:hover{border-color:var(--red-h,#C80000);box-shadow:0 10px 26px rgba(176,0,0,.22)}
+.reg .rn{transition:transform .35s ease}
+.reg:hover .rn{transform:scale(1.08)}
+.btn{will-change:transform}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0) scale(.985)}
+.btn-red:hover{background:var(--red-h,#C80000)}
+.btn-ghost:hover{border-color:#cfcfcf}
+.lang button{transition:color .2s ease,background-color .2s ease}
+.foot-links a,.foot-contact a{transition:color .2s ease}
+@media(prefers-reduced-motion:reduce){
+  .step,.chip,.reg,.btn,.step .n,.reg .rn{transition:none}
+  .step:hover,.chip:hover,.reg:hover,.btn:hover,.btn:active{transform:none}
+  .step:hover .n,.reg:hover .rn{transform:none}
+}
 </style>
 </head>
 <body>
