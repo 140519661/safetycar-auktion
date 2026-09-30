@@ -61,7 +61,7 @@ a{text-decoration:none;color:inherit}
 .pill{display:inline-flex;align-items:center;gap:8px;font-family:'Montserrat';font-weight:700;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);background:var(--red-bg,rgba(176,0,0,.07));border:1px solid rgba(176,0,0,.18);padding:6px 14px;border-radius:100px;margin-bottom:22px}
 .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--red)}
 .hero h1{font-weight:800;font-size:clamp(1.9rem,4.4vw,3.05rem);line-height:1.06;letter-spacing:-.02em;margin-bottom:20px;text-wrap:balance}
-.hero p.sub{font-size:clamp(1rem,1.6vw,1.15rem);color:var(--mid);max-width:620px;margin-bottom:30px}
+.hero p.sub{font-size:clamp(1rem,1.6vw,1.15rem);color:var(--mid);max-width:730px;margin-bottom:30px}
 .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:26px}
 .trustline{display:flex;gap:22px;flex-wrap:wrap;color:var(--muted);font-size:.85rem}
 .trustline span{display:inline-flex;align-items:center;gap:7px}
@@ -83,13 +83,16 @@ a{text-decoration:none;color:inherit}
 .trust{background:var(--ink);color:#fff}
 .trust .eyebrow{color:#ff6b6b}
 .trust h2{color:#fff}
-.tcards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-@media(max-width:760px){.tcards{grid-template-columns:1fr}}
-.tcard{border:1px solid rgba(255,255,255,.14);border-radius:var(--rl);padding:26px}
-.tcard .ic{width:40px;height:40px;border-radius:10px;background:rgba(176,0,0,.25);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.tcards{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:1000px}
+@media(max-width:760px){.tcards{grid-template-columns:1fr;gap:16px}.tcard{padding:26px 24px}}
+@media(prefers-reduced-motion:reduce){.tcard,.tcard .ic{transition:none}.tcard:hover{transform:none}.tcard:hover .ic{transform:none}}
+.tcard{border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:34px 32px;background:rgba(255,255,255,.02);transition:transform .35s ease,border-color .35s ease,background-color .35s ease}
+.tcard:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.055)}
+.tcard .ic{width:48px;height:48px;border-radius:12px;background:rgba(176,0,0,.25);display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:background-color .35s ease,transform .35s ease}
+.tcard:hover .ic{background:rgba(176,0,0,.5);transform:scale(1.06)}
 .tcard .ic svg{stroke:#ff6b6b;fill:none;stroke-width:2}
-.tcard h3{font-weight:700;font-size:1.05rem;margin-bottom:8px}
-.tcard p{font-size:.9rem;color:rgba(255,255,255,.66)}
+.tcard h3{font-weight:700;font-size:1.18rem;margin-bottom:10px}
+.tcard p{font-size:.94rem;line-height:1.65;color:rgba(255,255,255,.7)}
 
 /* ---- Band ---- */
 .band{background:var(--red);color:#fff;text-align:center;padding:58px 0}
@@ -148,6 +151,17 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:30px 0;border-to
 .foot-contact a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.82rem}
 .foot-contact a:hover{color:#fff}
 .foot-sep{color:rgba(255,255,255,.28);margin:0 10px}
+
+.ck{position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;display:none;justify-content:center;pointer-events:none}
+.ck.show{display:flex}
+.ck-in{pointer-events:auto;width:100%;max-width:680px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:16px;box-shadow:0 10px 34px rgba(0,0,0,.14)}
+.ck-body{flex:1;min-width:0}
+.ck-t{font-weight:700;font-size:.92rem;color:var(--ink);margin:0 0 3px}
+.ck-x{font-size:.78rem;color:var(--mid);line-height:1.55;margin:0}
+.ck-x a{color:var(--red)}
+.ck-ok{flex:none;background:var(--red);color:#fff;border:none;border-radius:9px;padding:11px 22px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit}
+.ck-ok:hover{background:var(--red-h,#C80000)}
+@media(max-width:560px){.ck-in{flex-direction:column;align-items:stretch;gap:12px}.ck-ok{width:100%}}
 </style>
 </head>
 <body>
@@ -169,14 +183,14 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:30px 0;border-to
 <section class="hero"><div class="wrap">
   <span class="pill"><span class="dot"></span><span data-i18n="hero_eyebrow">F&uuml;r Sie als Fahrzeugh&auml;ndler</span></span>
   <h1><span data-i18n="hero_h1a">Geprüfte Gebrauchtwagen.</span><br/><span data-i18n="hero_h1b">Direkt für Ihren Handel.</span></h1>
-  <p class="sub" data-i18n="hero_sub">Ihr exklusiver Ankaufskanal f&uuml;r gepr&uuml;fte Gebrauchtfahrzeuge aus privatem Vorbesitz &ndash;<br/>jetzt kostenlos registrieren und direkt mitbieten.</p>
+  <p class="sub" data-i18n="hero_sub">Ihr exklusiver Ankaufskanal f&uuml;r gepr&uuml;fte Gebrauchtfahrzeuge aus privatem Vorbesitz &ndash; jetzt kostenlos registrieren und direkt mitbieten.</p>
   <div class="hero-cta">
     <a href="app.html" class="btn btn-red" data-i18n="cta_register">H&auml;ndlerregistrierung</a>
     <a href="app.html#login" class="btn btn-ghost" data-i18n="cta_login">H&auml;ndleranmeldung</a>
   </div>
   <div class="trustline">
     <span><svg width="15" height="15" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="tl1">Gepr&uuml;fte Fahrzeuge</span></span>
-    <span><svg width="15" height="15" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="tl2">Sichere Zahlungsabwicklung</span></span>
+    <span><svg width="15" height="15" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="tl2">Sichere Zahlung</span></span>
     <span><svg width="15" height="15" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="tl3">Reibungslose Abwicklung</span></span>
   </div>
 </div></section>
@@ -187,9 +201,9 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:30px 0;border-to
   <h2 data-i18n="steps_title">So einfach kann Ihr zuk&uuml;nftiger Fahrzeugeinkauf ablaufen.</h2>
   <div class="steps">
     <div class="step"><div class="n">1</div><h3 data-i18n="s1t">Pr&uuml;fung</h3><p data-i18n="s1d">Jedes Auktionsfahrzeug wird vorab von unseren Kfz-Mechatronikern detailliert gepr&uuml;ft.</p></div>
-    <div class="step"><div class="n">2</div><h3 data-i18n="s2t">3-Stunden-Auktion</h3><p data-i18n="s2d">Jeden Abend werden die Fahrzeuge des Tages zwischen 17 und 20 Uhr auktioniert &ndash; das H&ouml;chstgebot erh&auml;lt den Zuschlag.</p></div>
+    <div class="step"><div class="n">2</div><h3 data-i18n="s2t">3-Stunden-Auktion</h3><p data-i18n="s2d">Jeden Abend werden die Fahrzeuge des Tages zwischen 17:00 und 20:00 Uhr auktioniert &ndash; das H&ouml;chstgebot erh&auml;lt den Zuschlag.</p></div>
     <div class="step"><div class="n">3</div><h3 data-i18n="s3t">Zahlungsabwicklung</h3><p data-i18n="s3d">Sichere Zahlungsabwicklung &uuml;ber einen Treuh&auml;nder.</p></div>
-    <div class="step"><div class="n">4</div><h3 data-i18n="s4t">Abholung</h3><p data-i18n="s4d">Selbstabholung an unserem Sammelplatz in Stuttgart oder Lieferung &uuml;ber unseren Dienstleister.</p></div>
+    <div class="step"><div class="n">4</div><h3 data-i18n="s4t">Abholung</h3><p data-i18n="s4d">Selbstabholung an unserem Sammelplatz in Stuttgart oder Direktanlieferung &uuml;ber unseren Dienstleister.</p></div>
   </div>
 </div></section>
 
@@ -243,7 +257,6 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:30px 0;border-to
     <div class="reg"><span class="rn">2</span><span class="rt" data-i18n="reg2">Pr&uuml;fung durch Safety Car</span></div>
     <div class="reg"><span class="rn">3</span><span class="rt" data-i18n="reg3">Zugang erhalten &amp; direkt mitbieten</span></div>
   </div>
-  <p class="reg-note" data-i18n="reg_note">Neue H&auml;ndler starten mit einem Bietlimit, das nach den ersten Abwicklungen steigt.</p>
 </div></section>
 
 <!-- BAND -->
@@ -268,11 +281,20 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:30px 0;border-to
   <div class="foot-copy">© 2026 Safety Car · Jenne, Zehner Safety Car GbR · Korntal-Münchingen</div>
 </div></footer>
 
+<div id="ckBanner" class="ck" role="region" aria-labelledby="ckTitle">
+  <div class="ck-in">
+    <div class="ck-body">
+      <p class="ck-t" id="ckTitle" data-i18n="ck_title">Hinweis zum Datenschutz</p>
+      <p class="ck-x" data-i18n="ck_text">Diese Seite speichert ausschlie&szlig;lich technisch notwendige Informationen im lokalen Speicher Ihres Browsers (Spracheinstellung, dieser Hinweis). Es findet kein Tracking und keine Werbung statt. Mehr dazu in unserer <a href="datenschutz.html">Datenschutzerkl&auml;rung</a>.</p>
+    </div>
+    <button type="button" class="ck-ok" id="ckOk" data-i18n="ck_btn">Verstanden</button>
+  </div>
+</div>
 <script>
 var I18N={
  de:{},
- en:{veh4v:"mainly ≤ 2,000 cc",t4t:"Smooth processing",t4d:"Every vehicle is deregistered and handed over with all documents required for transfer.",pf_eyebrow:"Our Safety Car-Check",pf_title:"Properly measured, not roughly estimated.",pf_lead:"Every auction vehicle is inspected beforehand to a set standard by our automotive technicians – with state-of-the-art diagnostic and measuring equipment and a mobile lift.",pf_c1:"Reading the fault memory",pf_c2:"Underbody on a mobile lift",pf_c3:"Checking paint for respray",pf_c4:"Battery test with printout",pf_c5:"Checking operating fluids",pf_c6:"A report for every vehicle",nav_login:"Log in",hero_eyebrow:"For you as a car dealer",hero_h1a:"Vetted vehicles.",hero_h1b:"Straight to your business.",hero_sub:"Your exclusive sourcing channel for inspected used vehicles from private ownership –<br/>register free of charge and start bidding.",cta_register:"Dealer registration",cta_login:"Dealer login",tl1:"Inspected vehicles",tl2:"Secure payment handling",tl3:"Smooth processing",steps_eyebrow:"Our process",steps_title:"This is how your future vehicle purchasing can work.",s1t:"Inspection",s1d:"Every auction vehicle is inspected in detail by our automotive technicians beforehand.",s2t:"3-hour auction",s2d:"Every evening the day's vehicles are auctioned between 5 and 8 pm – the highest bid wins.",s3t:"Payment handling",s3d:"Secure payment handling via an escrow service.",s4t:"Collection",s4d:"Collect yourself at our assembly point in Stuttgart or have it delivered by our service partner.",trust_eyebrow:"Why Safety Car?",trust_title:"You are not just buying stock – you are buying certainty for your own calculation.",t1t:"Calculation certainty",t1d:"Our inspection report lets you calculate reliably – without travelling there and without a safety margin.",t2t:"A clear commitment",t2d:"We stand fully behind the measured values in the inspection report – a clear undertaking instead of a blanket exclusion.",t3t:"Mileage in focus",t3d:"Multi-stage comparison across the individual control units, the service history and the wear pattern.",band_title:"Register and start bidding.",band_sub:"Your direct access to inspected used cars from Germany – without fixed costs.",band_cta:"Dealer registration",f_imp:"Legal notice",f_ds:"Privacy",f_agb:"Terms",veh_eyebrow:"Focus vehicles",veh_title:"These are the used cars we focus on.",veh1v:"Private ownership",veh1l:"Origin",veh2v:"Established brands",veh2l:"Focus brands",veh3v:"up to €25,000",veh3l:"Vehicle value",veh4l:"Engine size",ma_live:"Live auction",ma_tag:"Example auction",st_live:"Live",st_sold:"Sold",ma_curr:"Current highest bid",ma_sub:"13 bids \u00b7 14 h left",reg_eyebrow:"Registration",reg_title:"Three steps to exclusive access.",reg1:"Register via our platform",reg2:"Review by Safety Car",reg3:"Get access & start bidding",reg_note:"New dealers start with a bid limit that rises after the first completed deals."},
- pl:{veh4v:"głównie ≤ 2 000 cm³",t4t:"Sprawna realizacja",t4d:"Każdy pojazd jest wyrejestrowany i przekazywany ze wszystkimi dokumentami niezbędnymi do przewozu.",pf_eyebrow:"Nasz Safety Car-Check",pf_title:"Rzetelnie zmierzone, nie z grubsza oszacowane.",pf_lead:"Każdy pojazd aukcyjny jest wcześniej sprawdzany według jednolitego standardu przez naszych mechatroników – przy użyciu nowoczesnej techniki diagnostycznej i pomiarowej oraz mobilnego podnośnika.",pf_c1:"Odczyt pamięci usterek",pf_c2:"Podwozie na mobilnym podnośniku",pf_c3:"Kontrola lakieru pod kątem przemalowań",pf_c4:"Test akumulatora z wydrukiem",pf_c5:"Kontrola płynów eksploatacyjnych",pf_c6:"Protokół do każdego pojazdu",nav_login:"Zaloguj się",hero_eyebrow:"Dla Państwa jako dealera samochodowego",hero_h1a:"Sprawdzone pojazdy.",hero_h1b:"Prosto do Twojego biznesu.",hero_sub:"Państwa ekskluzywny kanał zakupu sprawdzonych samochodów używanych od właścicieli prywatnych –<br/>bezpłatna rejestracja i licytacja od razu.",cta_register:"Rejestracja dealera",cta_login:"Logowanie dealera",tl1:"Sprawdzone pojazdy",tl2:"Bezpieczna obsługa płatności",tl3:"Sprawna realizacja",steps_eyebrow:"Nasz przebieg",steps_title:"Tak prosto może wyglądać Państwa przyszły zakup pojazdów.",s1t:"Kontrola",s1d:"Każdy pojazd aukcyjny jest wcześniej szczegółowo sprawdzany przez naszych mechatroników samochodowych.",s2t:"Aukcja 3-godzinna",s2d:"Każdego wieczoru pojazdy z danego dnia licytowane są między 17 a 20 – najwyższa oferta wygrywa.",s3t:"Obsługa płatności",s3d:"Bezpieczna obsługa płatności przez powiernika.",s4t:"Odbiór",s4d:"Odbiór własny w naszym punkcie zbiorczym w Stuttgarcie lub dostawa przez naszego usługodawcę.",trust_eyebrow:"Dlaczego Safety Car?",trust_title:"Kupują Państwo nie tylko towar handlowy, lecz przede wszystkim pewność własnej kalkulacji.",t1t:"Pewność kalkulacji",t1d:"Na podstawie naszego protokołu mogą Państwo rzetelnie kalkulować – bez dojazdu i bez marginesu bezpieczeństwa.",t2t:"Jasne zobowiązanie",t2d:"Za wartości zmierzone w protokole odpowiadamy w pełni – jasne zapewnienie zamiast ogólnego wyłączenia.",t3t:"Przebieg pod lupą",t3d:"Wielostopniowe porównanie danych ze sterowników, historii serwisowej i obrazu zużycia.",band_title:"Zarejestruj się i licytuj.",band_sub:"Państwa bezpośredni dostęp do sprawdzonych samochodów używanych z Niemiec – bez kosztów stałych.",band_cta:"Rejestracja dealera",f_imp:"Nota prawna",f_ds:"Prywatność",f_agb:"Regulamin",veh_eyebrow:"Pojazdy w centrum uwagi",veh_title:"Na tych samochodach używanych się koncentrujemy.",veh1v:"Własność prywatna",veh1l:"Pochodzenie",veh2v:"Uznane marki",veh2l:"Marki priorytetowe",veh3v:"do 25 000 €",veh3l:"Wartość pojazdu",veh4l:"Pojemność silnika",ma_live:"Aukcja na żywo",ma_tag:"Przykładowa aukcja",st_live:"Na żywo",st_sold:"Sprzedane",ma_curr:"Aktualna najwyższa oferta",ma_sub:"13 ofert \u00b7 pozostało 14 godz.",reg_eyebrow:"Rejestracja",reg_title:"Trzy kroki do ekskluzywnego dostępu.",reg1:"Rejestracja przez naszą platformę",reg2:"Weryfikacja przez Safety Car",reg3:"Uzyskanie dostępu i licytacja",reg_note:"Nowi dealerzy zaczynają z limitem licytacji, który rośnie po pierwszych transakcjach."}
+ en:{ck_btn:"Got it",ck_text:"This page only stores technically necessary information in your browser's local storage (language setting, this notice). There is no tracking and no advertising. Find out more in our <a href='datenschutz.html'>privacy policy</a>.",ck_title:"Privacy notice",veh4v:"mainly ≤ 2,000 cc",t4t:"Smooth processing",t4d:"Every vehicle is deregistered and handed over with all documents required for transfer.",pf_eyebrow:"Our Safety Car-Check",pf_title:"Properly measured, not roughly estimated.",pf_lead:"Every auction vehicle is inspected beforehand to a set standard by our automotive technicians – with state-of-the-art diagnostic and measuring equipment and a mobile lift.",pf_c1:"Reading the fault memory",pf_c2:"Underbody on a mobile lift",pf_c3:"Checking paint for respray",pf_c4:"Battery test with printout",pf_c5:"Checking operating fluids",pf_c6:"A report for every vehicle",nav_login:"Log in",hero_eyebrow:"For you as a car dealer",hero_h1a:"Vetted vehicles.",hero_h1b:"Straight to your business.",hero_sub:"Your exclusive sourcing channel for inspected used vehicles from private ownership – register free of charge and start bidding.",cta_register:"Dealer registration",cta_login:"Dealer login",tl1:"Inspected vehicles",tl2:"Secure payment",tl3:"Smooth processing",steps_eyebrow:"Our process",steps_title:"This is how your future vehicle purchasing can work.",s1t:"Inspection",s1d:"Every auction vehicle is inspected in detail by our automotive technicians beforehand.",s2t:"3-hour auction",s2d:"Every evening the day's vehicles are auctioned between 5:00 and 8:00 pm – the highest bid wins.",s3t:"Payment handling",s3d:"Secure payment handling via an escrow service.",s4t:"Collection",s4d:"Collect yourself at our assembly point in Stuttgart or have it delivered directly by our service partner.",trust_eyebrow:"Why Safety Car?",trust_title:"You are not just buying stock – you are buying certainty for your own calculation.",t1t:"Calculation certainty",t1d:"Our inspection report lets you calculate reliably – without travelling there and without a safety margin.",t2t:"A clear commitment",t2d:"We stand fully behind the measured values in the inspection report – a clear undertaking instead of a blanket exclusion.",t3t:"Mileage in focus",t3d:"Multi-stage comparison across the individual control units, the service history and the wear pattern.",band_title:"Register and start bidding.",band_sub:"Your direct access to inspected used cars from Germany – without fixed costs.",band_cta:"Dealer registration",f_imp:"Legal notice",f_ds:"Privacy",f_agb:"Terms",veh_eyebrow:"Focus vehicles",veh_title:"These are the used cars we focus on.",veh1v:"Private ownership",veh1l:"Origin",veh2v:"Established brands",veh2l:"Focus brands",veh3v:"up to €25,000",veh3l:"Vehicle value",veh4l:"Engine size",ma_live:"Live auction",ma_tag:"Example auction",st_live:"Live",st_sold:"Sold",ma_curr:"Current highest bid",ma_sub:"13 bids \u00b7 14 h left",reg_eyebrow:"Registration",reg_title:"Three steps to exclusive access.",reg1:"Register via our platform",reg2:"Review by Safety Car",reg3:"Get access & start bidding",},
+ pl:{ck_btn:"Rozumiem",ck_text:"Ta strona zapisuje w pamięci lokalnej przeglądarki wyłącznie technicznie niezbędne informacje (ustawienie języka, ta informacja). Nie stosujemy śledzenia ani reklam. Więcej w naszej <a href='datenschutz.html'>polityce prywatności</a>.",ck_title:"Informacja o ochronie danych",veh4v:"głównie ≤ 2 000 cm³",t4t:"Sprawna realizacja",t4d:"Każdy pojazd jest wyrejestrowany i przekazywany ze wszystkimi dokumentami niezbędnymi do przewozu.",pf_eyebrow:"Nasz Safety Car-Check",pf_title:"Rzetelnie zmierzone, nie z grubsza oszacowane.",pf_lead:"Każdy pojazd aukcyjny jest wcześniej sprawdzany według jednolitego standardu przez naszych mechatroników – przy użyciu nowoczesnej techniki diagnostycznej i pomiarowej oraz mobilnego podnośnika.",pf_c1:"Odczyt pamięci usterek",pf_c2:"Podwozie na mobilnym podnośniku",pf_c3:"Kontrola lakieru pod kątem przemalowań",pf_c4:"Test akumulatora z wydrukiem",pf_c5:"Kontrola płynów eksploatacyjnych",pf_c6:"Protokół do każdego pojazdu",nav_login:"Zaloguj się",hero_eyebrow:"Dla Państwa jako dealera samochodowego",hero_h1a:"Sprawdzone pojazdy.",hero_h1b:"Prosto do Twojego biznesu.",hero_sub:"Państwa ekskluzywny kanał zakupu sprawdzonych samochodów używanych od właścicieli prywatnych – bezpłatna rejestracja i licytacja od razu.",cta_register:"Rejestracja dealera",cta_login:"Logowanie dealera",tl1:"Sprawdzone pojazdy",tl2:"Bezpieczna płatność",tl3:"Sprawna realizacja",steps_eyebrow:"Nasz przebieg",steps_title:"Tak prosto może wyglądać Państwa przyszły zakup pojazdów.",s1t:"Kontrola",s1d:"Każdy pojazd aukcyjny jest wcześniej szczegółowo sprawdzany przez naszych mechatroników samochodowych.",s2t:"Aukcja 3-godzinna",s2d:"Każdego wieczoru pojazdy z danego dnia licytowane są między 17:00 a 20:00 – najwyższa oferta wygrywa.",s3t:"Obsługa płatności",s3d:"Bezpieczna obsługa płatności przez powiernika.",s4t:"Odbiór",s4d:"Odbiór własny w naszym punkcie zbiorczym w Stuttgarcie lub dostawa bezpośrednia przez naszego usługodawcę.",trust_eyebrow:"Dlaczego Safety Car?",trust_title:"Kupują Państwo nie tylko towar handlowy, lecz przede wszystkim pewność własnej kalkulacji.",t1t:"Pewność kalkulacji",t1d:"Na podstawie naszego protokołu mogą Państwo rzetelnie kalkulować – bez dojazdu i bez marginesu bezpieczeństwa.",t2t:"Jasne zobowiązanie",t2d:"Za wartości zmierzone w protokole odpowiadamy w pełni – jasne zapewnienie zamiast ogólnego wyłączenia.",t3t:"Przebieg pod lupą",t3d:"Wielostopniowe porównanie danych ze sterowników, historii serwisowej i obrazu zużycia.",band_title:"Zarejestruj się i licytuj.",band_sub:"Państwa bezpośredni dostęp do sprawdzonych samochodów używanych z Niemiec – bez kosztów stałych.",band_cta:"Rejestracja dealera",f_imp:"Nota prawna",f_ds:"Prywatność",f_agb:"Regulamin",veh_eyebrow:"Pojazdy w centrum uwagi",veh_title:"Na tych samochodach używanych się koncentrujemy.",veh1v:"Własność prywatna",veh1l:"Pochodzenie",veh2v:"Uznane marki",veh2l:"Marki priorytetowe",veh3v:"do 25 000 €",veh3l:"Wartość pojazdu",veh4l:"Pojemność silnika",ma_live:"Aukcja na żywo",ma_tag:"Przykładowa aukcja",st_live:"Na żywo",st_sold:"Sprzedane",ma_curr:"Aktualna najwyższa oferta",ma_sub:"13 ofert \u00b7 pozostało 14 godz.",reg_eyebrow:"Rejestracja",reg_title:"Trzy kroki do ekskluzywnego dostępu.",reg1:"Rejestracja przez naszą platformę",reg2:"Weryfikacja przez Safety Car",reg3:"Uzyskanie dostępu i licytacja",}
 };
 // deutsche Originaltexte als de-Fallback aus dem DOM aufnehmen
 document.querySelectorAll('[data-i18n]').forEach(function(el){I18N.de[el.getAttribute('data-i18n')]=el.innerHTML;});
@@ -287,6 +309,19 @@ document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener
 var saved;try{saved=localStorage.getItem('sc_op_lang');}catch(e){}
 if(!saved){var nl=(navigator.language||'de').toLowerCase();saved=nl.indexOf('pl')===0?'pl':(nl.indexOf('en')===0?'en':'de');}
 apply(saved);
+</script>
+
+<script>
+(function(){
+  var b=document.getElementById('ckBanner'), k='sc_op_cookie';
+  var gesehen=null; try{gesehen=localStorage.getItem(k);}catch(e){}
+  if(!gesehen && b) b.classList.add('show');
+  var t=document.getElementById('ckOk');
+  if(t) t.addEventListener('click', function(){
+    try{localStorage.setItem(k,'gesehen');}catch(e){}
+    if(b) b.classList.remove('show');
+  });
+})();
 </script>
 </body>
 </html>
