@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Safety Car Auktion</title>
+
+
+  <!-- Symbole (Browser-Tab, Lesezeichen, Startbildschirm) -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="favicon-16.png" sizes="16x16" type="image/png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+
 <style>
 @font-face{font-family:'Inter';font-style:normal;font-weight:300;font-display:swap;src:url('fonts/inter-300.woff2') format('woff2')}
 @font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/inter-regular.woff2') format('woff2')}
@@ -47,7 +56,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .auth-logo-name span{color:var(--red)}
 .auth-card{background:var(--white);border-radius:var(--radius-xl);border:0.5px solid var(--border);padding:40px 36px 36px;width:100%;max-width:420px;box-shadow:var(--shadow-md)}
 .auth-card-logo{display:flex;justify-content:center;margin-bottom:30px}
-.auth-card-logo img{height:62px;width:auto;display:block}
+.auth-card-logo img{height:50px;width:auto;display:block}
 .auth-title{font-size:20px;font-weight:600;color:var(--text);margin-bottom:4px}
 .auth-desc{font-size:13px;color:var(--text3);margin-bottom:24px;padding-bottom:20px;border-bottom:0.5px solid var(--border)}
 .fi{margin-bottom:14px}
@@ -88,7 +97,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 #selectorScreen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#F8F7F5 0%,#FFF0F0 50%,#F8F7F5 100%);padding:20px}
 .sel-card{background:var(--white);border-radius:var(--radius-xl);border:0.5px solid var(--border);padding:36px 32px 32px;width:100%;max-width:520px;box-shadow:var(--shadow-md)}
 .sel-card-logo{display:flex;justify-content:center;margin-bottom:28px}
-.sel-card-logo img{height:62px;width:auto;display:block}
+.sel-card-logo img{height:50px;width:auto;display:block}
 .sel-title{font-size:18px;font-weight:600;margin-bottom:4px}
 .sel-desc{font-size:13px;color:var(--text3);margin-bottom:20px;padding-bottom:16px;border-bottom:0.5px solid var(--border)}
 .auction-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;max-height:300px;overflow-y:auto}
@@ -573,7 +582,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 <div id="loadingScreen">
   <div class="loading-logo">
     
-    <div class="loading-name"><img src="logo.png" alt="Safety Car" style="height:34px;width:auto;display:block"></div>
+    <div class="loading-name"><img src="logo.png" alt="Safety Car" style="height:28px;width:auto;display:block"></div>
   </div>
   <div class="loading-bar"></div>
   <div style="font-size:12px;color:var(--text4)">Wird geladen...</div>
@@ -667,7 +676,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 <!-- DASHBOARD -->
 <div id="dashboardScreen">
   <div class="topbar">
-    <div class="topbar-logo" style="cursor:pointer" onclick="showDashTab('overview',null)"><img src="logo.png" alt="Safety Car" style="height:36px;width:auto;display:block"></div>
+    <div class="topbar-logo" style="cursor:pointer" onclick="showDashTab('overview',null)"><img src="logo.png" alt="Safety Car" style="height:30px;width:auto;display:block"></div>
     <div class="topbar-nav-wrap">
       <div class="topbar-nav">
         <button class="topbar-nav-btn active" onclick="showDashTab('overview',this)">Übersicht</button>
@@ -752,7 +761,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
   <div class="auction-topbar">
     <div class="atb-left">
       
-      <img src="logo.png" alt="Safety Car" style="height:32px;width:auto;display:block">
+      <img src="logo.png" alt="Safety Car" style="height:26px;width:auto;display:block">
       <div class="atb-live"><span class="live-dot"></span>LIVE</div>
       <div class="atb-code" id="auctionCodeTag"></div>
     </div>
@@ -866,7 +875,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
             </button>
             <div id="pdfUploadStatus" style="font-size:12px;color:var(--text3);margin-top:6px"></div>
           </div>
-          <div class="aff"><label>Auktionsdauer</label><select id="aDur"><option value="172800">48 Stunden</option><option value="86400">24 Stunden</option><option value="3600">1 Stunde (Test)</option><option value="600">10 Minuten (Test)</option></select></div>
+          <div class="aff"><label>Auktionsdauer</label><select id="aDur"><option value="172800">48 Stunden</option><option value="86400">24 Stunden</option><option value="10800">3 Stunden</option><option value="3600">1 Stunde (Test)</option><option value="600">10 Minuten (Test)</option></select></div>
           <button class="btn-save" onclick="saveAuction('draft')">Als Entwurf speichern</button>
           <button class="btn-publish" onclick="saveAuction('published')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Auktion veröffentlichen</button>
           <button class="btn-new" onclick="newAuction()">+ Neue Auktion</button>
@@ -942,6 +951,10 @@ var SBURL = 'https://cdlashucfivjihehwlis.supabase.co';
 var SBKEY = 'sb_publishable_QhSJ5XSC3xLWNXXWjFZEqQ_r08Hwy69';
 // Admin PIN is verified server-side only - never in frontend code
 var SITE = 'https://auktion.safetycar.net';
+// Nur diese Auktionsspalten darf ein Haendler lesen (Name/E-Mail des Hoechstbietenden sind gesperrt)
+var AUC_COLS = 'id, auction_code, vehicle_name, vehicle_sub, description, lot_number, current_bid, min_increment, snipe_extension, photo_url, photos, specs, checklist_pdf_url, ends_at, status, created_at, top_bidder_id, paused_remaining_seconds, ended_processed';
+function scLeads(a) { return !!(a && cUser && a.top_bidder_id && a.top_bidder_id === cUser.id); }
+function scPaused(a) { return !!(a && a.status === 'paused'); }
 var sb = supabase.createClient(SBURL, SBKEY, {
   auth: {
     // 'implicit': Der Reset-Link traegt die Sitzung direkt mit sich.
@@ -1072,6 +1085,7 @@ function pad2(n) { return n < 10 ? '0' + n : '' + n; }
 function fmtTime(ts) { return new Date(ts).toLocaleString('de-DE'); }
 function fmtCountdown(endsAt) {
   var diff = Math.max(0, Math.floor((new Date(endsAt) - new Date()) / 1000));
+  if (diff > 3 * 365 * 86400) return L('Pausiert','Paused','Wstrzymana');
   if (diff === 0) return L('Beendet','Ended','Zakończona');
   var d = Math.floor(diff / 86400);
   var h = Math.floor((diff % 86400) / 3600), m = Math.floor((diff % 3600) / 60), s = diff % 60;
@@ -1159,14 +1173,14 @@ async function loadProfile() {
 async function loadAllAuctions() {
   // Nicht freigegebene Händler sehen keine Auktionen (null = noch nicht geprüft, false = widerrufen)
   if (!cProfile || cProfile.approved !== true) { allAuctions = []; return; }
-  var res = await sb.from('auction').select('*').order('created_at', {ascending: false});
-  allAuctions = res.data || [];
+  var res = await sb.from('auction').select(AUC_COLS).order('created_at', {ascending: false});
+  allAuctions = (res.data || []).filter(function(a){ return a.status !== 'draft'; });
 }
 
 async function loadMyBidsAll() {
   if (!cUser || !cProfile) return;
   var myName = cProfile.display_name || cUser.email;
-  var res = await sb.from('bids').select('*, auction(vehicle_name, ends_at, current_bid, top_bidder, auction_code, lot_number)').eq('bidder', myName).order('created_at', {ascending: false});
+  var res = await sb.from('bids').select('id, amount, created_at, auction_id, auction(vehicle_name, ends_at, current_bid, top_bidder_id, auction_code, lot_number, status)').eq('user_id', cUser.id).order('created_at', {ascending: false});
   myBidsAll = res.data || [];
 }
 
@@ -1197,8 +1211,8 @@ function renderDashboard() {
   var active = allAuctions.filter(function(a) { return now < new Date(a.ends_at); });
   var myName = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
   var myActiveAuctions = active.filter(function(a) { return myBidsAll.some(function(b) { return b.auction_id === a.id; }); });
-  var leading = active.filter(function(a) { return a.top_bidder === myName; });
-  var won = allAuctions.filter(function(a) { return now >= new Date(a.ends_at) && a.top_bidder === myName; });
+  var leading = active.filter(function(a) { return scLeads(a); });
+  var won = allAuctions.filter(function(a) { return now >= new Date(a.ends_at) && scLeads(a); });
   document.getElementById('ds-active').textContent = myActiveAuctions.length;
   document.getElementById('ds-leading').textContent = leading.length;
   document.getElementById('ds-won').textContent = won.length;
@@ -1219,7 +1233,7 @@ function renderAuctionsGrid(containerId, auctions, activeOnly) {
   for (var i = 0; i < auctions.length; i++) {
     var a = auctions[i];
     var ended = now >= new Date(a.ends_at);
-    var isLeading = a.top_bidder === myName;
+    var isLeading = scLeads(a);
     var hasBid = myBidsAll.some(function(b) { return b.auction_id === a.id; });
     var isWatched = watchlistIds.indexOf(a.id) >= 0;
     var card = document.createElement('div');
@@ -1230,11 +1244,12 @@ function renderAuctionsGrid(containerId, auctions, activeOnly) {
     else if (isLeading && ended) badges += '<span class="ac-badge won">Ersteigert</span>';
     else if (hasBid && ended && !isLeading) badges += '<span class="ac-badge lost">Nicht ersteigert</span>';
     if (isWatched) badges += '<span class="ac-badge watching">Watchlist</span>';
+    if (scPaused(a)) badges += '<span class="ac-badge" style="background:#FFF7E6;color:#7A4B00;border:0.5px solid #F5C26B">' + L('Pausiert','Paused','Wstrzymana') + '</span>';
     var timerStr = ended ? 'Beendet' : fmtCountdown(a.ends_at);
     var timerClass = !ended && Math.floor((new Date(a.ends_at) - now) / 1000) < 300 ? ' urgent' : '';
     var mainImg = a.photo_url || (a.photos && a.photos.length ? a.photos[0] : '');
     var imgHtml = mainImg ? '<img src="' + mainImg + '" onerror="this.style.display=\'none\';this.parentNode.querySelector(\'.ac-img-ph\')&&(this.parentNode.querySelector(\'.ac-img-ph\').style.display=\'flex\')">' : '<div class="ac-img-ph" style="display:flex"><svg viewBox="0 0 520 200" style="width:70%;opacity:.3"><rect x="70" y="90" width="380" height="70" rx="8" fill="#333"/><rect x="140" y="55" width="220" height="70" rx="12" fill="#444"/><circle cx="140" cy="162" r="26" fill="#222"/><circle cx="380" cy="162" r="26" fill="#222"/></svg></div>';
-    card.innerHTML = '<div class="ac-img">' + imgHtml + '<div class="ac-timer-overlay' + timerClass + '" data-ends-at="' + (a.ends_at||'') + '">' + timerStr + '</div></div><div class="ac-body"><div class="ac-name">' + (a.vehicle_name || '---') + '</div><div class="ac-sub">' + esc(a.vehicle_sub || '') + '</div><div style="font-size:11px;color:var(--text3);font-family:\'DM Mono\',monospace;margin:3px 0 10px">' + esc(a.auction_code || '---') + '</div><div style="border-top:0.5px solid var(--border);margin-bottom:10px"></div><div class="ac-bid-lbl">' + (ended ? 'Verkauft für' : 'Aktuelles Höchstgebot') + '</div><div class="ac-bid-val">' + fmtPrice(a.current_bid || 0) + '</div></div><div class="ac-actions">' + (!ended ? '<button class="ac-btn" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Jetzt bieten</button>' : '<button class="ac-btn secondary" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Details</button>') + '<button class="ac-btn secondary ' + (isWatched ? 'watched-btn' : '') + '" onclick="event.stopPropagation();toggleWatch(\'' + a.id + '\',this)">' + (isWatched ? 'Gespeichert ✓' : 'Watchlist') + '</button></div>';
+    card.innerHTML = '<div class="ac-img">' + imgHtml + '<div class="ac-timer-overlay' + timerClass + '" data-ends-at="' + (scPaused(a) ? '' : (a.ends_at||'')) + '">' + timerStr + '</div></div><div class="ac-body"><div class="ac-name">' + (a.vehicle_name || '---') + '</div><div class="ac-sub">' + esc(a.vehicle_sub || '') + '</div><div style="font-size:11px;color:var(--text3);font-family:\'DM Mono\',monospace;margin:3px 0 10px">' + esc(a.auction_code || '---') + '</div><div style="border-top:0.5px solid var(--border);margin-bottom:10px"></div><div class="ac-bid-lbl">' + (ended ? 'Verkauft für' : 'Aktuelles Höchstgebot') + '</div><div class="ac-bid-val">' + fmtPrice(a.current_bid || 0) + '</div></div><div class="ac-actions">' + (!ended ? '<button class="ac-btn" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Jetzt bieten</button>' : '<button class="ac-btn secondary" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Details</button>') + '<button class="ac-btn secondary ' + (isWatched ? 'watched-btn' : '') + '" onclick="event.stopPropagation();toggleWatch(\'' + a.id + '\',this)">' + (isWatched ? 'Gespeichert ✓' : 'Watchlist') + '</button></div>';
     card.style.cursor = 'pointer';
     card.onclick = (function(auc){ return function(){ joinAuction(auc); }; })(a);
     container.appendChild(card);
@@ -1271,7 +1286,7 @@ function renderMyBidsTable() {
     if (!b.auction) continue;
     var aKey = b.auction_id;
     var ended = now >= new Date(b.auction.ends_at);
-    var isLeading = b.auction.top_bidder === myName;
+    var isLeading = scLeads(b.auction);
     var statusClass = '', statusText = '';
     if (!ended) { statusClass = isLeading ? 'winning' : 'losing'; statusText = isLeading ? 'Höchstbietend' : 'Überboten'; }
     else { statusClass = isLeading ? 'winning' : 'losing'; statusText = isLeading ? 'Ersteigert' : 'Nicht ersteigert'; }
@@ -1280,7 +1295,7 @@ function renderMyBidsTable() {
     var tr = document.createElement('tr');
     var codeStr = b.auction.auction_code || '';
     var nameCell = '<td>' + esc(b.auction.vehicle_name || '---') + (codeStr ? '<div style="font-size:11px;color:var(--text2);font-family:\'DM Mono\',monospace;margin-top:2px">' + esc(codeStr) + '</div>' : '') + '</td>';
-    var timerCell = '<td>' + (ended ? 'Beendet' : '<span class="bid-timer" data-ends-at="' + b.auction.ends_at + '">' + fmtCountdown(b.auction.ends_at) + '</span>') + '</td>';
+    var timerCell = '<td>' + (ended ? 'Beendet' : (scPaused(b.auction) ? L('Pausiert','Paused','Wstrzymana') : '<span class="bid-timer" data-ends-at="' + b.auction.ends_at + '">' + fmtCountdown(b.auction.ends_at) + '</span>')) + '</td>';
     tr.innerHTML = nameCell + '<td class="amt">' + fmtEur(b.amount) + '</td><td class="amt">' + fmtEur(b.auction.current_bid || 0) + '</td><td class="' + statusClass + '">' + statusText + '</td>' + timerCell + '<td>' + (!ended ? '<button style="background:var(--red);border:none;padding:6px 14px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;border-radius:8px;font-family:inherit;white-space:nowrap" onclick="joinAuctionById(\'' + b.auction_id + '\')">Jetzt bieten</button>' : '') + '</td>';
     tbody.appendChild(tr);
   }
@@ -1315,7 +1330,7 @@ async function joinAuctionById(auctionId) {
   var found = null;
   for (var i = 0; i < allAuctions.length; i++) { if (allAuctions[i].id === auctionId) { found = allAuctions[i]; break; } }
   if (!found) {
-    var res = await sb.from('auction').select('*').eq('id', auctionId).maybeSingle();
+    var res = await sb.from('auction').select(AUC_COLS).eq('id', auctionId).maybeSingle();
     if (res.data) found = res.data;
   }
   if (found) joinAuction(found);
@@ -1400,8 +1415,8 @@ async function addNotification(userId, type, message, auctionId) {
 
 // SELECTOR
 async function loadAuctionList() {
-  var res = await sb.from('auction').select('*').order('created_at', {ascending: false});
-  allAuctions = res.data || [];
+  var res = await sb.from('auction').select(AUC_COLS).order('created_at', {ascending: false});
+  allAuctions = (res.data || []).filter(function(a){ return a.status !== 'draft'; });
   var container = document.getElementById('auctionList');
   var now = new Date();
   var active = allAuctions.filter(function(a) { return now < new Date(a.ends_at); });
@@ -1424,7 +1439,7 @@ async function joinByCode() {
   var errEl = document.getElementById('selErr');
   errEl.textContent = '';
   if (!code) { errEl.textContent = 'Bitte Auktionscode eingeben.'; return; }
-  var res = await sb.from('auction').select('*').eq('auction_code', code).maybeSingle();
+  var res = await sb.from('auction').select(AUC_COLS).eq('auction_code', code).maybeSingle();
   if (!res.data) { errEl.textContent = 'Auktionscode nicht gefunden.'; return; }
   if (new Date() > new Date(res.data.ends_at)) { errEl.textContent = 'Diese Auktion ist bereits beendet.'; return; }
   joinAuction(res.data);
@@ -1669,6 +1684,61 @@ function loadUI() {
   loadMyBids();
 }
 
+// Pausiert / aktiv in der Auktionsansicht anzeigen und Bieten sperren
+function scApplyStatus() {
+  if (!aData) return;
+  var paused = scPaused(aData);
+  var ended = !paused && new Date() >= new Date(aData.ends_at);
+  var banner = document.getElementById('pausedBanner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'pausedBanner';
+    banner.style.cssText = 'display:none;background:#FFF7E6;border:1px solid #F5C26B;color:#7A4B00;border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.5;margin:0 0 12px';
+    var form = document.querySelector('.bid-form');
+    if (form && form.parentNode) form.parentNode.insertBefore(banner, form);
+  }
+  if (paused) {
+    banner.innerHTML = '<strong>' + L('Auktion pausiert','Auction paused','Aukcja wstrzymana') + '</strong><br>' +
+      L('Gebote sind vorübergehend nicht möglich. Die Restlaufzeit wird beim Fortsetzen vollständig gutgeschrieben.',
+        'Bidding is temporarily not possible. The remaining time will be fully restored when the auction resumes.',
+        'Składanie ofert jest chwilowo niemożliwe. Pozostały czas zostanie w pełni przywrócony po wznowieniu aukcji.');
+    banner.style.display = 'block';
+    var st = document.getElementById('statusTag');
+    st.textContent = L('PAUSIERT','PAUSED','WSTRZYMANA'); st.className = 'v-status'; st.style.cssText = 'background:#FFF7E6;color:#7A4B00;border:0.5px solid #F5C26B';
+  } else {
+    banner.style.display = 'none';
+    var st2 = document.getElementById('statusTag');
+    st2.style.cssText = '';
+    if (!ended) { st2.textContent = L('AKTIV','ACTIVE','AKTYWNA'); st2.className = 'v-status active'; }
+  }
+  var block = paused || ended;
+  document.getElementById('bidBtn').disabled = block;
+  document.querySelectorAll('.qb').forEach(function(b) { b.disabled = block; });
+  var inp = document.getElementById('bidInput'); if (inp) inp.disabled = block;
+  if (paused) {
+    ['timerDisp','topTimer','admTimer'].forEach(function(id){ var el = document.getElementById(id); if (el) el.textContent = L('Pausiert','Paused','Wstrzymana'); });
+    ['tc-h','tc-m','tc-s'].forEach(function(id){ var el = document.getElementById(id); if (el) el.textContent = '--'; });
+  }
+}
+
+// Frischen Stand der Auktion vom Server holen (Absicherung, falls Live-Verbindung hakt)
+var _scLastSig = '';
+async function scRefreshAuction() {
+  if (!aData) return null;
+  var forId = aData.id;
+  try {
+    var r = await sb.from('auction').select(AUC_COLS).eq('id', forId).maybeSingle();
+    if (!r.data || !aData || aData.id !== forId) return null;
+    var sig = [r.data.current_bid, r.data.ends_at, r.data.status, r.data.top_bidder_id].join('|');
+    aData = Object.assign({}, aData, r.data);
+    if (sig !== _scLastSig) {
+      _scLastSig = sig;
+      updateBid(); scApplyStatus(); loadFullHistory(); loadMyBids();
+    }
+    return aData;
+  } catch (e) { return null; }
+}
+
 function updateBid() {
   if (!aData) return;
   var cb = aData.current_bid || 0, inc = aData.min_increment || 500, mn = cb + inc;
@@ -1678,6 +1748,7 @@ function updateBid() {
   document.getElementById('bidInput').min = mn;
   document.getElementById('bidInput').placeholder = fmtEur(mn);
   updateMyStatus(cb);
+  scApplyStatus();
 }
 
 function updateMyStatus(currentBid) {
@@ -1687,7 +1758,7 @@ function updateMyStatus(currentBid) {
   if (!myBidsAll || !aData) { box.style.display = 'none'; return; }
   var myBidsForThis = myBidsAll.filter(function(b) { return b.auction_id === aData.id; });
   if (!myBidsForThis.length) { box.style.display = 'none'; return; }
-  var leading = aData.top_bidder === myName;
+  var leading = scLeads(aData);
   // Wenn führend, entspricht das eigene Gebot immer dem aktuellen Höchstgebot (stets aktuell)
   var myBest = leading ? currentBid : myBidsForThis[0].amount;
   box.style.display = 'block';
@@ -1698,29 +1769,42 @@ function updateMyStatus(currentBid) {
   document.getElementById('myStatusInfo').textContent = leading ? '' : L('Höchstgebot ist jetzt ','Highest bid is now ','Najwyższa oferta wynosi teraz ') + fmtEur(currentBid);
 }
 
-async function loadFullHistory() {
+// Mehrfache Aufrufe kurz hintereinander werden zu einem gebuendelt
+var _scHistT = null;
+function loadFullHistory() {
+  clearTimeout(_scHistT);
+  _scHistT = setTimeout(scLoadFullHistoryNow, 300);
+}
+async function scLoadFullHistoryNow() {
   if (!aData) return;
-  var res = await sb.from('bids').select('*').eq('auction_id', aData.id).order('created_at', {ascending: false}).limit(50);
-  var bids = res.data || [];
-  var myName = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
+  var forId = aData.id, bids = [];
+  try {
+    var sres = await sb.auth.getSession();
+    var tok = sres.data.session ? sres.data.session.access_token : null;
+    if (tok) {
+      var r = await fetch(BACKEND_URL + '/api/auctions/' + forId + '/bids', { headers: { 'Authorization': 'Bearer ' + tok } });
+      if (r.ok) { var d = await r.json(); bids = d.bids || []; }
+    }
+  } catch (e) {}
+  if (!aData || aData.id !== forId) return;
   var el = document.getElementById('histFull');
-  if (!bids.length) { el.innerHTML = '<div class="hemp">Noch keine Gebote</div>'; return; }
+  if (!bids.length) { el.innerHTML = '<div class="hemp">' + L('Noch keine Gebote','No bids yet','Brak ofert') + '</div>'; return; }
   el.innerHTML = '';
   for (var i = 0; i < bids.length; i++) {
-    var b = bids[i], isMe = b.bidder === myName;
-    var r = document.createElement('div');
-    r.className = 'hf-row' + (i === 0 ? ' top' : '') + (isMe ? ' mine' : '');
+    var b = bids[i], isMe = !!b.isMe;
+    var r2 = document.createElement('div');
+    r2.className = 'hf-row' + (i === 0 ? ' top' : '') + (isMe ? ' mine' : '');
     var t = new Date(b.created_at).toTimeString().slice(0, 8);
-    var displayName = isMe ? b.bidder + L(' (Sie)',' (You)',' (Ty)') : L('Bieter ','Bidder ','Licytujący ') + (i + 1);
-    r.innerHTML = '<span class="hf-bidder">' + esc(displayName) + '</span><span class="hf-amt' + (i === 0 ? ' top' : '') + '">' + fmtEur(b.amount) + '</span><span class="hf-time">' + t + '</span>';
-    el.appendChild(r);
+    var displayName = isMe ? L('Ihr Gebot','Your bid','Państwa oferta') : L('Bieter ','Bidder ','Licytujący ') + (b.bidderNo || (i + 1));
+    r2.innerHTML = '<span class="hf-bidder">' + esc(displayName) + '</span><span class="hf-amt' + (i === 0 ? ' top' : '') + '">' + fmtEur(b.amount) + '</span><span class="hf-time">' + t + '</span>';
+    el.appendChild(r2);
   }
 }
 
 async function loadMyBids() {
   if (!aData || !cUser || !cProfile) return;
   var myName = cProfile.display_name || cUser.email;
-  var res = await sb.from('bids').select('*').eq('auction_id', aData.id).eq('bidder', myName).order('created_at', {ascending: false}).limit(10);
+  var res = await sb.from('bids').select('id, amount, created_at').eq('auction_id', aData.id).eq('user_id', cUser.id).order('created_at', {ascending: false}).limit(10);
   var el = document.getElementById('myHist'), bids = res.data || [];
   if (!bids.length) { el.innerHTML = '<div class="hemp">Noch keine eigenen Gebote</div>'; return; }
   el.innerHTML = '';
@@ -1736,6 +1820,7 @@ var pendingBidAmount = 0;
 
 async function placeBid() {
   if (!aData || !cUser) return;
+  if (scPaused(aData)) { showMsg(L('Die Auktion ist pausiert.','The auction is paused.','Aukcja jest wstrzymana.'), 'err'); return; }
   if (new Date() > new Date(aData.ends_at)) { endAuction(); return; }
   var rawInput = document.getElementById('bidInput').value.replace(/\./g, '').replace(',', '.');
   var val = parseFloat(rawInput);
@@ -1745,12 +1830,47 @@ async function placeBid() {
   pendingBidAmount = Math.round(val);
   document.getElementById('bidConfirmAmount').textContent = fmtEur(pendingBidAmount);
   document.getElementById('bidConfirmVehicle').textContent = aData.vehicle_name || '';
+  var _me = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
+  scShowSelfWarn(scLeads(aData));
+  scShowJumpWarn(pendingBidAmount, aData.current_bid || 0);
   document.getElementById('bidConfirmOverlay').style.display = 'flex';
+}
+
+// Tippfehler-Schutz: deutlich ueber dem aktuellen Hoechstgebot?
+function scShowJumpWarn(amount, current) {
+  var w = document.getElementById('bidJumpWarn');
+  if (!w) return;
+  var pct = current > 0 ? Math.round((amount - current) / current * 100) : 0;
+  if (current > 0 && pct >= 25) {
+    w.innerHTML = '<strong>' + L('Bitte Betrag prüfen','Please check the amount','Prosimy sprawdzić kwotę') + '</strong><br>' +
+      L('Ihr Gebot liegt ' + pct + ' % über dem aktuellen Höchstgebot von ' + fmtEur(current) + '.',
+        'Your bid is ' + pct + ' % above the current highest bid of ' + fmtEur(current) + '.',
+        'Państwa oferta jest o ' + pct + ' % wyższa od aktualnej najwyższej oferty ' + fmtEur(current) + '.');
+    w.style.display = 'block';
+  } else { w.innerHTML = ''; w.style.display = 'none'; }
+}
+
+// Rueckfrage beim Erhoehen des eigenen Hoechstgebots
+var pendingSelfRaise = false;
+function scShowSelfWarn(show) {
+  pendingSelfRaise = !!show;
+  var w = document.getElementById('bidSelfWarn');
+  if (!w) return;
+  if (show) {
+    w.innerHTML = '<strong>' + L('Sie sind bereits Höchstbietender.', 'You are already the highest bidder.', 'Są Państwo już najwyżej licytującym.') + '</strong><br>' +
+      L('Mit diesem Gebot erhöhen Sie Ihr eigenes Höchstgebot. Möchten Sie trotzdem fortfahren?',
+        'This bid raises your own highest bid. Do you still want to continue?',
+        'Ta oferta podnosi Państwa własną najwyższą ofertę. Czy mimo to chcą Państwo kontynuować?');
+    w.style.display = 'block';
+  } else {
+    w.innerHTML = ''; w.style.display = 'none';
+  }
 }
 
 function cancelBidConfirm() {
   document.getElementById('bidConfirmOverlay').style.display = 'none';
   pendingBidAmount = 0;
+  scShowSelfWarn(false);
 }
 
 async function confirmBidSubmit() {
@@ -1758,6 +1878,7 @@ async function confirmBidSubmit() {
   if (!aData || !cUser || !pendingBidAmount) return;
   if (new Date() > new Date(aData.ends_at)) { endAuction(); return; }
   var amount = pendingBidAmount; pendingBidAmount = 0;
+  var selfRaise = pendingSelfRaise; scShowSelfWarn(false);
   var btn = document.getElementById('bidBtn'); btn.disabled = true;
   try {
     var sessionRes = await sb.auth.getSession();
@@ -1766,11 +1887,24 @@ async function confirmBidSubmit() {
     var res = await fetch(BACKEND_URL + '/api/bids/place', {
       method: 'POST',
       headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, 'x-sc-lang': (window.SC_LANG || 'de')},
-      body: JSON.stringify({auctionId: aData.id, amount: amount})
+      body: JSON.stringify({auctionId: aData.id, amount: amount, confirmSelfRaise: selfRaise})
     });
     var data = await res.json();
-    if (!res.ok) { showMsg(data.error || 'Fehler bei Gebotsabgabe.', 'err'); btn.disabled = false; return; }
-    aData.current_bid = amount; aData.top_bidder = cProfile ? cProfile.display_name : cUser.email;
+    if (res.status === 409 && data && data.code === 'ALREADY_TOP') {
+      // Server meldet: bereits Hoechstbietender -> Rueckfrage anzeigen
+      pendingBidAmount = amount;
+      document.getElementById('bidConfirmAmount').textContent = fmtEur(amount);
+      document.getElementById('bidConfirmVehicle').textContent = aData.vehicle_name || '';
+      scShowSelfWarn(true);
+      document.getElementById('bidConfirmOverlay').style.display = 'flex';
+      btn.disabled = false; return;
+    }
+    if (!res.ok) {
+      showMsg(data.error || 'Fehler bei Gebotsabgabe.', 'err'); btn.disabled = false;
+      if (data && (data.code === 'PAUSED' || data.code === 'ENDED' || data.code === 'NOT_ACTIVE')) { _scLastSig = ''; scRefreshAuction(); }
+      return;
+    }
+    aData.current_bid = amount; aData.top_bidder_id = cUser.id;
     if (data.sniped && data.newEndsAt) { aData.ends_at = data.newEndsAt; document.getElementById('snipeNotice').style.display = 'flex'; }
     updateBid(); loadFullHistory(); loadMyBids();
     // Dashboard-Daten (Meine Gebote / Übersicht) sofort aktualisieren
@@ -1802,8 +1936,12 @@ function clearTimer() { clearInterval(tInt); }
 
 function startTimer() {
   clearInterval(tInt);
+  var _tick = 0;
   tInt = setInterval(function() {
     if (!aData) return;
+    _tick++;
+    if (_tick % 5 === 0) scRefreshAuction();
+    if (scPaused(aData)) { scApplyStatus(); return; }
     var diff = Math.max(0, Math.floor((new Date(aData.ends_at) - new Date()) / 1000));
     var h = Math.floor(diff / 3600), m = Math.floor((diff % 3600) / 60), s = diff % 60;
     var str = (h > 0 ? pad2(h) + ':' : '') + pad2(m) + ':' + pad2(s);
@@ -1819,7 +1957,18 @@ function startTimer() {
   }, 1000);
 }
 
+var _scEnding = false;
 async function endAuction() {
+  // Vor dem Anzeigen "Beendet" beim Server nachfragen: evtl. wurde durch
+  // Anti-Sniping verlaengert oder die Auktion pausiert.
+  if (_scEnding) return;
+  _scEnding = true;
+  try {
+    var fresh = await scRefreshAuction();
+    if (fresh && (scPaused(fresh) || new Date(fresh.ends_at) > new Date())) {
+      updateBid(); scApplyStatus(); startTimer(); return;
+    }
+  } finally { _scEnding = false; }
   clearInterval(tInt);
   document.getElementById('statusTag').textContent = 'BEENDET'; document.getElementById('statusTag').className = 'v-status ended';
   document.getElementById('bidBtn').disabled = true;
@@ -1827,7 +1976,7 @@ async function endAuction() {
   document.getElementById('soldOv').style.display = 'flex';
   document.getElementById('soldWin').textContent = L('für ','for ','za ') + fmtEur(aData ? aData.current_bid || 0 : 0);
   var myName = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
-  if (aData && aData.top_bidder === myName) {
+  if (aData && scLeads(aData)) {
     document.getElementById('wonBadge').style.display = 'block';
     await addNotification(cUser.id, 'ERSTEIGERT', L('Sie haben unverbindlich ersteigert: ','You have won (non-binding): ','Wylicytowali Państwo niewiążąco: ') + (aData.vehicle_name || '') + ' - ' + fmtEur(aData.current_bid || 0) + L('. Wir melden uns zur Abwicklung.','. We will contact you to complete the transaction.','. Skontaktujemy się w sprawie realizacji.'), aData.id);
   }
@@ -1838,8 +1987,8 @@ function subRT() {
   if (!aData) return;
   rtSub = sb.channel('rt-' + aData.id)
     .on('postgres_changes', {event: 'UPDATE', schema: 'public', table: 'auction', filter: 'id=eq.' + aData.id}, function(p) {
-      aData = Object.assign({}, aData, p.new); updateBid();
-      if (new Date() > new Date(aData.ends_at)) endAuction();
+      aData = Object.assign({}, aData, p.new); updateBid(); scApplyStatus(); loadFullHistory(); loadMyBids();
+      if (!scPaused(aData) && new Date() > new Date(aData.ends_at)) endAuction();
     })
     .on('postgres_changes', {event: 'INSERT', schema: 'public', table: 'bids', filter: 'auction_id=eq.' + aData.id}, function() {
       loadFullHistory(); loadMyBids();
@@ -1927,10 +2076,13 @@ function renderAdminAuctionList() {
   for (var i = 0; i < filtered.length; i++) {
     var a = filtered[i], ended = now > new Date(a.ends_at);
     var isPublished = a.status === 'published';
+    var isPaused = a.status === 'paused';
     var item = document.createElement('div');
     item.style.cssText = 'background:var(--white);border:0.5px solid var(--border2);border-radius:10px;padding:12px 14px;margin-bottom:8px' + (aData && aData.id === a.id ? ';outline:2px solid var(--red);outline-offset:-1px' : '');
 
-    var statusBadge = isPublished
+    var statusBadge = isPaused
+      ? '<span style="background:#FFF7E6;color:#7A4B00;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600">❚❚ Pausiert</span>'
+      : isPublished
       ? '<span style="background:#E8F5E0;color:#3B7A1A;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600">● Veröffentlicht</span>'
       : '<span style="background:var(--warning-bg);color:var(--warning);font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600">● Entwurf</span>';
     var endedBadge = ended ? '<span style="background:#eee;color:#888;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;margin-left:4px">BEENDET</span>' : '';
@@ -1943,9 +2095,13 @@ function renderAdminAuctionList() {
           '<div style="margin-top:5px">' + statusBadge + endedBadge + '</div>' +
         '</div>' +
         '<div style="display:flex;flex-direction:column;gap:4px">' +
-          (isPublished
-            ? '<button onclick="toggleAuctionStatus(\'' + a.id + '\',\'draft\')" style="font-size:11px;padding:5px 10px;border:0.5px solid var(--border2);border-radius:6px;background:var(--white);cursor:pointer;font-family:inherit;white-space:nowrap">Pausieren</button>'
-            : '<button onclick="toggleAuctionStatus(\'' + a.id + '\',\'published\')" style="font-size:11px;padding:5px 10px;border:none;border-radius:6px;background:#4A9A22;color:white;cursor:pointer;font-family:inherit;white-space:nowrap">Veröffentlichen</button>') +
+          (isPaused
+            ? '<button onclick="toggleAuctionStatus(\'' + a.id + '\',\'resume\')" style="font-size:11px;padding:5px 10px;border:none;border-radius:6px;background:#4A9A22;color:white;cursor:pointer;font-family:inherit;white-space:nowrap">Fortsetzen</button>'
+            : (isPublished && !ended)
+            ? '<button onclick="toggleAuctionStatus(\'' + a.id + '\',\'pause\')" style="font-size:11px;padding:5px 10px;border:0.5px solid #F5C26B;border-radius:6px;background:#FFF7E6;color:#7A4B00;cursor:pointer;font-family:inherit;white-space:nowrap">Pausieren</button>'
+            : (!isPublished)
+            ? '<button onclick="toggleAuctionStatus(\'' + a.id + '\',\'publish\')" style="font-size:11px;padding:5px 10px;border:none;border-radius:6px;background:#4A9A22;color:white;cursor:pointer;font-family:inherit;white-space:nowrap">Veröffentlichen</button>'
+            : '') +
           '<button onclick="selectAuctionForEdit(\'' + a.id + '\')" style="font-size:11px;padding:5px 10px;border:0.5px solid var(--border2);border-radius:6px;background:var(--white);cursor:pointer;font-family:inherit">Bearbeiten</button>' +
           '<button onclick="deleteAuction(\'' + a.id + '\',\'' + esc(a.vehicle_name||'') + '\')" style="font-size:11px;padding:5px 10px;border:0.5px solid #E5B5B5;border-radius:6px;background:var(--white);color:#C0392B;cursor:pointer;font-family:inherit">Löschen</button>' +
         '</div>' +
@@ -2027,15 +2183,24 @@ function selectAuctionForEdit(id) {
   if (form) form.scrollIntoView({behavior:'smooth', block:'center'});
 }
 
-async function toggleAuctionStatus(id, newStatus) {
+async function toggleAuctionStatus(id, action) {
   if (!adminToken) { alert('Bitte als Admin anmelden.'); return; }
+  var frage = {
+    pause: 'Auktion jetzt pausieren?\n\nGebote sind sofort gesperrt. Die Restlaufzeit wird gespeichert und beim Fortsetzen gutgeschrieben.',
+    resume: 'Auktion fortsetzen?\n\nDie gespeicherte Restlaufzeit läuft weiter (mindestens 5 Minuten).',
+    publish: 'Auktion jetzt veröffentlichen?\n\nDie Laufzeit startet ab jetzt und alle freigegebenen Händler werden benachrichtigt.'
+  }[action];
+  if (frage && !confirm(frage)) return;
   try {
     var res = await fetch(BACKEND_URL + '/api/admin/auctions/' + id + '/status', {
       method: 'POST',
       headers: {'Content-Type': 'application/json', 'x-admin-token': adminToken},
-      body: JSON.stringify({status: newStatus})
+      body: JSON.stringify({action: action})
     });
-    if (!res.ok) { alert('Statusänderung fehlgeschlagen.'); return; }
+    var data = {}; try { data = await res.json(); } catch (e) {}
+    if (!res.ok) { alert('Statusänderung fehlgeschlagen: ' + (data.error || res.status)); return; }
+    var ok = { pause: '✓ Auktion pausiert', resume: '✓ Auktion fortgesetzt', publish: '✓ Auktion veröffentlicht' }[action] || '✓ Gespeichert';
+    showAdminToast(ok, 'ok');
     await loadAdminAuctionList();
     loadAdminStats();
   } catch(e) { alert('Verbindungsfehler.'); }
@@ -2398,7 +2563,9 @@ async function saveAuction(status) {
     var saveData = await saveRes.json();
     if (!saveRes.ok) { msgEl.textContent = 'Fehler: ' + (saveData.error || 'Speichern fehlgeschlagen'); msgEl.className = 'save-msg err'; showAdminToast('✕ ' + (saveData.error || 'Speichern fehlgeschlagen'), 'err'); return; }
     if (saveData.auction) aData = saveData.auction;
-    var successMsg = status === 'published' ? '✓ Auktion veröffentlicht! Code: ' + code : '✓ Entwurf gespeichert! Code: ' + code;
+    var successMsg = saveData.locked
+      ? '✓ Gespeichert. Hinweis: Bei laufenden/pausierten Auktionen bleiben Preis, Bietschritt, Laufzeit, Code und Status unverändert.'
+      : (status === 'published' ? '✓ Auktion veröffentlicht! Code: ' + code : '✓ Entwurf gespeichert! Code: ' + code);
     msgEl.textContent = successMsg; msgEl.className = 'save-msg ok';
     showAdminToast(successMsg, 'ok');
     loadAdminAuctionList(); loadAdminStats();
@@ -2415,7 +2582,7 @@ async function confirmReset() {
       headers: {'x-admin-token': adminToken}
     });
     if (!resetRes.ok) { document.getElementById('saveMsg').textContent = 'Reset fehlgeschlagen'; document.getElementById('saveMsg').className = 'save-msg err'; return; }
-    aData.current_bid = 0; aData.top_bidder = null;
+    aData.current_bid = 0; aData.top_bidder_id = null;
     document.getElementById('saveMsg').textContent = 'Zurueckgesetzt!'; document.getElementById('saveMsg').className = 'save-msg ok';
     refreshAdminBids();
   } catch(e) { document.getElementById('saveMsg').textContent = 'Verbindungsfehler'; }
@@ -2500,6 +2667,7 @@ startTimer = function() {
   if (!window._tcInt) {
     window._tcInt = setInterval(function() {
       if (!aData) return;
+      if (scPaused(aData)) return;
       var diff = Math.max(0, Math.floor((new Date(aData.ends_at) - new Date()) / 1000));
       var h = Math.floor(diff/3600), m = Math.floor((diff%3600)/60), s = diff%60;
       var eh = document.getElementById('tc-h'), em = document.getElementById('tc-m'), es = document.getElementById('tc-s');
@@ -2600,6 +2768,8 @@ setInterval(function() {
       <div style="font-size:13px;color:var(--text3);margin-bottom:4px" id="bidConfirmVehicle"></div>
       <div style="font-size:13px;color:var(--text2);margin-bottom:18px"><strong>Verbindliches Angebot</strong> in Höhe von:</div>
       <div style="font-size:32px;font-weight:700;color:var(--red);text-align:center;margin-bottom:8px" id="bidConfirmAmount">EUR 0</div>
+      <div id="bidSelfWarn" style="display:none;background:#FFF7E6;border:1px solid #F5C26B;color:#7A4B00;border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.5;margin:4px 0 16px"></div>
+      <div id="bidJumpWarn" style="display:none;background:#FDECEC;border:1px solid #E5A3A3;color:#8A1C1C;border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.5;margin:4px 0 16px"></div>
       <div style="font-size:12px;color:var(--text3);text-align:center;margin-bottom:24px;line-height:1.5">Mit der Bestätigung geben Sie ein rechtlich verbindliches Gebot ab. Ein abgegebenes Gebot kann nicht zurückgenommen werden.</div>
       <div style="display:flex;gap:10px">
         <button onclick="cancelBidConfirm()" style="flex:1;background:var(--white);border:1.5px solid var(--border2);color:var(--text2);padding:13px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Abbrechen</button>
@@ -2880,6 +3050,17 @@ setInterval(function() {
   var SC_LANG='de', _scApplying=false, _scT=null;
   window.SC_LANG=SC_LANG;
 
+  // Admin-Bereich bleibt immer Deutsch – unabhaengig vom Sprachumschalter.
+  function scIsAdminDE(el){
+    if(!el || !el.closest) return false;
+    if(el.closest('#adminOverlay, #pinModal, #admFab')) return true;
+    if(el.closest('#bidToast')){
+      var ao=document.getElementById('adminOverlay');
+      if(ao && ao.style.display && ao.style.display!=='none') return true;
+    }
+    return false;
+  }
+
   function scApplyLang(lang){
     _scApplying=true;
     try{
@@ -2889,6 +3070,7 @@ setInterval(function() {
           var tag=p.nodeName;
           if(tag==='SCRIPT'||tag==='STYLE'||tag==='TEXTAREA') return NodeFilter.FILTER_REJECT;
           if(p.closest && p.closest('.sc-lang')) return NodeFilter.FILTER_REJECT;
+          if(scIsAdminDE(p)) return NodeFilter.FILTER_REJECT;
           if(!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
           return NodeFilter.FILTER_ACCEPT;
         }
@@ -2903,10 +3085,12 @@ setInterval(function() {
         }
       });
       document.querySelectorAll('[placeholder]').forEach(function(el){
+        if(scIsAdminDE(el)) return;
         var key=(el.getAttribute('placeholder')||'').trim();
         var out=scTr(key, lang); if(out!==key) el.setAttribute('placeholder', out);
       });
       document.querySelectorAll('[title]').forEach(function(el){
+        if(scIsAdminDE(el)) return;
         var key=(el.getAttribute('title')||'').trim();
         var out=scTr(key, lang); if(out!==key) el.setAttribute('title', out);
       });
