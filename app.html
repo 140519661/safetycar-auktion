@@ -1550,10 +1550,25 @@ async function doForgot() {
   errEl.textContent = ''; okEl.textContent = '';
   if (!email || email.indexOf('@') < 0) { errEl.textContent = 'Bitte gueltige E-Mail eingeben.'; return; }
   var btn = document.getElementById('fgBtn'); btn.disabled = true; btn.textContent = 'WIRD GESENDET...';
-  var res = await sb.auth.resetPasswordForEmail(email, {redirectTo: SITE + '/app.html#type=recovery'});
+  // Versand ueber den eigenen Server (Resend, zweisprachige Safety-Car-Mail).
+  // Nur falls der Server nicht erreichbar ist: Rueckfall auf den Supabase-Standardversand.
+  var viaServer = false;
+  try {
+    var r = await fetch(BACKEND_URL + '/api/auth/forgot-password', {
+      method: 'POST', headers: {'Content-Type': 'application/json', 'x-sc-lang': (window.SC_LANG || 'de')},
+      body: JSON.stringify({email: email})
+    });
+    viaServer = r.ok;
+    if (r.status === 429) { btn.disabled = false; btn.textContent = 'RESET-LINK SENDEN'; errEl.textContent = L('Zu viele Versuche. Bitte später erneut versuchen.','Too many attempts. Please try again later.','Zbyt wiele prób. Prosimy spróbować później.'); return; }
+  } catch (e) { viaServer = false; }
+  if (!viaServer) {
+    var res = await sb.auth.resetPasswordForEmail(email, {redirectTo: SITE + '/app.html#type=recovery'});
+    if (res.error) { btn.disabled = false; btn.textContent = 'RESET-LINK SENDEN'; errEl.textContent = res.error.message; return; }
+  }
   btn.disabled = false; btn.textContent = 'RESET-LINK SENDEN';
-  if (res.error) { errEl.textContent = res.error.message; return; }
-  okEl.textContent = 'Reset-Link gesendet! Bitte E-Mail (auch Spam-Ordner) pruefen.';
+  okEl.textContent = L('Falls ein Konto mit dieser Adresse existiert, wurde ein Reset-Link gesendet. Bitte E-Mail (auch Spam-Ordner) prüfen.',
+    'If an account with this address exists, a reset link has been sent. Please check your e-mail (including spam).',
+    'Jeśli istnieje konto z tym adresem, wysłano link resetujący. Prosimy sprawdzić skrzynkę (również folder spam).');
 }
 
 async function doReset() {
