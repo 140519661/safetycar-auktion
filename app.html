@@ -394,6 +394,16 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
 .bmsg.err{color:var(--red);background:var(--red-pale);border:0.5px solid var(--red-border)}
 .bmsg.warn{color:var(--warning);background:var(--warning-bg);border:0.5px solid #EFC87A}
 #bidToast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);background:#1a1a1a;color:#fff;padding:14px 28px;border-radius:40px;font-size:15px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.35);z-index:900;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap}
+/* Admin: sichtbares Feedback beim Druecken + Hervorheben des Formulars */
+#adminOverlay button{transition:transform .08s ease, box-shadow .15s ease, opacity .15s}
+#adminOverlay button:active{transform:scale(.95)}
+#adminOverlay button:disabled{opacity:.55;cursor:wait}
+@keyframes scFlash{0%{box-shadow:0 0 0 0 rgba(176,0,0,.0)}25%{box-shadow:0 0 0 4px rgba(176,0,0,.45)}100%{box-shadow:0 0 0 0 rgba(176,0,0,0)}}
+.admin-form-card.sc-flash{animation:scFlash 1.3s ease}
+#admFormMode{display:none;border-radius:8px;padding:10px 12px;font-size:12.5px;line-height:1.5;margin:-4px 0 14px}
+#admFormMode.info{display:block;background:#EEF4FF;border:1px solid #BFD3F7;color:#1F3B73}
+#admFormMode.warn{display:block;background:#FFF7E6;border:1px solid #F5C26B;color:#7A4B00}
+#admFormMode.lock{display:block;background:#F3F3F3;border:1px solid #DDD;color:#555}
 #bidToast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #bidToast.ok{background:#1a6b3a}
 #bidToast.err{background:#B00000}
@@ -852,6 +862,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
         </div>
         <div class="admin-form-card">
           <div class="admin-form-title" id="admFormTitle">Neue Auktion</div>
+          <div id="admFormMode"></div>
           <div class="aff"><label>Auktionscode</label><input type="text" id="aCode" placeholder="Auktionscode" style="text-transform:uppercase"></div>
           <div class="aff"><label>Marke</label><input type="text" id="aName" placeholder="Marke / Modell"></div>
           <div class="aff"><label>Untertitel</label><input type="text" id="aSub" placeholder="Baujahr / Laufleistung"></div>
@@ -876,8 +887,8 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
             <div id="pdfUploadStatus" style="font-size:12px;color:var(--text3);margin-top:6px"></div>
           </div>
           <div class="aff"><label>Auktionsdauer</label><select id="aDur"><option value="172800">48 Stunden</option><option value="86400">24 Stunden</option><option value="10800">3 Stunden</option><option value="3600">1 Stunde (Test)</option><option value="600">10 Minuten (Test)</option></select></div>
-          <button class="btn-save" onclick="saveAuction('draft')">Als Entwurf speichern</button>
-          <button class="btn-publish" onclick="saveAuction('published')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Auktion veröffentlichen</button>
+          <button class="btn-save" id="admBtnDraft" onclick="saveAuction('draft')">Als Entwurf speichern</button>
+          <button class="btn-publish" id="admBtnPublish" onclick="saveAuction('published')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Auktion veröffentlichen</button>
           <button class="btn-new" onclick="newAuction()">+ Neue Auktion</button>
           <div class="save-msg" id="saveMsg"></div>
           <button class="btn-danger" onclick="confirmReset()">Gebote zurücksetzen</button>
@@ -2188,6 +2199,8 @@ function selectAuctionForEdit(id) {
   if (!a) return;
   aData = a;
   prefillForm();
+  scSetFormMode(scModeFor(a), a);
+  showAdminToast('Formular rechts: ' + (a.auction_code || 'Auktion') + ' geladen', 'ok');
   refreshAdminBids();
   if (a.ends_at) { var e = document.getElementById('admEnds'); if (e) e.textContent = 'Endet: ' + fmtTime(a.ends_at); }
   renderAdminAuctionList();
@@ -2282,6 +2295,50 @@ function prefillForm() {
   document.getElementById('admFormTitle').textContent = 'AUKTION BEARBEITEN';
 }
 
+// ── Admin-Formular: Modus anzeigen, Felder sperren, Rueckmeldung geben ──
+function scHaptic() { try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) {} }
+document.addEventListener('pointerdown', function(e) { if (e.target && e.target.closest && e.target.closest('#adminOverlay button')) scHaptic(); }, true);
+
+function scSetFormMode(mode, a) {
+  var box = document.getElementById('admFormMode');
+  var pub = document.getElementById('admBtnPublish'), dr = document.getElementById('admBtnDraft');
+  var lockIds = ['aCode','aStart','aInc','aSnipe','aDur'];
+  var lockAll = ['aName','aSub'];
+  var pubHtml = '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>';
+  function setLock(ids, on) { ids.forEach(function(id){ var el = document.getElementById(id); if (el) { el.disabled = on; el.style.opacity = on ? '.55' : ''; } }); }
+  setLock(lockIds, false); setLock(lockAll, false);
+  if (pub) { pub.style.display = ''; pub.innerHTML = pubHtml + 'Auktion veröffentlichen'; }
+  if (dr) dr.style.display = '';
+  box.className = ''; box.innerHTML = '';
+  var code = a ? esc(a.auction_code || '') : '';
+  if (mode === 'new') {
+    box.className = 'info'; box.innerHTML = '<strong>Neue Auktion.</strong> Daten eintragen, dann veröffentlichen oder als Entwurf speichern.';
+  } else if (mode === 'relist') {
+    box.className = 'info'; box.innerHTML = '<strong>Erneut einstellen – Kopie von ' + code + '.</strong><br>Es wird eine <strong>neue</strong> Auktion mit neuem Code angelegt (ohne alte Gebote). Startgebot und Dauer prüfen, dann veröffentlichen.';
+  } else if (mode === 'draft') {
+    box.className = 'info'; box.innerHTML = '<strong>Entwurf ' + code + ' bearbeiten.</strong> Die Laufzeit startet erst beim Veröffentlichen.';
+  } else if (mode === 'live') {
+    box.className = 'warn'; box.innerHTML = '<strong>' + code + ' läuft' + (a && a.status === 'paused' ? ' (pausiert)' : '') + '.</strong> Nur Marke, Untertitel, Fotos und PDF sind änderbar. Preis, Bietschritt, Dauer und Code sind gesperrt.';
+    setLock(lockIds, true);
+    if (dr) dr.style.display = 'none';
+    if (pub) pub.innerHTML = pubHtml + 'Änderungen speichern';
+  } else if (mode === 'ended') {
+    box.className = 'lock'; box.innerHTML = '<strong>' + code + ' ist beendet</strong> und kann nicht mehr geändert werden.<br><button type="button" onclick="relistAuction(\'' + a.id + '\')" style="margin-top:8px;font-size:12px;padding:6px 12px;border:none;border-radius:6px;background:var(--red);color:#fff;cursor:pointer;font-family:inherit">Erneut einstellen</button>';
+    setLock(lockIds, true); setLock(lockAll, true);
+    if (dr) dr.style.display = 'none';
+    if (pub) pub.style.display = 'none';
+  }
+  // Formular sichtbar machen und kurz aufleuchten lassen
+  var card = document.querySelector('#adminOverlay .admin-form-card');
+  if (card) { card.classList.remove('sc-flash'); void card.offsetWidth; card.classList.add('sc-flash'); card.scrollIntoView({behavior:'smooth', block:'start'}); }
+}
+function scModeFor(a) {
+  if (!a) return 'new';
+  if (a.status === 'draft') return 'draft';
+  if (a.status !== 'paused' && new Date(a.ends_at) <= new Date()) return 'ended';
+  return 'live';
+}
+
 // Beendete Auktion als NEUE Auktion (neuer Code, keine alten Gebote) ins Formular uebernehmen.
 // Die alte Auktion bleibt als Nachweis unveraendert bestehen.
 var _relistSrc = null;
@@ -2297,8 +2354,8 @@ function relistAuction(id) {
   document.getElementById('admFormTitle').textContent = 'ERNEUT EINSTELLEN (Kopie von ' + (a.auction_code || '') + ')';
   document.getElementById('saveMsg').textContent = sp ? '' : 'Bitte Startgebot eintragen.';
   renderAdminAuctionList();
-  var form = document.getElementById('admFormTitle');
-  if (form) form.scrollIntoView({behavior:'smooth', block:'center'});
+  scSetFormMode('relist', a);
+  showAdminToast('Kopie von ' + (a.auction_code || '') + ' im Formular rechts – prüfen und veröffentlichen', 'ok');
 }
 
 function newAuction() {
@@ -2318,6 +2375,7 @@ function newAuction() {
 
   document.getElementById('admFormTitle').textContent = 'NEUE AUKTION';
   document.getElementById('saveMsg').textContent = '';
+  scSetFormMode('new', null);
 }
 
 function nextScCode() {
@@ -2332,11 +2390,11 @@ function nextScCode() {
 }
 
 async function refreshAdminBids() {
-  if (!aData) return;
+  var _a = aData; if (!_a) return;
   var all = [];
   try {
     if (adminToken) {
-      var res = await fetch(BACKEND_URL + '/api/admin/bids/' + aData.id, { headers: {'x-admin-token': adminToken} });
+      var res = await fetch(BACKEND_URL + '/api/admin/bids/' + _a.id, { headers: {'x-admin-token': adminToken} });
       if (res.ok) { var j = await res.json(); all = j.bids || []; }
     }
   } catch(e) { all = []; }
@@ -2345,10 +2403,10 @@ async function refreshAdminBids() {
   for (var i = 0; i < all.length; i++) { if (unique.indexOf(all[i].bidder) < 0) unique.push(all[i].bidder); }
   document.getElementById('admUniq').textContent = unique.length;
   document.getElementById('admBidCount') && (document.getElementById('admBidCount').textContent = '(' + all.length + ')');
-  document.getElementById('admCode').textContent = aData.auction_code || '---';
+  document.getElementById('admCode').textContent = _a.auction_code || '---';
   if (all.length > 0) { document.getElementById('admTop').textContent = fmtEur(all[0].amount); document.getElementById('admTopBy').textContent = all[0].bidder; }
   else { document.getElementById('admTop').textContent = '---'; document.getElementById('admTopBy').textContent = 'Kein Gebot'; }
-  if (aData.ends_at) document.getElementById('admEnds').textContent = 'Endet: ' + fmtTime(aData.ends_at);
+  if (_a.ends_at) document.getElementById('admEnds').textContent = 'Endet: ' + fmtTime(_a.ends_at);
   var tbody = document.getElementById('admBody');
   if (!all.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--t3);padding:20px;font-size:12px">Noch keine Gebote</td></tr>'; return; }
   tbody.innerHTML = '';
@@ -2582,6 +2640,11 @@ async function saveAuction(status) {
   var dur = parseInt(document.getElementById('aDur').value);
   var _src = aData || _relistSrc;
   var specs = (_src && _src.specs) ? _src.specs : [];
+  // Doppelklick-Schutz: waehrend des Speicherns beide Knoepfe sperren (sonst doppelte Auktionen)
+  var _b1 = document.getElementById('admBtnPublish'), _b2 = document.getElementById('admBtnDraft');
+  if ((_b1 && _b1.disabled) || (_b2 && _b2.disabled)) return;
+  if (_b1) _b1.disabled = true; if (_b2) _b2.disabled = true;
+  msgEl.textContent = 'Wird gespeichert …'; msgEl.className = 'save-msg';
   // FIX 1: Admin auction save via BACKEND (admin JWT required, server validation)
   try {
     var saveRes = await fetch(BACKEND_URL + '/api/admin/auctions', {
@@ -2605,8 +2668,10 @@ async function saveAuction(status) {
       : (status === 'published' ? '✓ Auktion veröffentlicht! Code: ' + code : '✓ Entwurf gespeichert! Code: ' + code);
     msgEl.textContent = successMsg; msgEl.className = 'save-msg ok';
     showAdminToast(successMsg, 'ok');
-    loadAdminAuctionList(); loadAdminStats();
+    await loadAdminAuctionList(); loadAdminStats();
+    if (aData) scSetFormMode(scModeFor(aData), aData);
   } catch(e) { msgEl.textContent = 'Verbindungsfehler.'; msgEl.className = 'save-msg err'; showAdminToast('✕ Verbindungsfehler.', 'err'); }
+  finally { if (_b1) _b1.disabled = false; if (_b2) _b2.disabled = false; }
 }
 
 async function confirmReset() {
