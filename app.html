@@ -615,6 +615,7 @@ html,body{height:100%;background:var(--off-white);color:var(--text);font-family:
     <div class="fi"><label>Ansprechpartner (Vor- &amp; Zuname)</label><input type="text" id="su_contact" placeholder="Ansprechpartner (Vor- &amp; Zuname)" autocomplete="name"></div>
     <div class="fi"><label>Name Ihres Unternehmens</label><input type="text" id="su_name" placeholder="Name Ihres Unternehmens" autocomplete="organization"></div>
     <div class="fi"><label>E-Mail-Adresse</label><input type="email" id="su_email" placeholder="E-Mail-Adresse" autocomplete="email"></div>
+    <div class="fi"><label>E-Mail-Adresse bestätigen</label><input type="email" id="su_email2" placeholder="E-Mail-Adresse wiederholen" autocomplete="off"></div>
     <div class="fi"><label>Telefonnummer</label><input type="tel" id="su_phone" placeholder="Telefonnummer" autocomplete="tel"></div>
     <div class="fi"><label>Passwort</label><div class="pw-wrap"><input type="password" id="su_pw" placeholder="Passwort" autocomplete="new-password"><button type="button" class="pw-toggle" onclick="togglePw('su_pw',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="pwhint">Min. 8 Zeichen empfohlen</div></div>
     <div class="fi"><label>Passwort bestätigen</label><div class="pw-wrap"><input type="password" id="su_pw2" placeholder="Passwort bestätigen"><button type="button" class="pw-toggle" onclick="togglePw('su_pw2',this)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
@@ -1048,8 +1049,7 @@ function openProfileSettings() {
   if (!cUser) return;
   document.getElementById('profileEmail').textContent = cUser.email || '---';
   document.getElementById('profileName').textContent = cProfile && cProfile.display_name ? cProfile.display_name : '';
-  document.getElementById('newEmail').value = '';
-  document.getElementById('newPassword').value = '';
+  ['newEmail','newEmail2','currentPassword','newPassword','newPassword2'].forEach(function(id){ var el = document.getElementById(id); if (el) el.value = ''; });
   document.getElementById('emailMsg').textContent = '';
   document.getElementById('passwordMsg').textContent = '';
   document.getElementById('profileOverlay').style.display = 'block';
@@ -1063,7 +1063,10 @@ async function changeEmail() {
   var newEmail = document.getElementById('newEmail').value.trim().toLowerCase();
   var msg = document.getElementById('emailMsg');
   msg.style.color = '#C0392B';
-  if (!newEmail || newEmail.indexOf('@') < 0) { msg.textContent = 'Bitte gültige E-Mail eingeben.'; return; }
+  var newEmail2 = (document.getElementById('newEmail2').value || '').trim().toLowerCase();
+  if (!newEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) { msg.textContent = L('Bitte gültige E-Mail-Adresse eingeben.','Please enter a valid e-mail address.','Prosimy podać prawidłowy adres e-mail.'); return; }
+  if (newEmail !== newEmail2) { msg.textContent = L('Die beiden E-Mail-Adressen stimmen nicht überein.','The two e-mail addresses do not match.','Oba adresy e-mail nie są zgodne.'); return; }
+  if (cUser && newEmail === String(cUser.email || '').toLowerCase()) { msg.textContent = L('Das ist bereits Ihre aktuelle E-Mail-Adresse.','This is already your current e-mail address.','To jest już Państwa aktualny adres e-mail.'); return; }
   try {
     var res = await sb.auth.updateUser({email: newEmail}, {emailRedirectTo: SITE + '/app.html'});
     if (res.error) { msg.textContent = res.error.message; return; }
@@ -1075,16 +1078,24 @@ async function changeEmail() {
 }
 
 async function changePassword() {
+  var curPw = document.getElementById('currentPassword').value;
   var newPw = document.getElementById('newPassword').value;
+  var newPw2 = document.getElementById('newPassword2').value;
   var msg = document.getElementById('passwordMsg');
   msg.style.color = '#C0392B';
-  if (!newPw || newPw.length < 8) { msg.textContent = 'Passwort muss mindestens 8 Zeichen haben.'; return; }
+  if (!curPw) { msg.textContent = L('Bitte aktuelles Passwort eingeben.','Please enter your current password.','Prosimy podać aktualne hasło.'); return; }
+  if (!newPw || newPw.length < 8) { msg.textContent = L('Das neue Passwort muss mindestens 8 Zeichen haben.','The new password must have at least 8 characters.','Nowe hasło musi mieć co najmniej 8 znaków.'); return; }
+  if (newPw !== newPw2) { msg.textContent = L('Die beiden neuen Passwörter stimmen nicht überein.','The two new passwords do not match.','Oba nowe hasła nie są zgodne.'); return; }
+  if (newPw === curPw) { msg.textContent = L('Das neue Passwort muss sich vom aktuellen unterscheiden.','The new password must differ from the current one.','Nowe hasło musi różnić się od obecnego.'); return; }
   try {
+    // Sicherheit: aktuelles Passwort pruefen (verhindert Aenderung an einem offen gelassenen Geraet)
+    var chk = await sb.auth.signInWithPassword({ email: cUser.email, password: curPw });
+    if (chk.error) { msg.textContent = L('Das aktuelle Passwort ist nicht korrekt.','The current password is incorrect.','Aktualne hasło jest nieprawidłowe.'); return; }
     var res = await sb.auth.updateUser({password: newPw});
     if (res.error) { msg.textContent = res.error.message; return; }
     msg.style.color = '#3B7A1A';
-    msg.textContent = 'Passwort erfolgreich geändert.';
-    document.getElementById('newPassword').value = '';
+    msg.textContent = L('Passwort erfolgreich geändert.','Password changed successfully.','Hasło zostało zmienione.');
+    ['currentPassword','newPassword','newPassword2'].forEach(function(id){ document.getElementById(id).value = ''; });
   } catch(e) { msg.textContent = 'Fehler: ' + e.message; }
 }
 
@@ -1497,6 +1508,8 @@ async function doSignup() {
   if (!name) { errEl.textContent = 'Bitte Unternehmensname eingeben.'; return; }
   if (!contact) { errEl.textContent = 'Bitte Ansprechpartner eingeben.'; return; }
   if (!email || email.indexOf('@') < 0) { errEl.textContent = 'Gültige E-Mail-Adresse eingeben.'; return; }
+  var email2 = (document.getElementById('su_email2').value || '').trim().toLowerCase();
+  if (email !== email2) { errEl.textContent = L('Die E-Mail-Adressen stimmen nicht überein.','The e-mail addresses do not match.','Adresy e-mail nie są zgodne.'); return; }
   if (!phone) { errEl.textContent = 'Bitte Telefonnummer eingeben.'; return; }
   if (pw.length < 8) { errEl.textContent = 'Passwort mindestens 8 Zeichen.'; return; }
   if (pw !== pw2) { errEl.textContent = 'Passwörter stimmen nicht überein.'; return; }
@@ -2922,13 +2935,16 @@ setInterval(function() {
       </div>
       <div style="border-top:0.5px solid var(--border);padding-top:20px;margin-bottom:24px">
         <div style="font-size:14px;font-weight:600;margin-bottom:12px">E-Mail-Adresse ändern</div>
-        <div class="pw-wrap" style="margin-bottom:10px"><input type="email" id="newEmail" placeholder="Neue E-Mail-Adresse" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"></div>
+        <div class="pw-wrap" style="margin-bottom:10px"><input type="email" id="newEmail" placeholder="Neue E-Mail-Adresse" autocomplete="off" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"></div>
+        <div class="pw-wrap" style="margin-bottom:10px"><input type="email" id="newEmail2" placeholder="Neue E-Mail-Adresse wiederholen" autocomplete="off" style="width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"></div>
         <button onclick="changeEmail()" style="background:var(--red);border:none;border-radius:var(--radius);padding:10px 18px;color:#fff;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500">E-Mail-Adresse ändern</button>
         <div id="emailMsg" style="font-size:12px;margin-top:8px;min-height:14px"></div>
       </div>
       <div style="border-top:0.5px solid var(--border);padding-top:20px">
         <div style="font-size:14px;font-weight:600;margin-bottom:12px">Passwort ändern</div>
-        <div class="pw-wrap" style="margin-bottom:10px"><input type="password" id="newPassword" placeholder="Neues Passwort (min. 8 Zeichen)" style="width:100%;padding:11px 42px 11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"><button type="button" class="pw-toggle" onclick="togglePw('newPassword',this)"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+        <div class="pw-wrap" style="margin-bottom:10px"><input type="password" id="currentPassword" placeholder="Aktuelles Passwort" autocomplete="current-password" style="width:100%;padding:11px 42px 11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"><button type="button" class="pw-toggle" onclick="togglePw('currentPassword',this)"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+        <div class="pw-wrap" style="margin-bottom:10px"><input type="password" id="newPassword" placeholder="Neues Passwort (min. 8 Zeichen)" autocomplete="new-password" style="width:100%;padding:11px 42px 11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"><button type="button" class="pw-toggle" onclick="togglePw('newPassword',this)"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+        <div class="pw-wrap" style="margin-bottom:10px"><input type="password" id="newPassword2" placeholder="Neues Passwort wiederholen" autocomplete="new-password" style="width:100%;padding:11px 42px 11px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);font-family:inherit;font-size:14px"><button type="button" class="pw-toggle" onclick="togglePw('newPassword2',this)"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
         <button onclick="changePassword()" style="background:var(--red);border:none;border-radius:var(--radius);padding:10px 18px;color:#fff;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500">Passwort ändern</button>
         <div id="passwordMsg" style="font-size:12px;margin-top:8px;min-height:14px"></div>
       </div>
@@ -3095,6 +3111,11 @@ setInterval(function() {
     ["Angemeldet als", "Signed in as", "Zalogowano jako"],
     ["E-Mail-Adresse ändern", "Change E-Mail-Address", "Zmień adres e-mail"],
     ["Neue E-Mail-Adresse", "New E-Mail-Address", "Nowy adres e-mail"],
+    ["Neue E-Mail-Adresse wiederholen", "Repeat new E-Mail-Address", "Powtórz nowy adres e-mail"],
+    ["Aktuelles Passwort", "Current password", "Aktualne hasło"],
+    ["Neues Passwort wiederholen", "Repeat new password", "Powtórz nowe hasło"],
+    ["E-Mail-Adresse bestätigen", "Confirm E-Mail-Address", "Potwierdź adres e-mail"],
+    ["E-Mail-Adresse wiederholen", "Repeat E-Mail-Address", "Powtórz adres e-mail"],
     ["Passwort ändern", "Change password", "Zmień hasło"],
     ["Neues Passwort (min. 8 Zeichen)", "New password (min. 8 characters)", "Nowe hasło (min. 8 znaków)"],
     ["Safety Car-Check herunterladen", "Download Safety Car-Check", "Pobierz Safety Car-Check"],
