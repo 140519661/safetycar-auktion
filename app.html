@@ -955,6 +955,18 @@ var SITE = 'https://auktion.safetycar.net';
 var AUC_COLS = 'id, auction_code, vehicle_name, vehicle_sub, description, lot_number, current_bid, min_increment, snipe_extension, photo_url, photos, specs, checklist_pdf_url, ends_at, status, created_at, top_bidder_id, paused_remaining_seconds, ended_processed';
 function scLeads(a) { return !!(a && cUser && a.top_bidder_id && a.top_bidder_id === cUser.id); }
 function scPaused(a) { return !!(a && a.status === 'paused'); }
+// Preis-Beschriftung: ohne Gebot = Startpreis; beendet = Hoechstgebot (Verkauf steht unter Vorbehalt der Verkaeuferzustimmung)
+function scPriceLabel(a, ended) {
+  var hasBid = !!(a && a.top_bidder_id);
+  if (ended) return hasBid ? L('Höchstgebot','Highest bid','Najwyższa oferta') : L('Ohne Gebot beendet','Ended without bids','Zakończona bez ofert');
+  return hasBid ? L('Aktuelles Höchstgebot','Current highest bid','Aktualna najwyższa oferta') : L('Startpreis','Starting price','Cena wywoławcza');
+}
+function scSoldText() {
+  var t = document.querySelector('#soldOv .vsov-title'), w = document.getElementById('soldWin');
+  var hasBid = !!(aData && aData.top_bidder_id);
+  if (t) t.textContent = L('BEENDET','ENDED','ZAKOŃCZONA');
+  if (w) w.textContent = hasBid ? L('Höchstgebot: ','Highest bid: ','Najwyższa oferta: ') + fmtEur(aData.current_bid || 0) : L('Ohne Gebot','No bids','Bez ofert');
+}
 var sb = supabase.createClient(SBURL, SBKEY, {
   auth: {
     // 'implicit': Der Reset-Link traegt die Sitzung direkt mit sich.
@@ -1249,7 +1261,7 @@ function renderAuctionsGrid(containerId, auctions, activeOnly) {
     var timerClass = !ended && Math.floor((new Date(a.ends_at) - now) / 1000) < 300 ? ' urgent' : '';
     var mainImg = a.photo_url || (a.photos && a.photos.length ? a.photos[0] : '');
     var imgHtml = mainImg ? '<img src="' + mainImg + '" onerror="this.style.display=\'none\';this.parentNode.querySelector(\'.ac-img-ph\')&&(this.parentNode.querySelector(\'.ac-img-ph\').style.display=\'flex\')">' : '<div class="ac-img-ph" style="display:flex"><svg viewBox="0 0 520 200" style="width:70%;opacity:.3"><rect x="70" y="90" width="380" height="70" rx="8" fill="#333"/><rect x="140" y="55" width="220" height="70" rx="12" fill="#444"/><circle cx="140" cy="162" r="26" fill="#222"/><circle cx="380" cy="162" r="26" fill="#222"/></svg></div>';
-    card.innerHTML = '<div class="ac-img">' + imgHtml + '<div class="ac-timer-overlay' + timerClass + '" data-ends-at="' + (scPaused(a) ? '' : (a.ends_at||'')) + '">' + timerStr + '</div></div><div class="ac-body"><div class="ac-name">' + (a.vehicle_name || '---') + '</div><div class="ac-sub">' + esc(a.vehicle_sub || '') + '</div><div style="font-size:11px;color:var(--text3);font-family:\'DM Mono\',monospace;margin:3px 0 10px">' + esc(a.auction_code || '---') + '</div><div style="border-top:0.5px solid var(--border);margin-bottom:10px"></div><div class="ac-bid-lbl">' + (ended ? 'Verkauft für' : 'Aktuelles Höchstgebot') + '</div><div class="ac-bid-val">' + fmtPrice(a.current_bid || 0) + '</div></div><div class="ac-actions">' + (!ended ? '<button class="ac-btn" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Jetzt bieten</button>' : '<button class="ac-btn secondary" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Details</button>') + '<button class="ac-btn secondary ' + (isWatched ? 'watched-btn' : '') + '" onclick="event.stopPropagation();toggleWatch(\'' + a.id + '\',this)">' + (isWatched ? 'Gespeichert ✓' : 'Watchlist') + '</button></div>';
+    card.innerHTML = '<div class="ac-img">' + imgHtml + '<div class="ac-timer-overlay' + timerClass + '" data-ends-at="' + (scPaused(a) ? '' : (a.ends_at||'')) + '">' + timerStr + '</div></div><div class="ac-body"><div class="ac-name">' + (a.vehicle_name || '---') + '</div><div class="ac-sub">' + esc(a.vehicle_sub || '') + '</div><div style="font-size:11px;color:var(--text3);font-family:\'DM Mono\',monospace;margin:3px 0 10px">' + esc(a.auction_code || '---') + '</div><div style="border-top:0.5px solid var(--border);margin-bottom:10px"></div><div class="ac-bid-lbl">' + scPriceLabel(a, ended) + '</div><div class="ac-bid-val">' + ((ended && !a.top_bidder_id) ? '–' : fmtPrice(a.current_bid || 0)) + '</div></div><div class="ac-actions">' + (!ended ? '<button class="ac-btn" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Jetzt bieten</button>' : '<button class="ac-btn secondary" onclick="event.stopPropagation();joinAuction(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">Details</button>') + '<button class="ac-btn secondary ' + (isWatched ? 'watched-btn' : '') + '" onclick="event.stopPropagation();toggleWatch(\'' + a.id + '\',this)">' + (isWatched ? 'Gespeichert ✓' : 'Watchlist') + '</button></div>';
     card.style.cursor = 'pointer';
     card.onclick = (function(auc){ return function(){ joinAuction(auc); }; })(a);
     container.appendChild(card);
@@ -1743,7 +1755,8 @@ function updateBid() {
   if (!aData) return;
   var cb = aData.current_bid || 0, inc = aData.min_increment || 500, mn = cb + inc;
   document.getElementById('curBid').textContent = fmtEur(cb);
-  document.getElementById('curBy').textContent = cb > 0 ? 'Anonymes Gebot' : 'Noch kein Gebot';
+  var _hasBid = !!aData.top_bidder_id;
+  document.getElementById('curBy').textContent = _hasBid ? L('Anonymes Gebot','Anonymous bid','Anonimowa oferta') : L('Noch kein Gebot – Startpreis','No bid yet – starting price','Brak ofert – cena wywoławcza');
   document.getElementById('bidHint').textContent = L('Mindestgebot: ','Minimum bid: ','Minimalna oferta: ') + fmtEur(mn) + ' (+ ' + fmtEur(inc) + ')';
   document.getElementById('bidInput').min = mn;
   document.getElementById('bidInput').placeholder = fmtEur(mn);
@@ -1974,7 +1987,7 @@ async function endAuction() {
   document.getElementById('bidBtn').disabled = true;
   document.querySelectorAll('.qb').forEach(function(b) { b.disabled = true; });
   document.getElementById('soldOv').style.display = 'flex';
-  document.getElementById('soldWin').textContent = L('für ','for ','za ') + fmtEur(aData ? aData.current_bid || 0 : 0);
+  scSoldText();
   var myName = cProfile ? cProfile.display_name : (cUser ? cUser.email : '');
   if (aData && scLeads(aData)) {
     document.getElementById('wonBadge').style.display = 'block';
@@ -2101,7 +2114,7 @@ function renderAdminAuctionList() {
             ? '<button onclick="toggleAuctionStatus(\'' + a.id + '\',\'pause\')" style="font-size:11px;padding:5px 10px;border:0.5px solid #F5C26B;border-radius:6px;background:#FFF7E6;color:#7A4B00;cursor:pointer;font-family:inherit;white-space:nowrap">Pausieren</button>'
             : (!isPublished)
             ? '<button onclick="toggleAuctionStatus(\'' + a.id + '\',\'publish\')" style="font-size:11px;padding:5px 10px;border:none;border-radius:6px;background:#4A9A22;color:white;cursor:pointer;font-family:inherit;white-space:nowrap">Veröffentlichen</button>'
-            : '') +
+            : '<button onclick="relistAuction(\'' + a.id + '\')" style="font-size:11px;padding:5px 10px;border:0.5px solid var(--border2);border-radius:6px;background:var(--white);cursor:pointer;font-family:inherit;white-space:nowrap">Erneut einstellen</button>') +
           '<button onclick="selectAuctionForEdit(\'' + a.id + '\')" style="font-size:11px;padding:5px 10px;border:0.5px solid var(--border2);border-radius:6px;background:var(--white);cursor:pointer;font-family:inherit">Bearbeiten</button>' +
           '<button onclick="deleteAuction(\'' + a.id + '\',\'' + esc(a.vehicle_name||'') + '\')" style="font-size:11px;padding:5px 10px;border:0.5px solid #E5B5B5;border-radius:6px;background:var(--white);color:#C0392B;cursor:pointer;font-family:inherit">Löschen</button>' +
         '</div>' +
@@ -2244,10 +2257,13 @@ async function deleteBid(bidId, amount) {
       method: 'DELETE',
       headers: {'x-admin-token': adminToken}
     });
-    if (!res.ok) { var d = await res.json(); alert('Fehler: ' + (d.error || 'Löschen fehlgeschlagen')); return; }
-    loadAuctionBids(aData);
-    loadAdminStats();
-  } catch(e) { alert('Verbindungsfehler.'); }
+    if (!res.ok) { var d = {}; try { d = await res.json(); } catch (x) {} alert('Fehler: ' + (d.error || 'Löschen fehlgeschlagen')); return; }
+  } catch(e) { alert('Verbindungsfehler.'); return; }
+  // Gebot ist geloescht – Ansichten neu laden
+  showAdminToast('✓ Gebot gelöscht', 'ok');
+  refreshAdminBids();
+  loadAdminAuctionList();
+  loadAdminStats();
 }
 
 function prefillForm() {
@@ -2266,7 +2282,27 @@ function prefillForm() {
   document.getElementById('admFormTitle').textContent = 'AUKTION BEARBEITEN';
 }
 
+// Beendete Auktion als NEUE Auktion (neuer Code, keine alten Gebote) ins Formular uebernehmen.
+// Die alte Auktion bleibt als Nachweis unveraendert bestehen.
+var _relistSrc = null;
+function relistAuction(id) {
+  var a = (window._allAdminAuctions || []).find(function(x) { return x.id === id; });
+  if (!a) return;
+  aData = a; prefillForm();
+  _relistSrc = a; aData = null;
+  var rest = (a.auction_code || '').replace(/^SC0*\d+-?/i, '');
+  document.getElementById('aCode').value = nextScCode() + rest;
+  var sp = (a.start_bid != null && Number(a.start_bid) > 0) ? a.start_bid : '';
+  document.getElementById('aStart').value = sp;
+  document.getElementById('admFormTitle').textContent = 'ERNEUT EINSTELLEN (Kopie von ' + (a.auction_code || '') + ')';
+  document.getElementById('saveMsg').textContent = sp ? '' : 'Bitte Startgebot eintragen.';
+  renderAdminAuctionList();
+  var form = document.getElementById('admFormTitle');
+  if (form) form.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
 function newAuction() {
+  _relistSrc = null;
   aData = null;
   ['aCode','aName','aSub','aLot','aStart','aSpecs','aDesc'].forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ''; });
   uploadedPhotos = []; renderPhotoGrid();
@@ -2544,7 +2580,8 @@ async function saveAuction(status) {
   var inc = parseFloat(document.getElementById('aInc').value) || 500;
   var snipe = parseInt(document.getElementById('aSnipe').value) || 15;
   var dur = parseInt(document.getElementById('aDur').value);
-  var specs = (aData && aData.specs) ? aData.specs : [];
+  var _src = aData || _relistSrc;
+  var specs = (_src && _src.specs) ? _src.specs : [];
   // FIX 1: Admin auction save via BACKEND (admin JWT required, server validation)
   try {
     var saveRes = await fetch(BACKEND_URL + '/api/admin/auctions', {
@@ -2555,14 +2592,14 @@ async function saveAuction(status) {
         auction_code: code, vehicle_name: name, vehicle_sub: sub, lot_number: lot,
         current_bid: start, min_increment: inc, snipe_extension: snipe,
         photos: uploadedPhotos, specs: specs, duration_seconds: dur,
-        description: (aData && aData.description) ? aData.description : '',
+        description: (_src && _src.description) ? _src.description : '',
         checklist_pdf_url: uploadedPdfUrl || null,
         status: status
       })
     });
     var saveData = await saveRes.json();
     if (!saveRes.ok) { msgEl.textContent = 'Fehler: ' + (saveData.error || 'Speichern fehlgeschlagen'); msgEl.className = 'save-msg err'; showAdminToast('✕ ' + (saveData.error || 'Speichern fehlgeschlagen'), 'err'); return; }
-    if (saveData.auction) aData = saveData.auction;
+    if (saveData.auction) { aData = saveData.auction; _relistSrc = null; }
     var successMsg = saveData.locked
       ? '✓ Gespeichert. Hinweis: Bei laufenden/pausierten Auktionen bleiben Preis, Bietschritt, Laufzeit, Code und Status unverändert.'
       : (status === 'published' ? '✓ Auktion veröffentlicht! Code: ' + code : '✓ Entwurf gespeichert! Code: ' + code);
@@ -2707,6 +2744,8 @@ renderDashboard = function() {
   if (sbWatch) sbWatch.textContent = watchlistIds.length;
 };
 
+// Kurzhinweis unten (wurde in der Merkliste aufgerufen, war aber nie definiert)
+function showToast(txt, type) { showAdminToast(txt, type); }
 function showAdminToast(txt, type) {
   var toast = document.getElementById('bidToast');
   if (!toast) return;
@@ -3112,7 +3151,7 @@ setInterval(function() {
       var so=document.getElementById('soldOv');
       if(so && so.style.display!=='none' && typeof aData!=='undefined' && aData){
         var sw=document.getElementById('soldWin');
-        if(sw) sw.textContent = window.L('für ','for ','za ') + fmtEur(aData.current_bid||0);
+        if(sw && typeof scSoldText==='function') scSoldText();
       }
     }catch(e){}
   };
