@@ -1065,10 +1065,12 @@ async function changeEmail() {
   msg.style.color = '#C0392B';
   if (!newEmail || newEmail.indexOf('@') < 0) { msg.textContent = 'Bitte gültige E-Mail eingeben.'; return; }
   try {
-    var res = await sb.auth.updateUser({email: newEmail});
+    var res = await sb.auth.updateUser({email: newEmail}, {emailRedirectTo: SITE + '/app.html'});
     if (res.error) { msg.textContent = res.error.message; return; }
     msg.style.color = '#3B7A1A';
-    msg.textContent = 'Bestätigungs-Mail an die neue Adresse gesendet. Bitte bestätigen.';
+    msg.textContent = L('Bestätigungs-Mail verschickt. Bitte den Link in der Mail bestätigen – erst dann gilt die neue Adresse. Bis dahin bleibt die bisherige Adresse aktiv.',
+      'Confirmation e-mail sent. Please confirm the link in the e-mail – only then the new address applies. Until then your current address stays active.',
+      'Wysłano e-mail z potwierdzeniem. Prosimy potwierdzić link w wiadomości – dopiero wtedy nowy adres zacznie obowiązywać. Do tego czasu obowiązuje dotychczasowy adres.');
   } catch(e) { msg.textContent = 'Fehler: ' + e.message; }
 }
 
